@@ -21,6 +21,16 @@
   --r:10px; --rl:14px;
   --safe-bottom: env(safe-area-inset-bottom, 0px);
 }
+@media (prefers-color-scheme: dark) {
+  :root.dark-mode {
+    --bg:#1a1a1a; --surface:#2d2d2d; --surface2:#3a3a3a;
+    --border:#444; --text:#e8e8e8; --text2:#b8b8b8; --text3:#888;
+    --accent:#4a9eff; --accent-bg:#1a3a5a; --accent-border:#2a5a8a;
+    --green:#2ecc71; --green-bg:#1a3a1a; --green-border:#3a6a3a;
+    --red:#ff6b6b; --red-bg:#3a1a1a; --red-border:#6a3a3a;
+    --yellow:#ffd93d; --yellow-bg:#3a3a1a; --yellow-border:#6a6a3a;
+  }
+}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;overflow:hidden;background:var(--bg)}
 body{font-family:'Vazirmatn','Segoe UI',Tahoma,system-ui,sans-serif;color:var(--text);font-size:14px;display:flex;flex-direction:column}
@@ -172,6 +182,7 @@ input:focus,select:focus{border-color:var(--accent)}
 <div class="header">
   <h1>📖 دفترچه لغت</h1>
   <div class="header-pills">
+    <button class="pill" style="border:none;cursor:pointer;background:none;padding:0" onclick="toggleDarkMode()" title="تاریک‌نما">🌙</button>
     <span class="pill" id="hdr-total">۰</span>
     <span class="pill pill-green" id="hdr-known">۰ ✓</span>
   </div>
@@ -197,6 +208,8 @@ input:focus,select:focus{border-color:var(--accent)}
         </div>
       </div>
       <div class="field"><label>جمله مثال</label><input type="text" id="in-ex" placeholder="She is very beautiful."></div>
+      <div class="field"><label>مترادف (جدا با ویرگول)</label><input type="text" id="in-syn" placeholder="pretty, lovely, attractive"></div>
+      <div class="field"><label>متضاد (جدا با ویرگول)</label><input type="text" id="in-ant" placeholder="ugly, hideous"></div>
       <div class="field"><label>دسته جدید</label><input type="text" id="in-newcat" placeholder="مثلاً: هفته ۱"></div>
       <button class="btn btn-primary mt-8" onclick="addWord()">+ افزودن کلمه</button>
       <div id="add-msg" style="font-size:13px;text-align:center;min-height:20px;margin-top:8px"></div>
@@ -255,8 +268,69 @@ input:focus,select:focus{border-color:var(--accent)}
     <div id="word-list"></div>
   </div>
 
+  <!-- STATS -->
+  <div id="p-stats" class="panel">
+    <div class="card">
+      <div class="card-title">📊 آمارهای کلی</div>
+      <div class="stats-row">
+        <div class="stat"><div class="n" id="st-total">۰</div><div class="l">کل کلمات</div></div>
+        <div class="stat"><div class="n" id="st-known">۰</div><div class="l">بلد شده</div></div>
+        <div class="stat"><div class="n" id="st-today">۰</div><div class="l">امروز</div></div>
+        <div class="stat"><div class="n" id="st-streak">۰</div><div class="l">روز متوالی</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">📈 تمرین روزانه (۳۰ روز اخیر)</div>
+      <div id="streak-chart" style="display:flex;gap:2px;align-items:flex-end;height:120px;background:var(--surface2);padding:12px;border-radius:var(--r)"></div>
+    </div>
+    <div class="card">
+      <div class="card-title">⏱️ زمان صرف شده</div>
+      <div class="settings-item">
+        <span class="settings-label">کل زمان</span>
+        <span class="settings-val" id="st-time-total">۰ دقیقه</span>
+      </div>
+      <div class="settings-item">
+        <span class="settings-label">امروز</span>
+        <span class="settings-val" id="st-time-today">۰ دقیقه</span>
+      </div>
+    </div>
+  </div>
+
   <!-- MORE -->
   <div id="p-more" class="panel">
+    <div class="card">
+      <div class="card-title">🔔 یادآوری روزانه</div>
+      <div class="settings-item">
+        <span class="settings-label">فعال کن</span>
+        <button class="btn btn-sm btn-outline" id="notif-toggle-btn" onclick="toggleNotifications()" style="width:auto">غیرفعال</button>
+      </div>
+      <div class="settings-item">
+        <span class="settings-label">ساعت یادآوری</span>
+        <select id="notif-hour" onchange="saveNotificationSettings()" style="width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:var(--r);font-size:14px;background:var(--surface);color:var(--text);font-family:inherit">
+          <option value="">انتخاب کنید</option>
+          <option value="16">۱۶:۰۰ (۴ بعدازظهر)</option>
+          <option value="8">۸:۰۰ (۸ صبح)</option>
+          <option value="12">۱۲:۰۰ (ظهر)</option>
+          <option value="20">۲۰:۰۰ (۸ شب)</option>
+          <option value="9">۹:۰۰ (۹ صبح)</option>
+          <option value="18">۱۸:۰۰ (۶ بعدازظهر)</option>
+          <option value="21">۲۱:۰۰ (۹ شب)</option>
+        </select>
+      </div>
+      <div id="notif-msg" style="font-size:12px;text-align:center;margin-top:8px;min-height:20px"></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">📁 مدیریت دسته‌بندی</div>
+      <div class="field"><label>نام دسته‌بندی جدید</label><input type="text" id="new-cat-input" placeholder="مثلاً: هفته ۱"></div>
+      <button class="btn btn-primary mt-8" onclick="addCategory()">+ ایجاد دسته‌بندی</button>
+      <div id="cat-msg" style="font-size:13px;text-align:center;min-height:20px;margin-top:8px"></div>
+      <div style="margin-top:12px">
+        <div style="font-size:12px;color:var(--text2);margin-bottom:8px"><strong>دسته‌بندی‌های موجود:</strong></div>
+        <div id="cat-list" style="display:flex;flex-wrap:wrap;gap:6px"></div>
+      </div>
+    </div>
+
     <div class="card">
       <div class="card-title">ورود از فایل اکسل</div>
       <div class="drop-zone" onclick="document.getElementById('xl-file').click()">
@@ -265,13 +339,22 @@ input:focus,select:focus{border-color:var(--accent)}
         <div class="dz-sub">xlsx یا xls</div>
       </div>
       <input type="file" id="xl-file" accept=".xlsx,.xls,.csv" style="display:none" onchange="handleXlFile(this)">
-      <div class="col-grid">
+      <div class="col-grid" style="grid-template-columns:repeat(6,1fr)">
         <div class="col-box"><div class="col-letter">A</div><div class="col-label">انگلیسی *</div></div>
         <div class="col-box"><div class="col-letter">B</div><div class="col-label">فارسی *</div></div>
         <div class="col-box"><div class="col-letter">C</div><div class="col-label">تلفظ</div></div>
         <div class="col-box"><div class="col-letter">D</div><div class="col-label">جمله</div></div>
+        <div class="col-box"><div class="col-letter">E</div><div class="col-label">مترادف</div></div>
+        <div class="col-box"><div class="col-letter">F</div><div class="col-label">متضاد</div></div>
       </div>
       <div id="xl-result"></div>
+      <div id="import-category-dialog" style="display:none;background:var(--surface2);border:1px solid var(--border);border-radius:var(--rl);padding:14px;margin-bottom:12px">
+        <div class="field"><label>دسته‌بندی برای کلمات وارد شده:</label><input type="text" id="import-cat-input" placeholder="مثلاً: هفته ۱"></div>
+        <div class="flex gap-8 mt-8">
+          <button class="btn btn-primary" onclick="confirmImport()">تایید</button>
+          <button class="btn" onclick="cancelImport()">لغو</button>
+        </div>
+      </div>
     </div>
 
     <div class="card">
@@ -317,6 +400,10 @@ input:focus,select:focus{border-color:var(--accent)}
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><circle cx="3" cy="6" r="1" fill="currentColor"/><circle cx="3" cy="12" r="1" fill="currentColor"/><circle cx="3" cy="18" r="1" fill="currentColor"/></svg>
     لیست<div class="dot"></div>
   </button>
+  <button class="nav-btn" onclick="showPanel('stats',this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="3" x2="3" y2="21"/><line x1="21" y1="21" x2="21" y2="3"/><line x1="3" y1="18" x2="21" y2="18"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/></svg>
+    آمار<div class="dot"></div>
+  </button>
   <button class="nav-btn" onclick="showPanel('more',this)">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
     بیشتر<div class="dot"></div>
@@ -326,8 +413,15 @@ input:focus,select:focus{border-color:var(--accent)}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script>
 const KEY = 'vocab_pwa_v1';
+const STATS_KEY = 'vocab_stats_v1';
+const CATS_KEY = 'vocab_cats_v1';
+const NOTIF_KEY = 'vocab_notif_v1';
 const TODAY = new Date().toDateString();
 let words = [];
+let stats = {};
+let customCats = [];
+let pendingImportRows = [];
+let notifSettings = { enabled: false, hour: 16, lastNotifDate: null };
 let flMode = 'en', flIdx = 0, flShown = false, flOrder = [];
 let qzIdx = 0, qzOrder = [];
 let tpIdx = 0, tpOrder = [];
@@ -335,11 +429,115 @@ let hmWord = null, hmGuessed = [], hmMisses = 0;
 const HM_MAX = 6;
 const ALPHA = 'abcdefghijklmnopqrstuvwxyz'.split('');
 const HM_ST = ['😶 ۰/۶','😟 ۱/۶','😨 ۲/۶','😰 ۳/۶','😱 ۴/۶','😵 ۵/۶','💀 باختی'];
+let sessionStartTime = Date.now();
 
 function toFa(n) { return String(n).replace(/\d/g, d => '۰۱۲۳۴۵۶۷۸۹'[d]); }
-function load() { try { words = JSON.parse(localStorage.getItem(KEY) || '[]'); } catch(e) { words = []; } }
-function save() { localStorage.setItem(KEY, JSON.stringify(words)); }
-function getCats() { const s = new Set(); words.forEach(w => { if(w.cat) s.add(w.cat); }); return [...s].sort(); }
+function load() { try { words = JSON.parse(localStorage.getItem(KEY) || '[]'); stats = JSON.parse(localStorage.getItem(STATS_KEY) || '{}'); customCats = JSON.parse(localStorage.getItem(CATS_KEY) || '[]'); notifSettings = JSON.parse(localStorage.getItem(NOTIF_KEY) || '{"enabled":false,"hour":16,"lastNotifDate":null}'); } catch(e) { words = []; stats = {}; customCats = []; notifSettings = { enabled: false, hour: 16, lastNotifDate: null }; } }
+function save() { localStorage.setItem(KEY, JSON.stringify(words)); localStorage.setItem(STATS_KEY, JSON.stringify(stats)); localStorage.setItem(CATS_KEY, JSON.stringify(customCats)); localStorage.setItem(NOTIF_KEY, JSON.stringify(notifSettings)); }
+function getCats() { const s = new Set(customCats); words.forEach(w => { if(w.cat) s.add(w.cat); }); return [...s].sort(); }
+
+function addCategory() {
+  const name = document.getElementById('new-cat-input').value.trim();
+  if (!name) { msg('cat-msg', 'نام دسته‌بندی لازم است', 'var(--red)'); return; }
+  const cats = getCats();
+  if (cats.includes(name)) { msg('cat-msg', 'این دسته‌بندی قبلاً وجود دارد', 'var(--yellow)'); return; }
+  customCats.push(name);
+  save();
+  document.getElementById('new-cat-input').value = '';
+  msg('cat-msg', '✓ دسته‌بندی ایجاد شد', 'var(--green)');
+  updateCats();
+  renderCategories();
+}
+
+function renderCategories() {
+  const cats = getCats();
+  const list = document.getElementById('cat-list');
+  if (!cats.length) { list.innerHTML = '<div style="font-size:12px;color:var(--text3)">هیچ دسته‌بندی‌ای وجود ندارد</div>'; return; }
+  list.innerHTML = cats.map(c => {
+    const count = words.filter(w => w.cat === c).length;
+    return `<div style="background:var(--accent-bg);border:1px solid var(--accent-border);color:var(--accent);padding:6px 10px;border-radius:20px;font-size:12px;display:flex;align-items:center;gap:6px">
+      <span>${c} <span style="font-size:10px">(${toFa(count)})</span></span>
+      <button onclick="deleteCategory('${c.replace(/'/g,"\\'")}',event)" style="background:none;border:none;color:var(--red);cursor:pointer;padding:0;font-size:14px">✕</button>
+    </div>`;
+  }).join('');
+}
+
+function deleteCategory(cat, e) {
+  e.stopPropagation();
+  if (!confirm(`دسته‌بندی «${cat}» حذف شود؟ کلمات این دسته‌بندی حفظ می‌شوند.`)) return;
+  words.forEach(w => { if (w.cat === cat) w.cat = ''; });
+  customCats = customCats.filter(c => c !== cat);
+  save(); updateCats(); renderCategories();
+  msg('cat-msg', '✓ دسته‌بندی حذف شد', 'var(--green)');
+}
+
+// NOTIFICATIONS
+function requestNotificationPermission() {
+  if (!('Notification' in window)) { msg('notif-msg', 'مرورگر شما نوتیفیکیشن پشتیبانی نمی‌کند', 'var(--red)'); return; }
+  if (Notification.permission === 'granted') return;
+  Notification.requestPermission().then(perm => {
+    if (perm === 'granted') msg('notif-msg', '✓ اجازه نوتیفیکیشن داده شد', 'var(--green)');
+    else msg('notif-msg', 'اجازه نوتیفیکیشن رد شد', 'var(--red)');
+  });
+}
+
+function toggleNotifications() {
+  if (!('Notification' in window)) { msg('notif-msg', 'مرورگر شما نوتیفیکیشن پشتیبانی نمی‌کند', 'var(--red)'); return; }
+
+  if (!notifSettings.enabled) {
+    if (Notification.permission === 'denied') { msg('notif-msg', 'اجازه نوتیفیکیشن رد شده است', 'var(--red)'); return; }
+    if (Notification.permission !== 'granted') { requestNotificationPermission(); return; }
+  }
+
+  notifSettings.enabled = !notifSettings.enabled;
+  saveNotificationSettings();
+  const btn = document.getElementById('notif-toggle-btn');
+  btn.textContent = notifSettings.enabled ? 'فعال' : 'غیرفعال';
+  btn.style.background = notifSettings.enabled ? 'var(--green)' : 'var(--surface)';
+  btn.style.color = notifSettings.enabled ? '#fff' : 'var(--text)';
+  btn.style.borderColor = notifSettings.enabled ? 'var(--green-border)' : 'var(--border)';
+  msg('notif-msg', notifSettings.enabled ? '✓ یادآوری فعال شد' : '✓ یادآوری غیرفعال شد', 'var(--green)');
+}
+
+function saveNotificationSettings() {
+  const hour = document.getElementById('notif-hour').value;
+  if (hour) notifSettings.hour = parseInt(hour);
+  save();
+  loadNotificationSettings();
+}
+
+function loadNotificationSettings() {
+  const btn = document.getElementById('notif-toggle-btn');
+  const hourSelect = document.getElementById('notif-hour');
+  btn.textContent = notifSettings.enabled ? 'فعال' : 'غیرفعال';
+  btn.style.background = notifSettings.enabled ? 'var(--green)' : 'var(--surface)';
+  btn.style.color = notifSettings.enabled ? '#fff' : 'var(--text)';
+  btn.style.borderColor = notifSettings.enabled ? 'var(--green-border)' : 'var(--border)';
+  hourSelect.value = notifSettings.hour;
+}
+
+function checkAndSendNotification() {
+  if (!notifSettings.enabled || !('Notification' in window) || Notification.permission !== 'granted') return;
+  const now = new Date();
+  const currentHour = now.getHours();
+  const currentDate = now.toDateString();
+  if (currentHour !== notifSettings.hour || notifSettings.lastNotifDate === currentDate) return;
+
+  const todayCount = words.filter(w => w.date === currentDate).length;
+  const messages = [
+    `سلام! 👋 امروز ${toFa(todayCount)} کلمه یاد گرفتی. بیا یک کم دیگه تمرین کن!`,
+    `🎯 وقت تمرین است! آمادی برای یادگیری کلمات جدید؟`,
+    `📚 سلام! بیا ${toFa(Math.ceil(Math.random() * 5))} کلمه دیگه یاد بگیری!`,
+    `💪 نمی‌دونی چه جالب است؟ هر روز تمرین، موفقیت مطمئن!`,
+    `🌟 تمرین روزانه = یادگیری بهتر. آماده‌ای؟`
+  ];
+  const msg = messages[Math.floor(Math.random() * messages.length)];
+  new Notification('📖 دفترچه لغت', { body: msg, icon: 'icon-192.png', tag: 'vocab-reminder' });
+  notifSettings.lastNotifDate = currentDate;
+  save();
+}
+function toggleDarkMode() { document.documentElement.classList.toggle('dark-mode'); localStorage.setItem('dark-mode', document.documentElement.classList.contains('dark-mode')); }
+function loadDarkMode() { if (localStorage.getItem('dark-mode') === 'true') document.documentElement.classList.add('dark-mode'); }
 
 function updateCats() {
   const cats = getCats();
@@ -361,7 +559,72 @@ function updateStats() {
   document.getElementById('s-known').textContent = toFa(kn);
   document.getElementById('hdr-total').textContent = toFa(t);
   document.getElementById('hdr-known').textContent = toFa(kn) + ' ✓';
+  if (!stats[TODAY]) stats[TODAY] = { words: 0, time: 0 };
+  stats[TODAY].words = tod;
+  save();
   updateCats();
+  updateStatsPanel();
+}
+
+function updateStatsPanel() {
+  const t = words.length, kn = words.filter(w => w.known).length;
+  document.getElementById('st-total').textContent = toFa(t);
+  document.getElementById('st-known').textContent = toFa(kn);
+  const tod = words.filter(w => w.date === TODAY).length;
+  document.getElementById('st-today').textContent = toFa(tod);
+
+  let streak = 0;
+  const d = new Date();
+  for (let i = 0; i < 365; i++) {
+    const dateStr = new Date(d.getTime() - i * 86400000).toDateString();
+    if (stats[dateStr] && stats[dateStr].words > 0) streak++;
+    else break;
+  }
+  document.getElementById('st-streak').textContent = toFa(streak);
+
+  renderStreakChart();
+  updateTimeStats();
+}
+
+function renderStreakChart() {
+  const chart = document.getElementById('streak-chart');
+  let html = '';
+  const maxHeight = 100;
+  const maxWords = 50;
+  for (let i = 29; i >= 0; i--) {
+    const dateStr = new Date(Date.now() - i * 86400000).toDateString();
+    const count = (stats[dateStr] && stats[dateStr].words) || 0;
+    const height = (count / maxWords * maxHeight) || 2;
+    const color = count > 0 ? 'var(--accent)' : 'var(--surface2)';
+    html += `<div style="flex:1;height:${Math.max(height, 2)}px;background:${color};border-radius:2px" title="${dateStr}: ${toFa(count)} کلمه"></div>`;
+  }
+  chart.innerHTML = html;
+}
+
+function updateTimeStats() {
+  let totalTime = 0;
+  Object.values(stats).forEach(s => { totalTime += s.time || 0; });
+  const todayTime = (stats[TODAY] && stats[TODAY].time) || 0;
+  document.getElementById('st-time-total').textContent = formatTime(totalTime);
+  document.getElementById('st-time-today').textContent = formatTime(todayTime);
+}
+
+function formatTime(minutes) {
+  if (minutes < 60) return toFa(Math.round(minutes)) + ' دقیقه';
+  const h = Math.floor(minutes / 60);
+  const m = Math.round(minutes % 60);
+  return toFa(h) + ' ساعت و ' + toFa(m) + ' دقیقه';
+}
+
+function trackSessionTime() {
+  const elapsed = Math.floor((Date.now() - sessionStartTime) / 60000);
+  if (elapsed > 0) {
+    if (!stats[TODAY]) stats[TODAY] = { words: 0, time: 0 };
+    stats[TODAY].time = (stats[TODAY].time || 0) + elapsed;
+    save();
+    updateTimeStats();
+    sessionStartTime = Date.now();
+  }
 }
 
 function addWord() {
@@ -369,13 +632,15 @@ function addWord() {
   const fa = document.getElementById('in-fa').value.trim();
   const pr = document.getElementById('in-pr').value.trim();
   const ex = document.getElementById('in-ex').value.trim();
+  const syn = document.getElementById('in-syn').value.trim().split(',').map(s => s.trim()).filter(s => s);
+  const ant = document.getElementById('in-ant').value.trim().split(',').map(s => s.trim()).filter(s => s);
   const nc = document.getElementById('in-newcat').value.trim();
   const cat = nc || document.getElementById('in-cat').value;
   if (!en || !fa) { msg('add-msg', 'کلمه و ترجمه لازم است', 'var(--red)'); return; }
   if (words.find(w => w.en.toLowerCase() === en.toLowerCase())) { msg('add-msg', 'قبلاً اضافه شده', 'var(--yellow)'); return; }
-  words.unshift({ en, fa, pr, ex, cat, date: TODAY, known: false, id: Date.now() });
+  words.unshift({ en, fa, pr, ex, syn, ant, cat, date: TODAY, known: false, id: Date.now() });
   save(); updateStats();
-  ['in-en','in-fa','in-pr','in-ex','in-newcat'].forEach(id => document.getElementById(id).value = '');
+  ['in-en','in-fa','in-pr','in-ex','in-syn','in-ant','in-newcat'].forEach(id => document.getElementById(id).value = '');
   document.getElementById('in-en').focus();
   msg('add-msg', '✓ «' + en + '» اضافه شد', 'var(--green)');
 }
@@ -543,11 +808,11 @@ function startHangman() {
 
 function renderHangman() {
   const area = document.getElementById('hm-area');
-  const letters = hmWord.en.toLowerCase().split('');
-  const unique = [...new Set(letters.filter(c => /[a-z]/.test(c)))];
+  const letterArray = hmWord.en.toLowerCase().split('');
+  const unique = [...new Set(letterArray.filter(c => /[a-z]/.test(c)))];
   const won = unique.every(c => hmGuessed.includes(c));
   const lost = hmMisses >= HM_MAX;
-  const wordHTML = letters.map(c => {
+  const wordHTML = letterArray.map(c => {
     if (!/[a-z]/.test(c)) return `<div class="hm-letter">${c}</div>`;
     const show = hmGuessed.includes(c) || lost;
     return `<div class="hm-letter" style="${lost && !hmGuessed.includes(c) ? 'color:var(--red)' : ''}">${show ? c : ''}</div>`;
@@ -594,6 +859,8 @@ function renderList() {
       <div class="word-fa">${w.fa}</div>
       ${w.pr ? `<div class="word-pr">${w.pr}</div>` : ''}
       ${w.ex ? `<div class="word-ex">${w.ex}</div>` : ''}
+      ${(w.syn && w.syn.length) ? `<div style="font-size:11px;color:var(--text3);margin-top:4px"><strong>مترادف:</strong> ${w.syn.join('، ')}</div>` : ''}
+      ${(w.ant && w.ant.length) ? `<div style="font-size:11px;color:var(--text3);margin-top:2px"><strong>متضاد:</strong> ${w.ant.join('، ')}</div>` : ''}
       <div class="word-footer">
         <div class="flex gap-8">
           ${w.cat ? `<span class="badge badge-blue">${w.cat}</span>` : ''}
@@ -621,18 +888,45 @@ function handleXlFile(input) {
       const raw = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]], { header: 1, defval: '' });
       const isH = raw[0] && /word|english|کلمه|انگلیسی/i.test(String(raw[0][0]));
       const rows = (isH ? raw.slice(1) : raw)
-        .map(r => ({ en: String(r[0]||'').trim(), fa: String(r[1]||'').trim(), pr: String(r[2]||'').trim(), ex: String(r[3]||'').trim() }))
+        .map(r => {
+          const synStr = String(r[4]||'');
+          const antStr = String(r[5]||'');
+          return {
+            en: String(r[0]||'').trim(),
+            fa: String(r[1]||'').trim(),
+            pr: String(r[2]||'').trim(),
+            ex: String(r[3]||'').trim(),
+            syn: synStr ? synStr.split(',').map(s => s.trim()).filter(s => s && s.length > 0) : [],
+            ant: antStr ? antStr.split(',').map(s => s.trim()).filter(s => s && s.length > 0) : []
+          };
+        })
         .filter(r => r.en && r.fa);
       const exist = new Set(words.map(w => w.en.toLowerCase()));
       const newR = rows.filter(r => !exist.has(r.en.toLowerCase()));
       if (!newR.length) { document.getElementById('xl-result').innerHTML = '<div class="result-warn">همه کلمات تکراری هستند</div>'; return; }
-      newR.forEach(r => words.unshift({ ...r, cat: '', date: TODAY, known: false, id: Date.now() + Math.random() }));
-      save(); updateStats();
-      document.getElementById('xl-result').innerHTML = `<div class="result-ok">✓ ${toFa(newR.length)} کلمه وارد شد!</div>`;
-      input.value = '';
+      pendingImportRows = newR;
+      document.getElementById('import-category-dialog').style.display = 'block';
     } catch(err) { document.getElementById('xl-result').innerHTML = `<div class="result-bad">خطا: ${err.message}</div>`; }
   };
   reader.readAsArrayBuffer(file);
+}
+
+function confirmImport() {
+  const cat = document.getElementById('import-cat-input').value.trim();
+  pendingImportRows.forEach(r => words.unshift({ ...r, cat, date: TODAY, known: false, id: Date.now() + Math.random() }));
+  save(); updateStats();
+  document.getElementById('xl-result').innerHTML = `<div class="result-ok">✓ ${toFa(pendingImportRows.length)} کلمه وارد شد!</div>`;
+  document.getElementById('import-category-dialog').style.display = 'none';
+  document.getElementById('import-cat-input').value = '';
+  document.getElementById('xl-file').value = '';
+  pendingImportRows = [];
+}
+
+function cancelImport() {
+  document.getElementById('import-category-dialog').style.display = 'none';
+  document.getElementById('import-cat-input').value = '';
+  document.getElementById('xl-file').value = '';
+  pendingImportRows = [];
 }
 
 // BACKUP
@@ -669,6 +963,7 @@ function clearAll() {
 
 // NAV
 function showPanel(name, btn) {
+  trackSessionTime();
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('act'));
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('act'));
   document.getElementById('p-' + name).classList.add('act');
@@ -679,6 +974,8 @@ function showPanel(name, btn) {
   if (name === 'type') startType();
   if (name === 'hangman') startHangman();
   if (name === 'list') renderList();
+  if (name === 'stats') updateStatsPanel();
+  if (name === 'more') { renderCategories(); loadNotificationSettings(); }
 }
 
 // PWA Install
@@ -704,7 +1001,9 @@ if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('./sw.js').catch(() => {});
 }
 
-load(); updateStats();
+load(); loadDarkMode(); updateStats(); renderCategories(); loadNotificationSettings();
+setInterval(trackSessionTime, 60000);
+setInterval(checkAndSendNotification, 60000);
 </script>
 </body>
 </html>
