@@ -358,6 +358,15 @@ input:focus,select:focus{border-color:var(--accent)}
     </div>
 
     <div class="card">
+      <div class="card-title">🔄 آپدیت و رفرش</div>
+      <div class="settings-item">
+        <span class="settings-label">رفرش کامل اپ</span>
+        <button class="btn btn-sm btn-outline" onclick="hardRefresh()">رفرش</button>
+      </div>
+      <div style="font-size:12px;color:var(--text3);margin-top:8px">برای پاک کردن cache و دانلود نسخه جدید</div>
+    </div>
+
+    <div class="card">
       <div class="card-title">پشتیبان‌گیری</div>
       <div class="settings-item">
         <span class="settings-label">دانلود بکاپ JSON</span>
@@ -976,6 +985,24 @@ function showPanel(name, btn) {
   if (name === 'list') renderList();
   if (name === 'stats') updateStatsPanel();
   if (name === 'more') { renderCategories(); loadNotificationSettings(); }
+}
+
+// Hard Refresh
+async function hardRefresh() {
+  try {
+    if ('serviceWorker' in navigator) {
+      const regs = await navigator.serviceWorker.getRegistrations();
+      for (let reg of regs) await reg.unregister();
+    }
+    if ('caches' in window) {
+      const names = await caches.keys();
+      for (let name of names) await caches.delete(name);
+    }
+    msg('settings-msg', '✓ کش پاک شد، صفحه رفرش میشه...', 'var(--green)');
+    setTimeout(() => window.location.reload(true), 500);
+  } catch (e) {
+    msg('settings-msg', 'خطا: ' + e.message, 'var(--red)');
+  }
 }
 
 // PWA Install
