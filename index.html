@@ -17,7 +17,6 @@
   --accent:#2563eb; --accent-bg:#eff6ff; --accent-border:#bfdbfe;
   --green:#16a34a; --green-bg:#f0fdf4; --green-border:#bbf7d0;
   --red:#dc2626; --red-bg:#fef2f2; --red-border:#fecaca;
-  --yellow:#d97706; --yellow-bg:#fffbeb; --yellow-border:#fde68a;
   --r:10px; --rl:14px;
   --safe-bottom: env(safe-area-inset-bottom, 0px);
 }
@@ -28,35 +27,23 @@
     --accent:#4a9eff; --accent-bg:#1a3a5a; --accent-border:#2a5a8a;
     --green:#2ecc71; --green-bg:#1a3a1a; --green-border:#3a6a3a;
     --red:#ff6b6b; --red-bg:#3a1a1a; --red-border:#6a3a3a;
-    --yellow:#ffd93d; --yellow-bg:#3a3a1a; --yellow-border:#6a6a3a;
   }
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;overflow:hidden;background:var(--bg)}
 body{font-family:'Vazirmatn','Segoe UI',Tahoma,system-ui,sans-serif;color:var(--text);font-size:14px;display:flex;flex-direction:column}
-
-/* Header */
 .header{background:var(--surface);border-bottom:1px solid var(--border);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;position:sticky;top:0;z-index:10}
 .header h1{font-size:16px;font-weight:700}
 .header-pills{display:flex;gap:6px}
 .pill{font-size:11px;padding:3px 9px;border-radius:20px;background:var(--accent-bg);color:var(--accent);border:1px solid var(--accent-border);font-weight:500}
-.pill-green{background:var(--green-bg);color:var(--green);border-color:var(--green-border)}
-
-/* Main scroll area */
 .main{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:16px;padding-bottom:calc(80px + var(--safe-bottom))}
-
-/* Bottom nav */
 .bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(--surface);border-top:1px solid var(--border);display:flex;padding-bottom:var(--safe-bottom);z-index:10;flex-shrink:0}
 .nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:10px 4px;cursor:pointer;border:none;background:none;color:var(--text3);font-size:10px;font-family:inherit;transition:color .15s}
 .nav-btn svg{width:20px;height:20px}
 .nav-btn.act{color:var(--accent)}
 .nav-btn .dot{width:4px;height:4px;border-radius:50%;background:var(--accent);margin-top:1px;opacity:0}
 .nav-btn.act .dot{opacity:1}
-
-/* Panels */
 .panel{display:none}.panel.act{display:block}
-
-/* Form */
 .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);padding:14px;margin-bottom:12px}
 .card-title{font-size:13px;font-weight:600;margin-bottom:10px;color:var(--text)}
 .field{margin-bottom:10px}
@@ -67,128 +54,35 @@ input:focus,select:focus{border-color:var(--accent)}
 .btn{display:flex;align-items:center;justify-content:center;gap:6px;padding:12px 16px;border-radius:var(--r);font-size:14px;font-weight:600;cursor:pointer;border:1px solid var(--border);background:var(--surface);color:var(--text2);font-family:inherit;width:100%;transition:all .12s;-webkit-appearance:none}
 .btn-primary{background:var(--accent);color:#fff;border-color:transparent}
 .btn-primary:active{opacity:.85}
-.btn-outline{border-color:var(--accent);color:var(--accent);background:var(--accent-bg)}
 .btn-sm{padding:8px 12px;font-size:12px;font-weight:500;width:auto}
-.btn-danger{border-color:var(--red-border);color:var(--red);background:var(--red-bg)}
-.flex{display:flex}.gap-8{gap:8px}.mt-8{margin-top:8px}.mt-12{margin-top:12px}
-
-/* Stats */
+.flex{display:flex}.gap-8{gap:8px}.mt-8{margin-top:8px}
 .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px}
 .stat{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:10px 6px;text-align:center}
 .stat .n{font-size:20px;font-weight:700;color:var(--text)}
 .stat .l{font-size:10px;color:var(--text3);margin-top:2px}
-
-/* Word list */
 .word-item{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:12px;margin-bottom:8px}
 .word-en{font-size:16px;font-weight:600;color:var(--text);margin-bottom:2px;display:flex;align-items:center;gap:6px}
 .word-fa{font-size:14px;color:var(--text2)}
-.word-pr{font-size:12px;color:var(--text3);font-style:italic;margin-top:2px}
 .word-ex{font-size:11px;color:var(--text3);margin-top:4px;padding-top:4px;border-top:1px solid var(--border);direction:ltr;text-align:left;font-style:italic}
-.word-footer{display:flex;align-items:center;justify-content:space-between;margin-top:8px}
-.badge{display:inline-block;font-size:10px;padding:2px 8px;border-radius:10px}
-.badge-blue{background:var(--accent-bg);color:var(--accent);border:1px solid var(--accent-border)}
-.badge-green{background:var(--green-bg);color:var(--green)}
-.badge-gray{background:var(--surface2);color:var(--text3)}
-.del-btn{background:none;border:none;color:var(--text3);font-size:18px;cursor:pointer;padding:4px 8px;border-radius:6px}
-.del-btn:active{background:var(--red-bg);color:var(--red)}
-.speak-btn{background:none;border:none;color:var(--accent);font-size:16px;cursor:pointer;padding:2px 4px}
-
-/* Search bar */
 .search-wrap{margin-bottom:12px;position:relative}
 .search-wrap input{padding-right:36px}
 .search-wrap .search-icon{position:absolute;right:10px;top:50%;transform:translateY(-50%);color:var(--text3);pointer-events:none}
-
-/* Flashcard */
-.flashcard{background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);min-height:200px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px 20px;text-align:center;cursor:pointer;margin-bottom:12px;transition:box-shadow .15s}
-.flashcard:active{box-shadow:0 0 0 3px var(--accent-bg)}
-.fc-word{font-size:30px;font-weight:700;color:var(--text);margin-bottom:6px}
-.fc-pron{font-size:14px;color:var(--text3);font-style:italic}
-.fc-back{border-top:1px solid var(--border);padding-top:14px;margin-top:14px;width:100%}
-.fc-hint{font-size:12px;color:var(--text3);margin-top:10px}
-.card-btns{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-
-/* Progress */
-.prog-wrap{margin-bottom:14px}
-.prog-row{display:flex;justify-content:space-between;font-size:12px;color:var(--text3);margin-bottom:6px}
-.prog-bar{height:6px;background:var(--border);border-radius:3px;overflow:hidden}
-.prog-fill{height:100%;background:var(--accent);border-radius:3px;transition:width .3s}
-
-/* Quiz */
-.quiz-q{background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);padding:20px;text-align:center;margin-bottom:12px}
-.choice-btn{width:100%;text-align:right;padding:13px 14px;border:1px solid var(--border);border-radius:var(--r);background:var(--surface);color:var(--text);font-size:14px;cursor:pointer;margin-bottom:8px;font-family:inherit;transition:all .12s;-webkit-appearance:none}
-.choice-btn:active{background:var(--accent-bg);border-color:var(--accent)}
-.choice-ok{background:var(--green-bg)!important;border-color:var(--green-border)!important;color:var(--green)!important}
-.choice-bad{background:var(--red-bg)!important;border-color:var(--red-border)!important;color:var(--red)!important}
-
-/* Type */
-.type-q{background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);padding:20px;text-align:center;margin-bottom:12px}
-
-/* Hangman */
-.hm-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);padding:16px;margin-bottom:12px}
-.hm-word{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin:14px 0}
-.hm-letter{width:28px;height:36px;border-bottom:2px solid var(--text);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700}
-.hm-keys{display:flex;flex-wrap:wrap;gap:5px;justify-content:center;margin:10px 0}
-.hm-key{width:34px;height:34px;border:1px solid var(--border);border-radius:8px;background:var(--surface);font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .12s;-webkit-appearance:none}
-.hm-key:active{background:var(--accent-bg)}
-.hm-key:disabled{opacity:.25;cursor:default}
-.hm-key.hit{background:var(--green-bg);border-color:var(--green-border);color:var(--green)}
-.hm-key.miss{background:var(--red-bg);border-color:var(--red-border);color:var(--red)}
-
-/* Result */
-.result-ok{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border);border-radius:var(--r);padding:12px;font-size:14px;font-weight:600;text-align:center;margin:8px 0}
-.result-bad{background:var(--red-bg);color:var(--red);border:1px solid var(--red-border);border-radius:var(--r);padding:12px;font-size:14px;font-weight:600;text-align:center;margin:8px 0}
-.result-warn{background:var(--yellow-bg);color:var(--yellow);border:1px solid var(--yellow-border);border-radius:var(--r);padding:10px 12px;font-size:13px;margin:8px 0}
-
-/* Import */
-.drop-zone{border:2px dashed var(--border);border-radius:var(--rl);padding:28px 16px;text-align:center;cursor:pointer;background:var(--surface);margin-bottom:12px}
-.drop-zone:active{background:var(--accent-bg);border-color:var(--accent)}
-.dz-icon{font-size:36px;margin-bottom:8px}
-.dz-title{font-size:14px;font-weight:600;margin-bottom:4px}
-.dz-sub{font-size:12px;color:var(--text3)}
-.col-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:12px}
-.col-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:8px 4px;text-align:center}
-.col-letter{font-size:15px;font-weight:700;color:var(--accent)}
-.col-label{font-size:9px;color:var(--text3);margin-top:2px}
-
-/* Mode select */
-.mode-row{display:flex;gap:8px;margin-bottom:12px;overflow-x:auto;padding-bottom:4px}
-.mode-btn{padding:7px 14px;border:1px solid var(--border);border-radius:20px;font-size:12px;font-weight:500;cursor:pointer;background:var(--surface);color:var(--text2);white-space:nowrap;font-family:inherit;flex-shrink:0;-webkit-appearance:none}
-.mode-btn.act{background:var(--accent-bg);border-color:var(--accent-border);color:var(--accent)}
-
-/* Settings */
-.settings-item{display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--border);font-size:14px}
-.settings-item:last-child{border-bottom:none}
-.settings-label{color:var(--text)}
-.settings-val{font-size:11px;color:var(--text3)}
 .empty{text-align:center;padding:3rem 1rem;color:var(--text3)}
-
-/* Install banner */
-.install-banner{background:var(--accent);color:#fff;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-shrink:0}
-.install-banner p{font-size:13px;font-weight:500}
-.install-banner button{background:#fff;color:var(--accent);border:none;padding:6px 14px;border-radius:20px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;font-family:inherit}
-.install-banner .close-btn{background:none;border:none;color:#fff;font-size:20px;cursor:pointer;padding:0 4px;opacity:.8}
+.msg{font-size:13px;text-align:center;min-height:20px;margin-top:8px}
+.loading{display:inline-block;width:4px;height:4px;background:var(--accent);border-radius:50%;animation:loading 1.4s infinite}
+@keyframes loading{0%,80%,100%{opacity:.5}40%{opacity:1}}
 </style>
 </head>
 <body>
 
-<!-- Install Banner -->
-<div class="install-banner" id="install-banner" style="display:none">
-  <p>📲 این اپ را روی گوشیت نصب کن!</p>
-  <button id="install-btn">نصب</button>
-  <button class="close-btn" onclick="document.getElementById('install-banner').style.display='none'">✕</button>
-</div>
-
-<!-- Header -->
 <div class="header">
   <h1>📖 دفترچه لغت</h1>
   <div class="header-pills">
     <button class="pill" style="border:none;cursor:pointer;background:none;padding:0" onclick="toggleDarkMode()" title="تاریک‌نما">🌙</button>
     <span class="pill" id="hdr-total">۰</span>
-    <span class="pill pill-green" id="hdr-known">۰ ✓</span>
   </div>
 </div>
 
-<!-- Main -->
 <div class="main" id="main">
 
   <!-- ADD -->
@@ -196,68 +90,20 @@ input:focus,select:focus{border-color:var(--accent)}
     <div class="card">
       <div class="card-title">کلمه جدید</div>
       <div class="row2">
-        <div class="field"><label>انگلیسی *</label><input type="text" id="in-en" placeholder="beautiful" autocomplete="off" autocorrect="off" autocapitalize="off"></div>
+        <div class="field"><label>انگلیسی *</label><input type="text" id="in-en" placeholder="beautiful" autocomplete="off"></div>
         <div class="field"><label>فارسی *</label><input type="text" id="in-fa" placeholder="زیبا"></div>
       </div>
       <div class="row2">
         <div class="field"><label>تلفظ</label><input type="text" id="in-pr" placeholder="بیوتیفول"></div>
-        <div class="field"><label>دسته</label>
-          <div class="flex gap-8">
-            <select id="in-cat" style="flex:1"><option value="">—</option></select>
-          </div>
-        </div>
+        <div class="field"><label>جمله مثال</label><input type="text" id="in-ex" placeholder="She is beautiful"></div>
       </div>
-      <div class="field"><label>جمله مثال</label><input type="text" id="in-ex" placeholder="She is very beautiful."></div>
-      <div class="field"><label>مترادف (جدا با ویرگول)</label><input type="text" id="in-syn" placeholder="pretty, lovely, attractive"></div>
-      <div class="field"><label>متضاد (جدا با ویرگول)</label><input type="text" id="in-ant" placeholder="ugly, hideous"></div>
-      <div class="field"><label>دسته جدید</label><input type="text" id="in-newcat" placeholder="مثلاً: هفته ۱"></div>
-      <div class="field" style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
-        <input type="checkbox" id="in-global" style="width:18px;height:18px;cursor:pointer">
-        <label style="margin:0;cursor:pointer;font-size:13px" onclick="document.getElementById('in-global').click()">✨ اضافه به دیتابیس عمومی</label>
-      </div>
-      <button class="btn btn-primary mt-8" onclick="addWord()">+ افزودن کلمه</button>
-      <div id="add-msg" style="font-size:13px;text-align:center;min-height:20px;margin-top:8px"></div>
+      <button class="btn btn-primary mt-8" onclick="addWord()">+ افزودن برای همه</button>
+      <div id="add-msg" class="msg"></div>
     </div>
     <div class="stats-row">
       <div class="stat"><div class="n" id="s-total">۰</div><div class="l">کل</div></div>
-      <div class="stat"><div class="n" id="s-today">۰</div><div class="l">امروز</div></div>
-      <div class="stat"><div class="n" id="s-known">۰</div><div class="l">بلدم</div></div>
-      <div class="stat"><div class="n" id="s-cats">۰</div><div class="l">دسته</div></div>
+      <div class="stat"><div class="n" id="s-synced">۰</div><div class="l">زمان آخر</div></div>
     </div>
-  </div>
-
-  <!-- FLASH -->
-  <div id="p-flash" class="panel">
-    <div class="mode-row">
-      <button class="mode-btn act" id="fl-en" onclick="setFlMode('en',this)">EN→FA</button>
-      <button class="mode-btn" id="fl-fa" onclick="setFlMode('fa',this)">FA→EN</button>
-      <select id="fl-cat" onchange="startFlash()" style="border-radius:20px;padding:6px 10px;font-size:12px;border:1px solid var(--border)"><option value="">همه</option></select>
-    </div>
-    <div id="flash-area"><div class="empty">ابتدا کلمه اضافه کن</div></div>
-  </div>
-
-  <!-- QUIZ -->
-  <div id="p-quiz" class="panel">
-    <div class="mode-row">
-      <select id="qz-cat" onchange="startQuiz()" style="border-radius:20px;padding:6px 10px;font-size:12px;border:1px solid var(--border)"><option value="">همه</option></select>
-    </div>
-    <div id="quiz-area"><div class="empty">ابتدا کلمه اضافه کن</div></div>
-  </div>
-
-  <!-- TYPE -->
-  <div id="p-type" class="panel">
-    <div class="mode-row">
-      <select id="tp-cat" onchange="startType()" style="border-radius:20px;padding:6px 10px;font-size:12px;border:1px solid var(--border)"><option value="">همه</option></select>
-    </div>
-    <div id="type-area"><div class="empty">ابتدا کلمه اضافه کن</div></div>
-  </div>
-
-  <!-- HANGMAN -->
-  <div id="p-hangman" class="panel">
-    <div class="mode-row">
-      <select id="hm-cat" onchange="startHangman()" style="border-radius:20px;padding:6px 10px;font-size:12px;border:1px solid var(--border)"><option value="">همه</option></select>
-    </div>
-    <div id="hm-area"><div class="empty">ابتدا کلمه اضافه کن</div></div>
   </div>
 
   <!-- LIST -->
@@ -266,834 +112,151 @@ input:focus,select:focus{border-color:var(--accent)}
       <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
       <input type="search" id="ls-search" placeholder="جستجو..." oninput="renderList()">
     </div>
-    <div class="mode-row">
-      <select id="ls-cat" onchange="renderList()" style="border-radius:20px;padding:6px 10px;font-size:12px;border:1px solid var(--border)"><option value="">همه دسته‌ها</option></select>
-    </div>
     <div id="word-list"></div>
   </div>
 
-  <!-- STATS -->
-  <div id="p-stats" class="panel">
+  <!-- SETTINGS -->
+  <div id="p-settings" class="panel">
     <div class="card">
-      <div class="card-title">📊 آمارهای کلی</div>
-      <div class="stats-row">
-        <div class="stat"><div class="n" id="st-total">۰</div><div class="l">کل کلمات</div></div>
-        <div class="stat"><div class="n" id="st-known">۰</div><div class="l">بلد شده</div></div>
-        <div class="stat"><div class="n" id="st-today">۰</div><div class="l">امروز</div></div>
-        <div class="stat"><div class="n" id="st-streak">۰</div><div class="l">روز متوالی</div></div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-title">📈 تمرین روزانه (۳۰ روز اخیر)</div>
-      <div id="streak-chart" style="display:flex;gap:2px;align-items:flex-end;height:120px;background:var(--surface2);padding:12px;border-radius:var(--r)"></div>
-    </div>
-    <div class="card">
-      <div class="card-title">⏱️ زمان صرف شده</div>
-      <div class="settings-item">
-        <span class="settings-label">کل زمان</span>
-        <span class="settings-val" id="st-time-total">۰ دقیقه</span>
-      </div>
-      <div class="settings-item">
-        <span class="settings-label">امروز</span>
-        <span class="settings-val" id="st-time-today">۰ دقیقه</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- MORE -->
-  <div id="p-more" class="panel">
-    <div class="card">
-      <div class="card-title">🔔 یادآوری روزانه</div>
-      <div class="settings-item">
-        <span class="settings-label">فعال کن</span>
-        <button class="btn btn-sm btn-outline" id="notif-toggle-btn" onclick="toggleNotifications()" style="width:auto">غیرفعال</button>
-      </div>
-      <div class="settings-item">
-        <span class="settings-label">ساعت یادآوری</span>
-        <select id="notif-hour" onchange="saveNotificationSettings()" style="width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:var(--r);font-size:14px;background:var(--surface);color:var(--text);font-family:inherit">
-          <option value="">انتخاب کنید</option>
-          <option value="16">۱۶:۰۰ (۴ بعدازظهر)</option>
-          <option value="8">۸:۰۰ (۸ صبح)</option>
-          <option value="12">۱۲:۰۰ (ظهر)</option>
-          <option value="20">۲۰:۰۰ (۸ شب)</option>
-          <option value="9">۹:۰۰ (۹ صبح)</option>
-          <option value="18">۱۸:۰۰ (۶ بعدازظهر)</option>
-          <option value="21">۲۱:۰۰ (۹ شب)</option>
-        </select>
-      </div>
-      <div id="notif-msg" style="font-size:12px;text-align:center;margin-top:8px;min-height:20px"></div>
-    </div>
-
-    <div class="card">
-      <div class="card-title">🌍 کلمات عمومی</div>
-      <div class="settings-item">
-        <span class="settings-label">تعداد کلمات عمومی</span>
-        <span class="settings-val" id="global-count">۰</span>
-      </div>
-      <div class="settings-item">
-        <span class="settings-label">آپدیت کلمات عمومی</span>
-        <button class="btn btn-sm btn-outline" onclick="loadGlobalWords()">دانلود</button>
-      </div>
-      <div class="settings-item">
-        <span class="settings-label">استفاده از کلمات عمومی</span>
-        <button class="btn btn-sm btn-outline" onclick="importGlobalWords()">اضافه کردن</button>
-      </div>
-      <div id="global-msg" style="font-size:12px;text-align:center;margin-top:8px;min-height:20px"></div>
-    </div>
-
-    <div class="card">
-      <div class="card-title">📁 مدیریت دسته‌بندی</div>
-      <div class="field"><label>نام دسته‌بندی جدید</label><input type="text" id="new-cat-input" placeholder="مثلاً: هفته ۱"></div>
-      <button class="btn btn-primary mt-8" onclick="addCategory()">+ ایجاد دسته‌بندی</button>
-      <div id="cat-msg" style="font-size:13px;text-align:center;min-height:20px;margin-top:8px"></div>
-      <div style="margin-top:12px">
-        <div style="font-size:12px;color:var(--text2);margin-bottom:8px"><strong>دسته‌بندی‌های موجود:</strong></div>
-        <div id="cat-list" style="display:flex;flex-wrap:wrap;gap:6px"></div>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-title">ورود از فایل اکسل</div>
-      <div class="drop-zone" onclick="document.getElementById('xl-file').click()">
-        <div class="dz-icon">📊</div>
-        <div class="dz-title">انتخاب فایل اکسل</div>
-        <div class="dz-sub">xlsx یا xls</div>
-      </div>
-      <input type="file" id="xl-file" accept=".xlsx,.xls,.csv" style="display:none" onchange="handleXlFile(this)">
-      <div class="col-grid" style="grid-template-columns:repeat(6,1fr)">
-        <div class="col-box"><div class="col-letter">A</div><div class="col-label">انگلیسی *</div></div>
-        <div class="col-box"><div class="col-letter">B</div><div class="col-label">فارسی *</div></div>
-        <div class="col-box"><div class="col-letter">C</div><div class="col-label">تلفظ</div></div>
-        <div class="col-box"><div class="col-letter">D</div><div class="col-label">جمله</div></div>
-        <div class="col-box"><div class="col-letter">E</div><div class="col-label">مترادف</div></div>
-        <div class="col-box"><div class="col-letter">F</div><div class="col-label">متضاد</div></div>
-      </div>
-      <div id="xl-result"></div>
-      <div id="import-category-dialog" style="display:none;background:var(--surface2);border:1px solid var(--border);border-radius:var(--rl);padding:14px;margin-bottom:12px">
-        <div class="field"><label>دسته‌بندی برای کلمات وارد شده:</label><input type="text" id="import-cat-input" placeholder="مثلاً: هفته ۱"></div>
-        <div class="flex gap-8 mt-8">
-          <button class="btn btn-primary" onclick="confirmImport()">تایید</button>
-          <button class="btn" onclick="cancelImport()">لغو</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-title">🔄 آپدیت و رفرش</div>
-      <div class="settings-item">
-        <span class="settings-label">رفرش کامل اپ</span>
-        <button class="btn btn-sm btn-outline" onclick="hardRefresh()">رفرش</button>
-      </div>
-      <div style="font-size:12px;color:var(--text3);margin-top:8px">برای پاک کردن cache و دانلود نسخه جدید</div>
-    </div>
-
-    <div class="card">
-      <div class="card-title">پشتیبان‌گیری</div>
-      <div class="settings-item">
-        <span class="settings-label">دانلود بکاپ JSON</span>
-        <button class="btn btn-sm btn-outline" onclick="backupJSON()">دانلود</button>
-      </div>
-      <div class="settings-item">
-        <span class="settings-label">بازیابی از JSON</span>
-        <button class="btn btn-sm" onclick="document.getElementById('restore-file').click()">انتخاب فایل</button>
-        <input type="file" id="restore-file" accept=".json" style="display:none" onchange="restoreJSON(this)">
-      </div>
-      <div class="settings-item">
-        <span class="settings-label" style="color:var(--red)">پاک کردن همه</span>
-        <button class="btn btn-sm btn-danger" onclick="clearAll()">پاک کن</button>
-      </div>
-      <div id="settings-msg" style="font-size:12px;margin-top:8px;text-align:center"></div>
+      <div class="card-title">⚙️ تنظیمات</div>
+      <div style="font-size:12px;color:var(--text3);margin-bottom:12px">تمام کلمات برای همه کاربران سراسری است</div>
+      <button class="btn btn-primary btn-sm" onclick="syncNow()">🔄 آپدیت الآن</button>
+      <div id="settings-msg" class="msg"></div>
     </div>
   </div>
 
 </div>
 
-<!-- Bottom Nav -->
 <nav class="bottom-nav">
   <button class="nav-btn act" onclick="showPanel('add',this)">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
     افزودن<div class="dot"></div>
   </button>
-  <button class="nav-btn" onclick="showPanel('flash',this)">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
-    فلش<div class="dot"></div>
-  </button>
-  <button class="nav-btn" onclick="showPanel('quiz',this)">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-    تست<div class="dot"></div>
-  </button>
-  <button class="nav-btn" onclick="showPanel('hangman',this)">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="3"/><path d="M12 11v5M9 16l3 3 3-3M9 13l-3 1M15 13l3 1"/></svg>
-    بازی<div class="dot"></div>
-  </button>
   <button class="nav-btn" onclick="showPanel('list',this)">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><circle cx="3" cy="6" r="1" fill="currentColor"/><circle cx="3" cy="12" r="1" fill="currentColor"/><circle cx="3" cy="18" r="1" fill="currentColor"/></svg>
     لیست<div class="dot"></div>
   </button>
-  <button class="nav-btn" onclick="showPanel('stats',this)">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="3" x2="3" y2="21"/><line x1="21" y1="21" x2="21" y2="3"/><line x1="3" y1="18" x2="21" y2="18"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/></svg>
-    آمار<div class="dot"></div>
-  </button>
-  <button class="nav-btn" onclick="showPanel('more',this)">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
-    بیشتر<div class="dot"></div>
+  <button class="nav-btn" onclick="showPanel('settings',this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v6m0 6v6M4.22 4.22l4.24 4.24m3.08 3.08l4.24 4.24M1 12h6m6 0h6m-1.78 7.78l-4.24-4.24m-3.08-3.08l-4.24-4.24"/></svg>
+    تنظیمات<div class="dot"></div>
   </button>
 </nav>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script>
-const KEY = 'vocab_pwa_v1';
-const STATS_KEY = 'vocab_stats_v1';
-const CATS_KEY = 'vocab_cats_v1';
-const NOTIF_KEY = 'vocab_notif_v1';
-const TODAY = new Date().toDateString();
+const API_URL = 'http://localhost:5000/api/words';
 let words = [];
-let stats = {};
-let customCats = [];
-let pendingImportRows = [];
-let notifSettings = { enabled: false, hour: 16, lastNotifDate: null };
-let flMode = 'en', flIdx = 0, flShown = false, flOrder = [];
-let qzIdx = 0, qzOrder = [];
-let tpIdx = 0, tpOrder = [];
-let hmWord = null, hmGuessed = [], hmMisses = 0;
-const HM_MAX = 6;
-const ALPHA = 'abcdefghijklmnopqrstuvwxyz'.split('');
-const HM_ST = ['😶 ۰/۶','😟 ۱/۶','😨 ۲/۶','😰 ۳/۶','😱 ۴/۶','😵 ۵/۶','💀 باختی'];
-let sessionStartTime = Date.now();
 
 function toFa(n) { return String(n).replace(/\d/g, d => '۰۱۲۳۴۵۶۷۸۹'[d]); }
-function load() { try { words = JSON.parse(localStorage.getItem(KEY) || '[]'); stats = JSON.parse(localStorage.getItem(STATS_KEY) || '{}'); customCats = JSON.parse(localStorage.getItem(CATS_KEY) || '[]'); notifSettings = JSON.parse(localStorage.getItem(NOTIF_KEY) || '{"enabled":false,"hour":16,"lastNotifDate":null}'); } catch(e) { words = []; stats = {}; customCats = []; notifSettings = { enabled: false, hour: 16, lastNotifDate: null }; } }
-function save() { localStorage.setItem(KEY, JSON.stringify(words)); localStorage.setItem(STATS_KEY, JSON.stringify(stats)); localStorage.setItem(CATS_KEY, JSON.stringify(customCats)); localStorage.setItem(NOTIF_KEY, JSON.stringify(notifSettings)); }
-function getCats() { const s = new Set(customCats); words.forEach(w => { if(w.cat) s.add(w.cat); }); return [...s].sort(); }
 
-function addCategory() {
-  const name = document.getElementById('new-cat-input').value.trim();
-  if (!name) { msg('cat-msg', 'نام دسته‌بندی لازم است', 'var(--red)'); return; }
-  const cats = getCats();
-  if (cats.includes(name)) { msg('cat-msg', 'این دسته‌بندی قبلاً وجود دارد', 'var(--yellow)'); return; }
-  customCats.push(name);
-  save();
-  document.getElementById('new-cat-input').value = '';
-  msg('cat-msg', '✓ دسته‌بندی ایجاد شد', 'var(--green)');
-  updateCats();
-  renderCategories();
-}
-
-function renderCategories() {
-  const cats = getCats();
-  const list = document.getElementById('cat-list');
-  if (!cats.length) { list.innerHTML = '<div style="font-size:12px;color:var(--text3)">هیچ دسته‌بندی‌ای وجود ندارد</div>'; return; }
-  list.innerHTML = cats.map(c => {
-    const count = words.filter(w => w.cat === c).length;
-    return `<div style="background:var(--accent-bg);border:1px solid var(--accent-border);color:var(--accent);padding:6px 10px;border-radius:20px;font-size:12px;display:flex;align-items:center;gap:6px">
-      <span>${c} <span style="font-size:10px">(${toFa(count)})</span></span>
-      <button onclick="deleteCategory('${c.replace(/'/g,"\\'")}',event)" style="background:none;border:none;color:var(--red);cursor:pointer;padding:0;font-size:14px">✕</button>
-    </div>`;
-  }).join('');
-}
-
-function deleteCategory(cat, e) {
-  e.stopPropagation();
-  if (!confirm(`دسته‌بندی «${cat}» حذف شود؟ کلمات این دسته‌بندی حفظ می‌شوند.`)) return;
-  words.forEach(w => { if (w.cat === cat) w.cat = ''; });
-  customCats = customCats.filter(c => c !== cat);
-  save(); updateCats(); renderCategories();
-  msg('cat-msg', '✓ دسته‌بندی حذف شد', 'var(--green)');
-}
-
-// NOTIFICATIONS
-function requestNotificationPermission() {
-  if (!('Notification' in window)) { msg('notif-msg', 'مرورگر شما نوتیفیکیشن پشتیبانی نمی‌کند', 'var(--red)'); return; }
-  if (Notification.permission === 'granted') return;
-  Notification.requestPermission().then(perm => {
-    if (perm === 'granted') msg('notif-msg', '✓ اجازه نوتیفیکیشن داده شد', 'var(--green)');
-    else msg('notif-msg', 'اجازه نوتیفیکیشن رد شد', 'var(--red)');
-  });
-}
-
-function toggleNotifications() {
-  if (!('Notification' in window)) { msg('notif-msg', 'مرورگر شما نوتیفیکیشن پشتیبانی نمی‌کند', 'var(--red)'); return; }
-
-  if (!notifSettings.enabled) {
-    if (Notification.permission === 'denied') { msg('notif-msg', 'اجازه نوتیفیکیشن رد شده است', 'var(--red)'); return; }
-    if (Notification.permission !== 'granted') { requestNotificationPermission(); return; }
-  }
-
-  notifSettings.enabled = !notifSettings.enabled;
-  saveNotificationSettings();
-  const btn = document.getElementById('notif-toggle-btn');
-  btn.textContent = notifSettings.enabled ? 'فعال' : 'غیرفعال';
-  btn.style.background = notifSettings.enabled ? 'var(--green)' : 'var(--surface)';
-  btn.style.color = notifSettings.enabled ? '#fff' : 'var(--text)';
-  btn.style.borderColor = notifSettings.enabled ? 'var(--green-border)' : 'var(--border)';
-  msg('notif-msg', notifSettings.enabled ? '✓ یادآوری فعال شد' : '✓ یادآوری غیرفعال شد', 'var(--green)');
-}
-
-function saveNotificationSettings() {
-  const hour = document.getElementById('notif-hour').value;
-  if (hour) notifSettings.hour = parseInt(hour);
-  save();
-  loadNotificationSettings();
-}
-
-function loadNotificationSettings() {
-  const btn = document.getElementById('notif-toggle-btn');
-  const hourSelect = document.getElementById('notif-hour');
-  btn.textContent = notifSettings.enabled ? 'فعال' : 'غیرفعال';
-  btn.style.background = notifSettings.enabled ? 'var(--green)' : 'var(--surface)';
-  btn.style.color = notifSettings.enabled ? '#fff' : 'var(--text)';
-  btn.style.borderColor = notifSettings.enabled ? 'var(--green-border)' : 'var(--border)';
-  hourSelect.value = notifSettings.hour;
-}
-
-function checkAndSendNotification() {
-  if (!notifSettings.enabled || !('Notification' in window) || Notification.permission !== 'granted') return;
-  const now = new Date();
-  const currentHour = now.getHours();
-  const currentDate = now.toDateString();
-  if (currentHour !== notifSettings.hour || notifSettings.lastNotifDate === currentDate) return;
-
-  const todayCount = words.filter(w => w.date === currentDate).length;
-  const messages = [
-    `سلام! 👋 امروز ${toFa(todayCount)} کلمه یاد گرفتی. بیا یک کم دیگه تمرین کن!`,
-    `🎯 وقت تمرین است! آمادی برای یادگیری کلمات جدید؟`,
-    `📚 سلام! بیا ${toFa(Math.ceil(Math.random() * 5))} کلمه دیگه یاد بگیری!`,
-    `💪 نمی‌دونی چه جالب است؟ هر روز تمرین، موفقیت مطمئن!`,
-    `🌟 تمرین روزانه = یادگیری بهتر. آماده‌ای؟`
-  ];
-  const msg = messages[Math.floor(Math.random() * messages.length)];
-  new Notification('📖 دفترچه لغت', { body: msg, icon: 'icon-192.png', tag: 'vocab-reminder' });
-  notifSettings.lastNotifDate = currentDate;
-  save();
-}
-function toggleDarkMode() { document.documentElement.classList.toggle('dark-mode'); localStorage.setItem('dark-mode', document.documentElement.classList.contains('dark-mode')); }
-function loadDarkMode() { if (localStorage.getItem('dark-mode') === 'true') document.documentElement.classList.add('dark-mode'); }
-
-function updateCats() {
-  const cats = getCats();
-  const opts = cats.map(c => `<option value="${c}">${c}</option>`).join('');
-  ['in-cat','fl-cat','qz-cat','tp-cat','hm-cat','ls-cat'].forEach(id => {
-    const el = document.getElementById(id); if (!el) return;
-    const cur = el.value;
-    el.innerHTML = (id === 'in-cat' ? '<option value="">— بدون دسته —</option>' : '<option value="">همه</option>') + opts;
-    if (cur) el.value = cur;
-  });
-  document.getElementById('s-cats').textContent = toFa(cats.length);
-}
-
-function updateStats() {
-  const t = words.length, kn = words.filter(w => w.known).length;
-  const tod = words.filter(w => w.date === TODAY).length;
-  document.getElementById('s-total').textContent = toFa(t);
-  document.getElementById('s-today').textContent = toFa(tod);
-  document.getElementById('s-known').textContent = toFa(kn);
-  document.getElementById('hdr-total').textContent = toFa(t);
-  document.getElementById('hdr-known').textContent = toFa(kn) + ' ✓';
-  if (!stats[TODAY]) stats[TODAY] = { words: 0, time: 0 };
-  stats[TODAY].words = tod;
-  save();
-  updateCats();
-  updateStatsPanel();
-}
-
-function updateStatsPanel() {
-  const t = words.length, kn = words.filter(w => w.known).length;
-  document.getElementById('st-total').textContent = toFa(t);
-  document.getElementById('st-known').textContent = toFa(kn);
-  const tod = words.filter(w => w.date === TODAY).length;
-  document.getElementById('st-today').textContent = toFa(tod);
-
-  let streak = 0;
-  const d = new Date();
-  for (let i = 0; i < 365; i++) {
-    const dateStr = new Date(d.getTime() - i * 86400000).toDateString();
-    if (stats[dateStr] && stats[dateStr].words > 0) streak++;
-    else break;
-  }
-  document.getElementById('st-streak').textContent = toFa(streak);
-
-  renderStreakChart();
-  updateTimeStats();
-}
-
-function renderStreakChart() {
-  const chart = document.getElementById('streak-chart');
-  let html = '';
-  const maxHeight = 100;
-  const maxWords = 50;
-  for (let i = 29; i >= 0; i--) {
-    const dateStr = new Date(Date.now() - i * 86400000).toDateString();
-    const count = (stats[dateStr] && stats[dateStr].words) || 0;
-    const height = (count / maxWords * maxHeight) || 2;
-    const color = count > 0 ? 'var(--accent)' : 'var(--surface2)';
-    html += `<div style="flex:1;height:${Math.max(height, 2)}px;background:${color};border-radius:2px" title="${dateStr}: ${toFa(count)} کلمه"></div>`;
-  }
-  chart.innerHTML = html;
-}
-
-function updateTimeStats() {
-  let totalTime = 0;
-  Object.values(stats).forEach(s => { totalTime += s.time || 0; });
-  const todayTime = (stats[TODAY] && stats[TODAY].time) || 0;
-  document.getElementById('st-time-total').textContent = formatTime(totalTime);
-  document.getElementById('st-time-today').textContent = formatTime(todayTime);
-}
-
-function formatTime(minutes) {
-  if (minutes < 60) return toFa(Math.round(minutes)) + ' دقیقه';
-  const h = Math.floor(minutes / 60);
-  const m = Math.round(minutes % 60);
-  return toFa(h) + ' ساعت و ' + toFa(m) + ' دقیقه';
-}
-
-function trackSessionTime() {
-  const elapsed = Math.floor((Date.now() - sessionStartTime) / 60000);
-  if (elapsed > 0) {
-    if (!stats[TODAY]) stats[TODAY] = { words: 0, time: 0 };
-    stats[TODAY].time = (stats[TODAY].time || 0) + elapsed;
-    save();
-    updateTimeStats();
-    sessionStartTime = Date.now();
+async function loadWords() {
+  try {
+    const res = await fetch(API_URL);
+    const data = await res.json();
+    words = data.words || [];
+    updateStats();
+    renderList();
+    updateTime();
+  } catch (e) {
+    msg('add-msg', '⚠️ اتصال به سرور ناموفق', 'var(--red)');
+    setTimeout(loadWords, 5000);
   }
 }
 
-function addWord() {
+async function addWord() {
   const en = document.getElementById('in-en').value.trim();
   const fa = document.getElementById('in-fa').value.trim();
   const pr = document.getElementById('in-pr').value.trim();
   const ex = document.getElementById('in-ex').value.trim();
-  const syn = document.getElementById('in-syn').value.trim().split(',').map(s => s.trim()).filter(s => s);
-  const ant = document.getElementById('in-ant').value.trim().split(',').map(s => s.trim()).filter(s => s);
-  const nc = document.getElementById('in-newcat').value.trim();
-  const cat = nc || document.getElementById('in-cat').value;
-  if (!en || !fa) { msg('add-msg', 'کلمه و ترجمه لازم است', 'var(--red)'); return; }
-  if (words.find(w => w.en.toLowerCase() === en.toLowerCase())) { msg('add-msg', 'قبلاً اضافه شده', 'var(--yellow)'); return; }
-  words.unshift({ en, fa, pr, ex, syn, ant, cat, date: TODAY, known: false, id: Date.now() });
-  save(); updateStats();
-  ['in-en','in-fa','in-pr','in-ex','in-syn','in-ant','in-newcat'].forEach(id => document.getElementById(id).value = '');
-  document.getElementById('in-en').focus();
-  msg('add-msg', '✓ «' + en + '» اضافه شد', 'var(--green)');
-}
 
-function msg(id, text, color) {
-  const el = document.getElementById(id); if (!el) return;
-  el.textContent = text; el.style.color = color;
-  setTimeout(() => el.textContent = '', 3000);
-}
+  if (!en || !fa) { msg('add-msg', 'انگلیسی و فارسی لازم است', 'var(--red)'); return; }
+  if (words.find(w => w.en.toLowerCase() === en.toLowerCase())) { msg('add-msg', 'این کلمه قبلاً وجود دارد', 'var(--yellow)'); return; }
 
-function speak(text) {
-  if (!window.speechSynthesis) return;
-  speechSynthesis.cancel();
-  const u = new SpeechSynthesisUtterance(text);
-  u.lang = 'en-US'; u.rate = 0.85;
-  speechSynthesis.speak(u);
-}
+  msg('add-msg', '⏳ درحال اضافه...', 'var(--accent)');
 
-function fw(cat) { return cat ? words.filter(w => w.cat === cat) : words; }
-function shuf(a) { const b=[...a]; for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];} return b; }
+  try {
+    const res = await fetch(API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ en, fa, pr, ex, date: new Date().toISOString().split('T')[0] })
+    });
 
-function progHTML(cur, total) {
-  const p = total ? Math.round(cur/total*100) : 0;
-  return `<div class="prog-wrap"><div class="prog-row"><span>${toFa(cur)} از ${toFa(total)}</span><span>${toFa(p)}٪</span></div><div class="prog-bar"><div class="prog-fill" style="width:${p}%"></div></div></div>`;
-}
+    if (!res.ok) { msg('add-msg', 'خطا!', 'var(--red)'); return; }
 
-function finishCard(onRetry) {
-  return `<div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);padding:2rem;text-align:center;margin-bottom:12px">
-    <div style="font-size:24px;margin-bottom:8px">🎉</div>
-    <div style="font-size:16px;font-weight:700;margin-bottom:16px">تموم شد!</div>
-    <button class="btn btn-primary" onclick="${onRetry}">دوباره</button>
-  </div>`;
-}
+    msg('add-msg', '✓ اضافه شد!', 'var(--green)');
+    ['in-en','in-fa','in-pr','in-ex'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('in-en').focus();
 
-// FLASH
-function setFlMode(m, btn) {
-  flMode = m;
-  document.getElementById('fl-en').classList.remove('act');
-  document.getElementById('fl-fa').classList.remove('act');
-  btn.classList.add('act');
-  startFlash();
-}
-
-function startFlash() {
-  const cat = document.getElementById('fl-cat').value;
-  const pool = fw(cat);
-  if (!pool.length) { document.getElementById('flash-area').innerHTML = '<div class="empty">کلمه‌ای نیست</div>'; return; }
-  flOrder = shuf(pool.map(w => words.indexOf(w)));
-  flIdx = 0; flShown = false; renderFlash();
-}
-
-function renderFlash() {
-  const area = document.getElementById('flash-area');
-  if (flIdx >= flOrder.length) { area.innerHTML = finishCard('startFlash()'); return; }
-  const w = words[flOrder[flIdx]];
-  const isEn = flMode === 'en';
-  const front = isEn
-    ? `<div class="fc-word">${w.en} <button class="speak-btn" onclick="speak('${w.en.replace(/'/g,"\\'")}');event.stopPropagation()">🔊</button></div>${w.pr ? `<div class="fc-pron">${w.pr}</div>` : ''}<div class="fc-hint">برای دیدن ترجمه لمس کن</div>`
-    : `<div class="fc-word" style="font-size:22px">${w.fa}</div><div class="fc-hint">کلمه انگلیسی؟</div>`;
-  const back = isEn
-    ? `<div class="fc-back"><div style="font-size:20px;font-weight:700">${w.fa}</div>${w.ex?`<div style="font-size:12px;color:var(--text3);margin-top:6px;font-style:italic;direction:ltr;text-align:left">${w.ex}</div>`:''}</div>`
-    : `<div class="fc-back"><div style="font-size:22px;font-weight:700">${w.en} <button class="speak-btn" onclick="speak('${w.en.replace(/'/g,"\\'")}');event.stopPropagation()">🔊</button></div>${w.pr?`<div class="fc-pron">${w.pr}</div>`:''}</div>`;
-  area.innerHTML = `${progHTML(flIdx, flOrder.length)}
-    <div class="flashcard" onclick="flShown=true;renderFlash()">${front}${flShown ? back : ''}</div>
-    ${flShown
-      ? `<div class="card-btns"><button class="btn" style="color:var(--green);border-color:var(--green-border);background:var(--green-bg)" onclick="nextFl(true)">✓ بلدم</button><button class="btn" onclick="nextFl(false)">↩ مرور</button></div>`
-      : `<button class="btn" onclick="flShown=true;renderFlash()">نمایش جواب</button>`}`;
-}
-
-function nextFl(k) {
-  if (k) { words[flOrder[flIdx]].known = true; save(); updateStats(); }
-  flIdx++; flShown = false; renderFlash();
-}
-
-// QUIZ
-function startQuiz() {
-  const pool = fw(document.getElementById('qz-cat').value);
-  if (pool.length < 4) { document.getElementById('quiz-area').innerHTML = '<div class="empty">حداقل ۴ کلمه لازم است</div>'; return; }
-  qzOrder = shuf(pool.map(w => words.indexOf(w))); qzIdx = 0; renderQuiz();
-}
-
-function renderQuiz() {
-  const area = document.getElementById('quiz-area');
-  const pool = fw(document.getElementById('qz-cat').value);
-  if (qzIdx >= qzOrder.length) { area.innerHTML = finishCard('startQuiz()'); return; }
-  const w = words[qzOrder[qzIdx]];
-  const choices = shuf([w.fa, ...shuf(pool.filter(x => x.id !== w.id)).slice(0,3).map(x => x.fa)]);
-  area.innerHTML = `${progHTML(qzIdx, qzOrder.length)}
-    <div class="quiz-q">
-      <div style="font-size:12px;color:var(--text3);margin-bottom:8px">ترجمه فارسی چیست؟</div>
-      <div style="font-size:26px;font-weight:700">${w.en} <button class="speak-btn" onclick="speak('${w.en.replace(/'/g,"\\'")}')">🔊</button></div>
-      ${w.pr ? `<div style="font-size:13px;color:var(--text3);font-style:italic;margin-top:4px">${w.pr}</div>` : ''}
-    </div>
-    <div id="choices">${choices.map(c => `<button class="choice-btn" onclick="pickQ('${c.replace(/'/g,"\\'")}','${w.fa.replace(/'/g,"\\'")}','${w.id}')">${c}</button>`).join('')}</div>
-    <div id="qz-res"></div>
-    <div id="qz-nx" style="display:none"><button class="btn btn-primary mt-8" onclick="qzIdx++;renderQuiz()">بعدی ←</button></div>`;
-}
-
-function pickQ(chosen, correct, wid) {
-  document.querySelectorAll('.choice-btn').forEach(b => {
-    b.disabled = true;
-    if (b.textContent === correct) b.classList.add('choice-ok');
-    else if (b.textContent === chosen && chosen !== correct) b.classList.add('choice-bad');
-  });
-  if (chosen === correct) {
-    document.getElementById('qz-res').innerHTML = '<div class="result-ok">✓ درست!</div>';
-    const w = words.find(x => x.id == wid); if (w) { w.known = true; save(); updateStats(); }
-    setTimeout(() => { qzIdx++; renderQuiz(); }, 1000);
-  } else {
-    document.getElementById('qz-res').innerHTML = `<div class="result-bad">✗ جواب: «${correct}»</div>`;
-    document.getElementById('qz-nx').style.display = 'block';
+    loadWords();
+  } catch (e) {
+    msg('add-msg', 'خطا: ' + e.message, 'var(--red)');
   }
 }
 
-// TYPE
-function startType() {
-  const pool = fw(document.getElementById('tp-cat').value);
-  if (!pool.length) { document.getElementById('type-area').innerHTML = '<div class="empty">کلمه‌ای نیست</div>'; return; }
-  tpOrder = shuf(pool.map(w => words.indexOf(w))); tpIdx = 0; renderType();
-}
-
-function renderType() {
-  const area = document.getElementById('type-area');
-  const pool = fw(document.getElementById('tp-cat').value);
-  if (tpIdx >= tpOrder.length) { area.innerHTML = finishCard('startType()'); return; }
-  const w = words[tpOrder[tpIdx]];
-  area.innerHTML = `${progHTML(tpIdx, tpOrder.length)}
-    <div class="type-q">
-      <div style="font-size:12px;color:var(--text3);margin-bottom:8px">کلمه انگلیسی بنویس</div>
-      <div style="font-size:24px;font-weight:700">${w.fa}</div>
-      ${w.pr ? `<div style="font-size:13px;color:var(--text3);font-style:italic;margin-top:4px">${w.pr}</div>` : ''}
-      ${w.ex ? `<div style="font-size:11px;color:var(--text3);margin-top:8px;border-top:1px solid var(--border);padding-top:8px;direction:ltr;text-align:left;font-style:italic">${w.ex}</div>` : ''}
-    </div>
-    <div class="flex gap-8">
-      <input type="text" id="tp-in" placeholder="type here..." autocomplete="off" autocorrect="off" autocapitalize="off" style="flex:1;direction:ltr;text-align:left" onkeydown="if(event.key==='Enter')checkType('${w.en.replace(/'/g,"\\'")}','${w.id}')">
-      <button class="btn btn-primary btn-sm" onclick="checkType('${w.en.replace(/'/g,"\\'")}','${w.id}')">✓</button>
-    </div>
-    <div id="tp-res"></div>
-    <div id="tp-nx" style="display:none"><button class="btn btn-primary mt-8" onclick="tpIdx++;renderType()">بعدی ←</button></div>`;
-  document.getElementById('tp-in').focus();
-}
-
-function checkType(correct, wid) {
-  const inp = document.getElementById('tp-in');
-  const ans = inp.value.trim().toLowerCase();
-  if (!ans) return;
-  inp.disabled = true;
-  if (ans === correct.toLowerCase()) {
-    document.getElementById('tp-res').innerHTML = `<div class="result-ok">✓ درست! ${correct} <button class="speak-btn" onclick="speak('${correct.replace(/'/g,"\\'")}')">🔊</button></div>`;
-    const w = words.find(x => x.id == wid); if (w) { w.known = true; save(); updateStats(); }
-    setTimeout(() => { tpIdx++; renderType(); }, 1200);
-  } else {
-    document.getElementById('tp-res').innerHTML = `<div class="result-bad">✗ جواب: «${correct}» <button class="speak-btn" onclick="speak('${correct.replace(/'/g,"\\'")}')">🔊</button></div>`;
-    document.getElementById('tp-nx').style.display = 'block';
-  }
-}
-
-// HANGMAN
-function startHangman() {
-  const pool = fw(document.getElementById('hm-cat').value);
-  if (!pool.length) { document.getElementById('hm-area').innerHTML = '<div class="empty">کلمه‌ای نیست</div>'; return; }
-  hmWord = pool[Math.floor(Math.random() * pool.length)];
-  hmGuessed = []; hmMisses = 0; renderHangman();
-}
-
-function renderHangman() {
-  const area = document.getElementById('hm-area');
-  const letterArray = hmWord.en.toLowerCase().split('');
-  const unique = [...new Set(letterArray.filter(c => /[a-z]/.test(c)))];
-  const won = unique.every(c => hmGuessed.includes(c));
-  const lost = hmMisses >= HM_MAX;
-  const wordHTML = letterArray.map(c => {
-    if (!/[a-z]/.test(c)) return `<div class="hm-letter">${c}</div>`;
-    const show = hmGuessed.includes(c) || lost;
-    return `<div class="hm-letter" style="${lost && !hmGuessed.includes(c) ? 'color:var(--red)' : ''}">${show ? c : ''}</div>`;
-  }).join('');
-  const keysHTML = ALPHA.map(c => {
-    const hit = hmGuessed.includes(c) && letters.includes(c);
-    const miss = hmGuessed.includes(c) && !letters.includes(c);
-    return `<button class="hm-key ${hit?'hit':''} ${miss?'miss':''}" ${(hmGuessed.includes(c)||won||lost)?'disabled':''} onclick="guessLetter('${c}')">${c}</button>`;
-  }).join('');
-  let footer = '';
-  if (won) footer = `<div class="result-ok">🎉 آفرین! «${hmWord.en}» — ${hmWord.fa} <button class="speak-btn" onclick="speak('${hmWord.en.replace(/'/g,"\\'")}')">🔊</button></div>`;
-  else if (lost) footer = `<div class="result-bad">💀 باختی! کلمه «${hmWord.en}» بود — ${hmWord.fa}</div>`;
-  area.innerHTML = `<div class="hm-box">
-    <div style="display:flex;justify-content:space-between;align-items:center">
-      <div style="font-size:13px;color:var(--text2)">ترجمه: <strong>${hmWord.fa}</strong>${hmWord.pr ? ` (${hmWord.pr})` : ''}</div>
-      <div style="font-size:12px;background:var(--surface2);padding:4px 10px;border-radius:20px">${HM_ST[Math.min(hmMisses,HM_MAX)]}</div>
-    </div>
-    <div class="hm-word">${wordHTML}</div>
-    ${hmWord.ex && (won||lost) ? `<div style="font-size:11px;color:var(--text3);text-align:center;font-style:italic">${hmWord.ex}</div>` : ''}
-  </div>
-  ${!won && !lost ? `<div class="hm-keys">${keysHTML}</div>` : ''}
-  ${footer}
-  ${won||lost ? `<button class="btn btn-primary mt-8" onclick="startHangman()">کلمه جدید</button>` : ''}`;
-}
-
-function guessLetter(c) {
-  if (hmGuessed.includes(c)) return;
-  hmGuessed.push(c);
-  if (!hmWord.en.toLowerCase().includes(c)) hmMisses++;
-  renderHangman();
-}
-
-// LIST
 function renderList() {
-  const cat = document.getElementById('ls-cat').value;
   const q = (document.getElementById('ls-search').value || '').toLowerCase();
-  let pool = fw(cat);
+  let pool = words;
   if (q) pool = pool.filter(w => w.en.toLowerCase().includes(q) || w.fa.includes(q));
+
   const wrap = document.getElementById('word-list');
   if (!pool.length) { wrap.innerHTML = '<div class="empty">کلمه‌ای یافت نشد</div>'; return; }
+
   wrap.innerHTML = pool.map(w => `
     <div class="word-item">
-      <div class="word-en">${w.en} <button class="speak-btn" onclick="speak('${w.en.replace(/'/g,"\\'")}')">🔊</button></div>
+      <div class="word-en">${w.en} 🔊</div>
       <div class="word-fa">${w.fa}</div>
-      ${w.pr ? `<div class="word-pr">${w.pr}</div>` : ''}
+      ${w.pr ? `<div style="font-size:12px;color:var(--text3)">${w.pr}</div>` : ''}
       ${w.ex ? `<div class="word-ex">${w.ex}</div>` : ''}
-      ${(w.syn && w.syn.length) ? `<div style="font-size:11px;color:var(--text3);margin-top:4px"><strong>مترادف:</strong> ${w.syn.join('، ')}</div>` : ''}
-      ${(w.ant && w.ant.length) ? `<div style="font-size:11px;color:var(--text3);margin-top:2px"><strong>متضاد:</strong> ${w.ant.join('، ')}</div>` : ''}
-      <div class="word-footer">
-        <div class="flex gap-8">
-          ${w.cat ? `<span class="badge badge-blue">${w.cat}</span>` : ''}
-          ${w.known ? `<span class="badge badge-green">✓ بلدم</span>` : ''}
-        </div>
-        <button class="del-btn" onclick="delWord(${w.id})">🗑</button>
-      </div>
     </div>`).join('');
 }
 
-function delWord(id) {
-  if (!confirm('حذف شود؟')) return;
-  words = words.filter(w => w.id !== id);
-  save(); updateStats(); renderList();
+function updateStats() {
+  document.getElementById('hdr-total').textContent = toFa(words.length);
+  document.getElementById('s-total').textContent = toFa(words.length);
 }
 
-// IMPORT
-function handleXlFile(input) {
-  const file = input.files[0]; if (!file) return;
-  const reader = new FileReader();
-  reader.onload = e => {
-    try {
-      const data = new Uint8Array(e.target.result);
-      const wb = XLSX.read(data, { type: 'array' });
-      const raw = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]], { header: 1, defval: '' });
-      const isH = raw[0] && /word|english|کلمه|انگلیسی/i.test(String(raw[0][0]));
-      const rows = (isH ? raw.slice(1) : raw)
-        .map(r => {
-          const synStr = String(r[4]||'');
-          const antStr = String(r[5]||'');
-          return {
-            en: String(r[0]||'').trim(),
-            fa: String(r[1]||'').trim(),
-            pr: String(r[2]||'').trim(),
-            ex: String(r[3]||'').trim(),
-            syn: synStr ? synStr.split(',').map(s => s.trim()).filter(s => s && s.length > 0) : [],
-            ant: antStr ? antStr.split(',').map(s => s.trim()).filter(s => s && s.length > 0) : []
-          };
-        })
-        .filter(r => r.en && r.fa);
-      const exist = new Set(words.map(w => w.en.toLowerCase()));
-      const newR = rows.filter(r => !exist.has(r.en.toLowerCase()));
-      if (!newR.length) { document.getElementById('xl-result').innerHTML = '<div class="result-warn">همه کلمات تکراری هستند</div>'; return; }
-      pendingImportRows = newR;
-      document.getElementById('import-category-dialog').style.display = 'block';
-    } catch(err) { document.getElementById('xl-result').innerHTML = `<div class="result-bad">خطا: ${err.message}</div>`; }
-  };
-  reader.readAsArrayBuffer(file);
+function updateTime() {
+  const now = new Date();
+  const h = toFa(String(now.getHours()).padStart(2, '0'));
+  const m = toFa(String(now.getMinutes()).padStart(2, '0'));
+  document.getElementById('s-synced').textContent = `${h}:${m}`;
 }
 
-function confirmImport() {
-  const cat = document.getElementById('import-cat-input').value.trim();
-  pendingImportRows.forEach(r => words.unshift({ ...r, cat, date: TODAY, known: false, id: Date.now() + Math.random() }));
-  save(); updateStats();
-  document.getElementById('xl-result').innerHTML = `<div class="result-ok">✓ ${toFa(pendingImportRows.length)} کلمه وارد شد!</div>`;
-  document.getElementById('import-category-dialog').style.display = 'none';
-  document.getElementById('import-cat-input').value = '';
-  document.getElementById('xl-file').value = '';
-  pendingImportRows = [];
+async function syncNow() {
+  msg('settings-msg', '⏳ آپدیت...', 'var(--accent)');
+  await loadWords();
+  msg('settings-msg', '✓ آپدیت شد!', 'var(--green)');
 }
 
-function cancelImport() {
-  document.getElementById('import-category-dialog').style.display = 'none';
-  document.getElementById('import-cat-input').value = '';
-  document.getElementById('xl-file').value = '';
-  pendingImportRows = [];
+function msg(id, text, color) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.textContent = text;
+  el.style.color = color;
+  setTimeout(() => el.textContent = '', 3000);
 }
 
-// BACKUP
-function backupJSON() {
-  const blob = new Blob([JSON.stringify(words, null, 2)], { type: 'application/json' });
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = `vocab-backup-${new Date().toISOString().slice(0,10)}.json`;
-  a.click();
-}
-
-function restoreJSON(input) {
-  const file = input.files[0]; if (!file) return;
-  const reader = new FileReader();
-  reader.onload = e => {
-    try {
-      const data = JSON.parse(e.target.result);
-      if (!Array.isArray(data)) throw new Error('فرمت نادرست');
-      if (!confirm(`بازیابی ${data.length} کلمه؟ کلمات فعلی جایگزین می‌شوند.`)) return;
-      words = data; save(); updateStats();
-      msg('settings-msg', `✓ ${toFa(words.length)} کلمه بازیابی شد`, 'var(--green)');
-      input.value = '';
-    } catch(err) { msg('settings-msg', 'فایل معتبر نیست', 'var(--red)'); }
-  };
-  reader.readAsText(file);
-}
-
-function clearAll() {
-  if (!confirm('همه کلمات پاک شوند؟')) return;
-  if (!confirm('مطمئنی؟ برگشت‌ناپذیره!')) return;
-  words = []; save(); updateStats(); renderList();
-  msg('settings-msg', 'همه کلمات پاک شدند', 'var(--red)');
-}
-
-// NAV
 function showPanel(name, btn) {
-  trackSessionTime();
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('act'));
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('act'));
   document.getElementById('p-' + name).classList.add('act');
   btn.classList.add('act');
-  document.getElementById('main').scrollTop = 0;
-  if (name === 'flash') startFlash();
-  if (name === 'quiz') startQuiz();
-  if (name === 'type') startType();
-  if (name === 'hangman') startHangman();
-  if (name === 'list') renderList();
-  if (name === 'stats') updateStatsPanel();
-  if (name === 'more') { renderCategories(); loadNotificationSettings(); }
 }
 
-// Hard Refresh
-async function hardRefresh() {
-  try {
-    if ('serviceWorker' in navigator) {
-      const regs = await navigator.serviceWorker.getRegistrations();
-      for (let reg of regs) await reg.unregister();
-    }
-    if ('caches' in window) {
-      const names = await caches.keys();
-      for (let name of names) await caches.delete(name);
-    }
-    msg('settings-msg', '✓ کش پاک شد، صفحه رفرش میشه...', 'var(--green)');
-    setTimeout(() => window.location.reload(true), 500);
-  } catch (e) {
-    msg('settings-msg', 'خطا: ' + e.message, 'var(--red)');
-  }
+function toggleDarkMode() {
+  document.documentElement.classList.toggle('dark-mode');
+  localStorage.setItem('dark-mode', document.documentElement.classList.contains('dark-mode'));
 }
 
-// PWA Install
-let deferredPrompt;
-window.addEventListener('beforeinstallprompt', e => {
-  e.preventDefault();
-  deferredPrompt = e;
-  document.getElementById('install-banner').style.display = 'flex';
-});
-document.getElementById('install-btn').addEventListener('click', async () => {
-  if (!deferredPrompt) return;
-  deferredPrompt.prompt();
-  const { outcome } = await deferredPrompt.userChoice;
-  deferredPrompt = null;
-  document.getElementById('install-banner').style.display = 'none';
-});
-window.addEventListener('appinstalled', () => {
-  document.getElementById('install-banner').style.display = 'none';
-});
-
-// Service Worker
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('./sw.js').catch(() => {});
+function loadDarkMode() {
+  if (localStorage.getItem('dark-mode') === 'true') document.documentElement.classList.add('dark-mode');
 }
 
-// Global Words Management
-let globalWords = [];
-const GLOBAL_KEY = 'vocab_global_v1';
+// Auto sync every 30 seconds
+setInterval(loadWords, 30000);
+setInterval(updateTime, 60000);
 
-async function loadGlobalWords() {
-  try {
-    msg('global-msg', '⏳ در حال دانلود...', 'var(--accent)');
-    const url = 'https://raw.githubusercontent.com/nua9753/vocapp/master/global-words.json';
-    const res = await fetch(url);
-    if (!res.ok) throw new Error('خطا در دانلود');
-    const data = await res.json();
-    globalWords = data.words || [];
-    localStorage.setItem(GLOBAL_KEY, JSON.stringify(globalWords));
-    updateGlobalCount();
-    msg('global-msg', `✓ ${toFa(globalWords.length)} کلمه دانلود شد`, 'var(--green)');
-  } catch (e) {
-    msg('global-msg', 'خطا: ' + e.message, 'var(--red)');
-  }
-}
-
-function updateGlobalCount() {
-  document.getElementById('global-count').textContent = toFa(globalWords.length);
-}
-
-function importGlobalWords() {
-  if (!globalWords.length) { msg('global-msg', 'ابتدا کلمات رو دانلود کن', 'var(--yellow)'); return; }
-  const toImport = globalWords.filter(w => !words.find(x => x.en.toLowerCase() === w.en.toLowerCase()));
-  if (!toImport.length) { msg('global-msg', 'همه کلمات قبلاً اضافه شده‌اند', 'var(--yellow)'); return; }
-  toImport.forEach(w => words.unshift({ ...w, known: false, id: Date.now() + Math.random() }));
-  save(); updateStats();
-  msg('global-msg', `✓ ${toFa(toImport.length)} کلمه اضافه شد`, 'var(--green)');
-}
-
-function loadGlobalWordsLocal() {
-  try {
-    globalWords = JSON.parse(localStorage.getItem(GLOBAL_KEY) || '[]');
-    updateGlobalCount();
-  } catch (e) {
-    globalWords = [];
-  }
-}
-
-load(); loadDarkMode(); updateStats(); renderCategories(); loadNotificationSettings(); loadGlobalWordsLocal();
-setInterval(trackSessionTime, 60000);
-setInterval(checkAndSendNotification, 60000);
+loadDarkMode();
+loadWords();
 </script>
 </body>
 </html>
