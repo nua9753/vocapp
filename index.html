@@ -211,6 +211,10 @@ input:focus,select:focus{border-color:var(--accent)}
       <div class="field"><label>مترادف (جدا با ویرگول)</label><input type="text" id="in-syn" placeholder="pretty, lovely, attractive"></div>
       <div class="field"><label>متضاد (جدا با ویرگول)</label><input type="text" id="in-ant" placeholder="ugly, hideous"></div>
       <div class="field"><label>دسته جدید</label><input type="text" id="in-newcat" placeholder="مثلاً: هفته ۱"></div>
+      <div class="field" style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+        <input type="checkbox" id="in-global" style="width:18px;height:18px;cursor:pointer">
+        <label style="margin:0;cursor:pointer;font-size:13px" onclick="document.getElementById('in-global').click()">✨ اضافه به دیتابیس عمومی</label>
+      </div>
       <button class="btn btn-primary mt-8" onclick="addWord()">+ افزودن کلمه</button>
       <div id="add-msg" style="font-size:13px;text-align:center;min-height:20px;margin-top:8px"></div>
     </div>
@@ -321,6 +325,23 @@ input:focus,select:focus{border-color:var(--accent)}
     </div>
 
     <div class="card">
+      <div class="card-title">🌍 کلمات عمومی</div>
+      <div class="settings-item">
+        <span class="settings-label">تعداد کلمات عمومی</span>
+        <span class="settings-val" id="global-count">۰</span>
+      </div>
+      <div class="settings-item">
+        <span class="settings-label">آپدیت کلمات عمومی</span>
+        <button class="btn btn-sm btn-outline" onclick="loadGlobalWords()">دانلود</button>
+      </div>
+      <div class="settings-item">
+        <span class="settings-label">استفاده از کلمات عمومی</span>
+        <button class="btn btn-sm btn-outline" onclick="importGlobalWords()">اضافه کردن</button>
+      </div>
+      <div id="global-msg" style="font-size:12px;text-align:center;margin-top:8px;min-height:20px"></div>
+    </div>
+
+    <div class="card">
       <div class="card-title">📁 مدیریت دسته‌بندی</div>
       <div class="field"><label>نام دسته‌بندی جدید</label><input type="text" id="new-cat-input" placeholder="مثلاً: هفته ۱"></div>
       <button class="btn btn-primary mt-8" onclick="addCategory()">+ ایجاد دسته‌بندی</button>
@@ -355,6 +376,15 @@ input:focus,select:focus{border-color:var(--accent)}
           <button class="btn" onclick="cancelImport()">لغو</button>
         </div>
       </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🔄 آپدیت و رفرش</div>
+      <div class="settings-item">
+        <span class="settings-label">رفرش کامل اپ</span>
+        <button class="btn btn-sm btn-outline" onclick="hardRefresh()">رفرش</button>
+      </div>
+      <div style="font-size:12px;color:var(--text3);margin-top:8px">برای پاک کردن cache و دانلود نسخه جدید</div>
     </div>
 
     <div class="card">
@@ -978,6 +1008,24 @@ function showPanel(name, btn) {
   if (name === 'more') { renderCategories(); loadNotificationSettings(); }
 }
 
+// Hard Refresh
+async function hardRefresh() {
+  try {
+    if ('serviceWorker' in navigator) {
+      const regs = await navigator.serviceWorker.getRegistrations();
+      for (let reg of regs) await reg.unregister();
+    }
+    if ('caches' in window) {
+      const names = await caches.keys();
+      for (let name of names) await caches.delete(name);
+    }
+    msg('settings-msg', '✓ کش پاک شد، صفحه رفرش میشه...', 'var(--green)');
+    setTimeout(() => window.location.reload(true), 500);
+  } catch (e) {
+    msg('settings-msg', 'خطا: ' + e.message, 'var(--red)');
+  }
+}
+
 // PWA Install
 let deferredPrompt;
 window.addEventListener('beforeinstallprompt', e => {
@@ -1001,7 +1049,49 @@ if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('./sw.js').catch(() => {});
 }
 
-load(); loadDarkMode(); updateStats(); renderCategories(); loadNotificationSettings();
+// Global Words Management
+let globalWords = [];
+const GLOBAL_KEY = 'vocab_global_v1';
+
+async function loadGlobalWords() {
+  try {
+    msg('global-msg', '⏳ در حال دانلود...', 'var(--accent)');
+    const url = 'https://raw.githubusercontent.com/nua9753/vocapp/master/global-words.json';
+    const res = await fetch(url);
+    if (!res.ok) throw new Error('خطا در دانلود');
+    const data = await res.json();
+    globalWords = data.words || [];
+    localStorage.setItem(GLOBAL_KEY, JSON.stringify(globalWords));
+    updateGlobalCount();
+    msg('global-msg', `✓ ${toFa(globalWords.length)} کلمه دانلود شد`, 'var(--green)');
+  } catch (e) {
+    msg('global-msg', 'خطا: ' + e.message, 'var(--red)');
+  }
+}
+
+function updateGlobalCount() {
+  document.getElementById('global-count').textContent = toFa(globalWords.length);
+}
+
+function importGlobalWords() {
+  if (!globalWords.length) { msg('global-msg', 'ابتدا کلمات رو دانلود کن', 'var(--yellow)'); return; }
+  const toImport = globalWords.filter(w => !words.find(x => x.en.toLowerCase() === w.en.toLowerCase()));
+  if (!toImport.length) { msg('global-msg', 'همه کلمات قبلاً اضافه شده‌اند', 'var(--yellow)'); return; }
+  toImport.forEach(w => words.unshift({ ...w, known: false, id: Date.now() + Math.random() }));
+  save(); updateStats();
+  msg('global-msg', `✓ ${toFa(toImport.length)} کلمه اضافه شد`, 'var(--green)');
+}
+
+function loadGlobalWordsLocal() {
+  try {
+    globalWords = JSON.parse(localStorage.getItem(GLOBAL_KEY) || '[]');
+    updateGlobalCount();
+  } catch (e) {
+    globalWords = [];
+  }
+}
+
+load(); loadDarkMode(); updateStats(); renderCategories(); loadNotificationSettings(); loadGlobalWordsLocal();
 setInterval(trackSessionTime, 60000);
 setInterval(checkAndSendNotification, 60000);
 </script>
