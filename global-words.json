@@ -1,0 +1,25 @@
+{
+  "words": [
+    {
+      "en": "beautiful",
+      "fa": "زیبا",
+      "pr": "بیوتیفول",
+      "ex": "She is very beautiful.",
+      "syn": ["pretty", "lovely", "attractive"],
+      "ant": ["ugly", "hideous"],
+      "submittedBy": "admin",
+      "date": "2026-06-28"
+    },
+    {
+      "en": "happy",
+      "fa": "خوشحال",
+      "pr": "هپی",
+      "ex": "I am very happy today.",
+      "syn": ["joyful", "cheerful"],
+      "ant": ["sad", "unhappy"],
+      "submittedBy": "admin",
+      "date": "2026-06-28"
+    }
+  ],
+  "lastUpdated": "2026-06-28T00:00:00Z"
+}
