@@ -1,4 +1,4 @@
-const CACHE = 'vocab-v1';
+const CACHE = 'vocab-v2';
 const FILES = ['./index.html', './manifest.json'];
 
 self.addEventListener('install', e => {
@@ -14,7 +14,19 @@ self.addEventListener('activate', e => {
 });
 
 self.addEventListener('fetch', e => {
-  e.respondWith(
-    caches.match(e.request).then(r => r || fetch(e.request).catch(() => caches.match('./index.html')))
-  );
+  const url = new URL(e.request.url);
+
+  // HTML: network first (always check for updates)
+  if (e.request.destination === 'document') {
+    e.respondWith(
+      fetch(e.request)
+        .then(r => r.ok ? caches.open(CACHE).then(c => { c.put(e.request, r.clone()); return r; }) : caches.match(e.request))
+        .catch(() => caches.match(e.request).then(r => r || caches.match('./index.html')))
+    );
+  } else {
+    // Other assets: cache first
+    e.respondWith(
+      caches.match(e.request).then(r => r || fetch(e.request).catch(() => caches.match('./index.html')))
+    );
+  }
 });
