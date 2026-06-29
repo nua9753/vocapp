@@ -21,15 +21,13 @@
   --r:10px; --rl:14px;
   --safe-bottom: env(safe-area-inset-bottom, 0px);
 }
-@media (prefers-color-scheme: dark) {
-  :root.dark-mode {
-    --bg:#1a1a1a; --surface:#2d2d2d; --surface2:#3a3a3a;
-    --border:#444; --text:#e8e8e8; --text2:#b8b8b8; --text3:#888;
-    --accent:#4a9eff; --accent-bg:#1a3a5a; --accent-border:#2a5a8a;
-    --green:#2ecc71; --green-bg:#1a3a1a; --green-border:#3a6a3a;
-    --red:#ff6b6b; --red-bg:#3a1a1a; --red-border:#6a3a3a;
-    --yellow:#ffd93d; --yellow-bg:#3a3a1a; --yellow-border:#6a6a3a;
-  }
+:root.dark-mode {
+  --bg:#1a1a1a; --surface:#2d2d2d; --surface2:#3a3a3a;
+  --border:#444; --text:#e8e8e8; --text2:#b8b8b8; --text3:#888;
+  --accent:#4a9eff; --accent-bg:#1a3a5a; --accent-border:#2a5a8a;
+  --green:#2ecc71; --green-bg:#1a3a1a; --green-border:#3a6a3a;
+  --red:#ff6b6b; --red-bg:#3a1a1a; --red-border:#6a3a3a;
+  --yellow:#ffd93d; --yellow-bg:#3a3a1a; --yellow-border:#6a6a3a;
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;overflow:hidden;background:var(--bg)}
@@ -211,10 +209,6 @@ input:focus,select:focus{border-color:var(--accent)}
       <div class="field"><label>مترادف (جدا با ویرگول)</label><input type="text" id="in-syn" placeholder="pretty, lovely, attractive"></div>
       <div class="field"><label>متضاد (جدا با ویرگول)</label><input type="text" id="in-ant" placeholder="ugly, hideous"></div>
       <div class="field"><label>دسته جدید</label><input type="text" id="in-newcat" placeholder="مثلاً: هفته ۱"></div>
-      <div class="field" style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
-        <input type="checkbox" id="in-global" style="width:18px;height:18px;cursor:pointer">
-        <label style="margin:0;cursor:pointer;font-size:13px" onclick="document.getElementById('in-global').click()">✨ اضافه به دیتابیس عمومی</label>
-      </div>
       <button class="btn btn-primary mt-8" onclick="addWord()">+ افزودن کلمه</button>
       <div id="add-msg" style="font-size:13px;text-align:center;min-height:20px;margin-top:8px"></div>
     </div>
@@ -232,6 +226,51 @@ input:focus,select:focus{border-color:var(--accent)}
       <button class="mode-btn act" id="fl-en" onclick="setFlMode('en',this)">EN→FA</button>
       <button class="mode-btn" id="fl-fa" onclick="setFlMode('fa',this)">FA→EN</button>
       <select id="fl-cat" onchange="startFlash()" style="border-radius:20px;padding:6px 10px;font-size:12px;border:1px solid var(--border)"><option value="">همه</option></select>
+    </div>
+    <div class="mode-row">
+      <button class="btn btn-primary btn-sm" id="fl-auto-btn" onclick="toggleAutoFlash()">مرور خودکار</button>
+      <button class="btn btn-sm btn-outline" id="fl-sentence-btn" onclick="toggleFlashSentence()">با جمله: خاموش</button>
+      <button class="btn btn-sm" id="fl-auto-stop" onclick="stopAutoFlash()" style="display:none">توقف</button>
+    </div>
+    <div id="fl-auto-note" style="font-size:12px;color:var(--text3);text-align:center;margin:-4px 0 10px;min-height:18px"></div>
+    <div class="card" style="padding:12px;margin-bottom:12px">
+      <div class="card-title">تنظیمات صدا</div>
+      <div class="settings-item">
+        <span class="settings-label">خواندن معنی فارسی</span>
+        <input type="checkbox" id="fl-read-meaning" onchange="saveFlashSettingsFromUI()" style="width:18px;height:18px">
+      </div>
+      <div class="settings-item">
+        <span class="settings-label">خواندن جمله</span>
+        <input type="checkbox" id="fl-read-sentence" onchange="saveFlashSettingsFromUI()" style="width:18px;height:18px">
+      </div>
+      <div class="settings-item">
+        <span class="settings-label">تکرار کلمه</span>
+        <select id="fl-repeat" onchange="saveFlashSettingsFromUI()" style="width:90px;padding:8px;border:1px solid var(--border);border-radius:var(--r);background:var(--surface);color:var(--text);font-family:inherit">
+          <option value="1">۱ بار</option>
+          <option value="2">۲ بار</option>
+          <option value="3">۳ بار</option>
+        </select>
+      </div>
+      <div class="settings-item">
+        <span class="settings-label">سرعت انگلیسی</span>
+        <input type="range" id="fl-en-rate" min="0.45" max="0.9" step="0.05" onchange="saveFlashSettingsFromUI()" style="width:130px">
+      </div>
+      <div class="settings-item">
+        <span class="settings-label">سرعت فارسی</span>
+        <input type="range" id="fl-fa-rate" min="0.55" max="1" step="0.05" onchange="saveFlashSettingsFromUI()" style="width:130px">
+      </div>
+      <div class="settings-item">
+        <span class="settings-label">سرعت جمله</span>
+        <input type="range" id="fl-ex-rate" min="0.4" max="0.8" step="0.05" onchange="saveFlashSettingsFromUI()" style="width:130px">
+      </div>
+      <div class="settings-item">
+        <span class="settings-label">مکث بین کارت‌ها</span>
+        <select id="fl-pause" onchange="saveFlashSettingsFromUI()" style="width:100px;padding:8px;border:1px solid var(--border);border-radius:var(--r);background:var(--surface);color:var(--text);font-family:inherit">
+          <option value="700">کوتاه</option>
+          <option value="1200">متوسط</option>
+          <option value="1800">طولانی</option>
+        </select>
+      </div>
     </div>
     <div id="flash-area"><div class="empty">ابتدا کلمه اضافه کن</div></div>
   </div>
@@ -302,45 +341,6 @@ input:focus,select:focus{border-color:var(--accent)}
 
   <!-- MORE -->
   <div id="p-more" class="panel">
-    <div class="card">
-      <div class="card-title">🔔 یادآوری روزانه</div>
-      <div class="settings-item">
-        <span class="settings-label">فعال کن</span>
-        <button class="btn btn-sm btn-outline" id="notif-toggle-btn" onclick="toggleNotifications()" style="width:auto">غیرفعال</button>
-      </div>
-      <div class="settings-item">
-        <span class="settings-label">ساعت یادآوری</span>
-        <select id="notif-hour" onchange="saveNotificationSettings()" style="width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:var(--r);font-size:14px;background:var(--surface);color:var(--text);font-family:inherit">
-          <option value="">انتخاب کنید</option>
-          <option value="16">۱۶:۰۰ (۴ بعدازظهر)</option>
-          <option value="8">۸:۰۰ (۸ صبح)</option>
-          <option value="12">۱۲:۰۰ (ظهر)</option>
-          <option value="20">۲۰:۰۰ (۸ شب)</option>
-          <option value="9">۹:۰۰ (۹ صبح)</option>
-          <option value="18">۱۸:۰۰ (۶ بعدازظهر)</option>
-          <option value="21">۲۱:۰۰ (۹ شب)</option>
-        </select>
-      </div>
-      <div id="notif-msg" style="font-size:12px;text-align:center;margin-top:8px;min-height:20px"></div>
-    </div>
-
-    <div class="card">
-      <div class="card-title">🌍 کلمات عمومی</div>
-      <div class="settings-item">
-        <span class="settings-label">تعداد کلمات عمومی</span>
-        <span class="settings-val" id="global-count">۰</span>
-      </div>
-      <div class="settings-item">
-        <span class="settings-label">آپدیت کلمات عمومی</span>
-        <button class="btn btn-sm btn-outline" onclick="loadGlobalWords()">دانلود</button>
-      </div>
-      <div class="settings-item">
-        <span class="settings-label">استفاده از کلمات عمومی</span>
-        <button class="btn btn-sm btn-outline" onclick="importGlobalWords()">اضافه کردن</button>
-      </div>
-      <div id="global-msg" style="font-size:12px;text-align:center;margin-top:8px;min-height:20px"></div>
-    </div>
-
     <div class="card">
       <div class="card-title">📁 مدیریت دسته‌بندی</div>
       <div class="field"><label>نام دسته‌بندی جدید</label><input type="text" id="new-cat-input" placeholder="مثلاً: هفته ۱"></div>
@@ -445,14 +445,16 @@ input:focus,select:focus{border-color:var(--accent)}
 const KEY = 'vocab_pwa_v1';
 const STATS_KEY = 'vocab_stats_v1';
 const CATS_KEY = 'vocab_cats_v1';
-const NOTIF_KEY = 'vocab_notif_v1';
+const FLASH_SETTINGS_KEY = 'vocab_flash_settings_v1';
 const TODAY = new Date().toDateString();
 let words = [];
 let stats = {};
 let customCats = [];
 let pendingImportRows = [];
-let notifSettings = { enabled: false, hour: 16, lastNotifDate: null };
 let flMode = 'en', flIdx = 0, flShown = false, flOrder = [];
+let flAuto = false, flAutoTimer = null, flWakeLock = null, flAutoRunId = 0;
+let flSettings = { readMeaning: true, readSentence: false, repeat: 1, enRate: 0.62, faRate: 0.78, exRate: 0.5, pause: 900 };
+let flReadSentence = false;
 let qzIdx = 0, qzOrder = [];
 let tpIdx = 0, tpOrder = [];
 let hmWord = null, hmGuessed = [], hmMisses = 0;
@@ -462,8 +464,21 @@ const HM_ST = ['😶 ۰/۶','😟 ۱/۶','😨 ۲/۶','😰 ۳/۶','😱 ۴/۶',
 let sessionStartTime = Date.now();
 
 function toFa(n) { return String(n).replace(/\d/g, d => '۰۱۲۳۴۵۶۷۸۹'[d]); }
-function load() { try { words = JSON.parse(localStorage.getItem(KEY) || '[]'); stats = JSON.parse(localStorage.getItem(STATS_KEY) || '{}'); customCats = JSON.parse(localStorage.getItem(CATS_KEY) || '[]'); notifSettings = JSON.parse(localStorage.getItem(NOTIF_KEY) || '{"enabled":false,"hour":16,"lastNotifDate":null}'); } catch(e) { words = []; stats = {}; customCats = []; notifSettings = { enabled: false, hour: 16, lastNotifDate: null }; } }
-function save() { localStorage.setItem(KEY, JSON.stringify(words)); localStorage.setItem(STATS_KEY, JSON.stringify(stats)); localStorage.setItem(CATS_KEY, JSON.stringify(customCats)); localStorage.setItem(NOTIF_KEY, JSON.stringify(notifSettings)); }
+function h(v) { return String(v ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function attr(v) { return h(v); }
+function jsq(v) { return String(v ?? '').replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/"/g,'&quot;').replace(/\r/g,'\\r').replace(/\n/g,'\\n').replace(/</g,'\\x3C'); }
+function load() {
+  try {
+    words = JSON.parse(localStorage.getItem(KEY) || '[]');
+    stats = JSON.parse(localStorage.getItem(STATS_KEY) || '{}');
+    customCats = JSON.parse(localStorage.getItem(CATS_KEY) || '[]');
+    flSettings = { ...flSettings, ...JSON.parse(localStorage.getItem(FLASH_SETTINGS_KEY) || '{}') };
+    flReadSentence = !!flSettings.readSentence;
+  } catch(e) {
+    words = []; stats = {}; customCats = [];
+  }
+}
+function save() { localStorage.setItem(KEY, JSON.stringify(words)); localStorage.setItem(STATS_KEY, JSON.stringify(stats)); localStorage.setItem(CATS_KEY, JSON.stringify(customCats)); localStorage.setItem(FLASH_SETTINGS_KEY, JSON.stringify(flSettings)); }
 function getCats() { const s = new Set(customCats); words.forEach(w => { if(w.cat) s.add(w.cat); }); return [...s].sort(); }
 
 function addCategory() {
@@ -486,10 +501,27 @@ function renderCategories() {
   list.innerHTML = cats.map(c => {
     const count = words.filter(w => w.cat === c).length;
     return `<div style="background:var(--accent-bg);border:1px solid var(--accent-border);color:var(--accent);padding:6px 10px;border-radius:20px;font-size:12px;display:flex;align-items:center;gap:6px">
-      <span>${c} <span style="font-size:10px">(${toFa(count)})</span></span>
-      <button onclick="deleteCategory('${c.replace(/'/g,"\\'")}',event)" style="background:none;border:none;color:var(--red);cursor:pointer;padding:0;font-size:14px">✕</button>
+      <span>${h(c)} <span style="font-size:10px">(${toFa(count)})</span></span>
+      <button onclick="renameCategory('${jsq(c)}',event)" style="background:none;border:none;color:var(--accent);cursor:pointer;padding:0;font-size:13px">ویرایش</button>
+      <button onclick="deleteCategory('${jsq(c)}',event)" style="background:none;border:none;color:var(--red);cursor:pointer;padding:0;font-size:14px">✕</button>
     </div>`;
   }).join('');
+}
+
+function renameCategory(oldName, e) {
+  e.stopPropagation();
+  const nextName = prompt('نام جدید دسته‌بندی:', oldName);
+  if (nextName === null) return;
+  const cleanName = nextName.trim();
+  if (!cleanName) { msg('cat-msg', 'نام دسته‌بندی لازم است', 'var(--red)'); return; }
+  if (cleanName === oldName) return;
+  if (getCats().includes(cleanName)) { msg('cat-msg', 'این دسته‌بندی قبلاً وجود دارد', 'var(--yellow)'); return; }
+  words.forEach(w => { if (w.cat === oldName) w.cat = cleanName; });
+  customCats = customCats.map(c => c === oldName ? cleanName : c);
+  if (!customCats.includes(cleanName)) customCats.push(cleanName);
+  customCats = customCats.filter(c => c !== oldName);
+  save(); updateCats(); renderCategories(); renderList();
+  msg('cat-msg', '✓ نام دسته‌بندی ویرایش شد', 'var(--green)');
 }
 
 function deleteCategory(cat, e) {
@@ -501,77 +533,12 @@ function deleteCategory(cat, e) {
   msg('cat-msg', '✓ دسته‌بندی حذف شد', 'var(--green)');
 }
 
-// NOTIFICATIONS
-function requestNotificationPermission() {
-  if (!('Notification' in window)) { msg('notif-msg', 'مرورگر شما نوتیفیکیشن پشتیبانی نمی‌کند', 'var(--red)'); return; }
-  if (Notification.permission === 'granted') return;
-  Notification.requestPermission().then(perm => {
-    if (perm === 'granted') msg('notif-msg', '✓ اجازه نوتیفیکیشن داده شد', 'var(--green)');
-    else msg('notif-msg', 'اجازه نوتیفیکیشن رد شد', 'var(--red)');
-  });
-}
-
-function toggleNotifications() {
-  if (!('Notification' in window)) { msg('notif-msg', 'مرورگر شما نوتیفیکیشن پشتیبانی نمی‌کند', 'var(--red)'); return; }
-
-  if (!notifSettings.enabled) {
-    if (Notification.permission === 'denied') { msg('notif-msg', 'اجازه نوتیفیکیشن رد شده است', 'var(--red)'); return; }
-    if (Notification.permission !== 'granted') { requestNotificationPermission(); return; }
-  }
-
-  notifSettings.enabled = !notifSettings.enabled;
-  saveNotificationSettings();
-  const btn = document.getElementById('notif-toggle-btn');
-  btn.textContent = notifSettings.enabled ? 'فعال' : 'غیرفعال';
-  btn.style.background = notifSettings.enabled ? 'var(--green)' : 'var(--surface)';
-  btn.style.color = notifSettings.enabled ? '#fff' : 'var(--text)';
-  btn.style.borderColor = notifSettings.enabled ? 'var(--green-border)' : 'var(--border)';
-  msg('notif-msg', notifSettings.enabled ? '✓ یادآوری فعال شد' : '✓ یادآوری غیرفعال شد', 'var(--green)');
-}
-
-function saveNotificationSettings() {
-  const hour = document.getElementById('notif-hour').value;
-  if (hour) notifSettings.hour = parseInt(hour);
-  save();
-  loadNotificationSettings();
-}
-
-function loadNotificationSettings() {
-  const btn = document.getElementById('notif-toggle-btn');
-  const hourSelect = document.getElementById('notif-hour');
-  btn.textContent = notifSettings.enabled ? 'فعال' : 'غیرفعال';
-  btn.style.background = notifSettings.enabled ? 'var(--green)' : 'var(--surface)';
-  btn.style.color = notifSettings.enabled ? '#fff' : 'var(--text)';
-  btn.style.borderColor = notifSettings.enabled ? 'var(--green-border)' : 'var(--border)';
-  hourSelect.value = notifSettings.hour;
-}
-
-function checkAndSendNotification() {
-  if (!notifSettings.enabled || !('Notification' in window) || Notification.permission !== 'granted') return;
-  const now = new Date();
-  const currentHour = now.getHours();
-  const currentDate = now.toDateString();
-  if (currentHour !== notifSettings.hour || notifSettings.lastNotifDate === currentDate) return;
-
-  const todayCount = words.filter(w => w.date === currentDate).length;
-  const messages = [
-    `سلام! 👋 امروز ${toFa(todayCount)} کلمه یاد گرفتی. بیا یک کم دیگه تمرین کن!`,
-    `🎯 وقت تمرین است! آمادی برای یادگیری کلمات جدید؟`,
-    `📚 سلام! بیا ${toFa(Math.ceil(Math.random() * 5))} کلمه دیگه یاد بگیری!`,
-    `💪 نمی‌دونی چه جالب است؟ هر روز تمرین، موفقیت مطمئن!`,
-    `🌟 تمرین روزانه = یادگیری بهتر. آماده‌ای؟`
-  ];
-  const msg = messages[Math.floor(Math.random() * messages.length)];
-  new Notification('📖 دفترچه لغت', { body: msg, icon: 'icon-192.png', tag: 'vocab-reminder' });
-  notifSettings.lastNotifDate = currentDate;
-  save();
-}
 function toggleDarkMode() { document.documentElement.classList.toggle('dark-mode'); localStorage.setItem('dark-mode', document.documentElement.classList.contains('dark-mode')); }
 function loadDarkMode() { if (localStorage.getItem('dark-mode') === 'true') document.documentElement.classList.add('dark-mode'); }
 
 function updateCats() {
   const cats = getCats();
-  const opts = cats.map(c => `<option value="${c}">${c}</option>`).join('');
+  const opts = cats.map(c => `<option value="${attr(c)}">${h(c)}</option>`).join('');
   ['in-cat','fl-cat','qz-cat','tp-cat','hm-cat','ls-cat'].forEach(id => {
     const el = document.getElementById(id); if (!el) return;
     const cur = el.value;
@@ -682,11 +649,155 @@ function msg(id, text, color) {
 }
 
 function speak(text) {
-  if (!window.speechSynthesis) return;
-  speechSynthesis.cancel();
-  const u = new SpeechSynthesisUtterance(text);
-  u.lang = 'en-US'; u.rate = 0.85;
-  speechSynthesis.speak(u);
+  speakEnglish(text);
+}
+
+function getVoice(langPrefix) {
+  if (!window.speechSynthesis) return null;
+  const voices = speechSynthesis.getVoices();
+  const prefix = langPrefix.toLowerCase();
+  return voices.find(v => v.lang && v.lang.toLowerCase().startsWith(prefix))
+    || voices.find(v => v.lang && v.lang.toLowerCase().includes(prefix.split('-')[0]))
+    || null;
+}
+
+function speakAsync(text, lang = 'en-US', rate = 0.75, pitch = 1, voice = null) {
+  return new Promise(resolve => {
+    if (!window.speechSynthesis || !text) { resolve(); return; }
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = lang;
+    u.rate = rate;
+    u.pitch = pitch;
+    if (voice) u.voice = voice;
+    u.onend = resolve;
+    u.onerror = resolve;
+    speechSynthesis.speak(u);
+  });
+}
+
+function playRemoteTTS(text, lang = 'fa') {
+  return new Promise(resolve => {
+    if (!text) { resolve(); return; }
+    const audio = new Audio('https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=' + encodeURIComponent(lang) + '&q=' + encodeURIComponent(text));
+    audio.onended = resolve;
+    audio.onerror = resolve;
+    audio.play().catch(resolve);
+  });
+}
+
+function speakEnglish(text) {
+  return speakAsync(text, 'en-US', flSettings.enRate, 1, getVoice('en-US') || getVoice('en'));
+}
+
+function speakExample(text) {
+  return speakAsync(text, 'en-US', flSettings.exRate, 1, getVoice('en-US') || getVoice('en'));
+}
+
+function speakPersian(text) {
+  const faVoice = getVoice('fa-IR') || getVoice('fa');
+  if (faVoice) return speakAsync('معنی کلمه: ' + text, 'fa-IR', flSettings.faRate, 1, faVoice);
+  setAutoFlashNote('صدای فارسی از اینترنت پخش می‌شود. برای حالت آفلاین، صدای فارسی گوشی را فعال کن.');
+  return playRemoteTTS(text, 'fa');
+}
+
+function delay(ms) {
+  return new Promise(resolve => {
+    flAutoTimer = setTimeout(resolve, ms);
+  });
+}
+
+async function requestFlashWakeLock() {
+  if (!('wakeLock' in navigator)) return;
+  try {
+    flWakeLock = await navigator.wakeLock.request('screen');
+  } catch (e) {
+    flWakeLock = null;
+  }
+}
+
+function releaseFlashWakeLock() {
+  if (flWakeLock) flWakeLock.release().catch(() => {});
+  flWakeLock = null;
+}
+
+function updateAutoFlashButtons() {
+  const start = document.getElementById('fl-auto-btn');
+  const stop = document.getElementById('fl-auto-stop');
+  const sentence = document.getElementById('fl-sentence-btn');
+  if (!start || !stop) return;
+  start.textContent = flAuto ? 'در حال مرور...' : 'مرور خودکار';
+  start.disabled = flAuto;
+  stop.style.display = flAuto ? 'flex' : 'none';
+  if (sentence) {
+    sentence.textContent = flReadSentence ? 'با جمله: روشن' : 'با جمله: خاموش';
+    sentence.classList.toggle('btn-outline', !flReadSentence);
+    sentence.classList.toggle('btn-primary', flReadSentence);
+  }
+}
+
+function loadFlashSettingsUI() {
+  const readMeaning = document.getElementById('fl-read-meaning');
+  const readSentence = document.getElementById('fl-read-sentence');
+  const repeat = document.getElementById('fl-repeat');
+  const enRate = document.getElementById('fl-en-rate');
+  const faRate = document.getElementById('fl-fa-rate');
+  const exRate = document.getElementById('fl-ex-rate');
+  const pause = document.getElementById('fl-pause');
+  if (readMeaning) readMeaning.checked = !!flSettings.readMeaning;
+  if (readSentence) readSentence.checked = !!flSettings.readSentence;
+  if (repeat) repeat.value = String(flSettings.repeat);
+  if (enRate) enRate.value = String(flSettings.enRate);
+  if (faRate) faRate.value = String(flSettings.faRate);
+  if (exRate) exRate.value = String(flSettings.exRate);
+  if (pause) pause.value = String(flSettings.pause);
+  flReadSentence = !!flSettings.readSentence;
+  updateAutoFlashButtons();
+}
+
+function saveFlashSettingsFromUI() {
+  const readMeaning = document.getElementById('fl-read-meaning');
+  const readSentence = document.getElementById('fl-read-sentence');
+  const repeat = document.getElementById('fl-repeat');
+  const enRate = document.getElementById('fl-en-rate');
+  const faRate = document.getElementById('fl-fa-rate');
+  const exRate = document.getElementById('fl-ex-rate');
+  const pause = document.getElementById('fl-pause');
+  flSettings.readMeaning = readMeaning ? readMeaning.checked : flSettings.readMeaning;
+  flSettings.readSentence = readSentence ? readSentence.checked : flSettings.readSentence;
+  flSettings.repeat = repeat ? parseInt(repeat.value, 10) : flSettings.repeat;
+  flSettings.enRate = enRate ? parseFloat(enRate.value) : flSettings.enRate;
+  flSettings.faRate = faRate ? parseFloat(faRate.value) : flSettings.faRate;
+  flSettings.exRate = exRate ? parseFloat(exRate.value) : flSettings.exRate;
+  flSettings.pause = pause ? parseInt(pause.value, 10) : flSettings.pause;
+  flReadSentence = !!flSettings.readSentence;
+  save();
+  updateAutoFlashButtons();
+}
+
+function setAutoFlashNote(text) {
+  const note = document.getElementById('fl-auto-note');
+  if (note) note.textContent = text || '';
+}
+
+function stopAutoFlash() {
+  flAuto = false;
+  flAutoRunId++;
+  if (flAutoTimer) clearTimeout(flAutoTimer);
+  flAutoTimer = null;
+  if (window.speechSynthesis) speechSynthesis.cancel();
+  releaseFlashWakeLock();
+  updateAutoFlashButtons();
+  setAutoFlashNote('');
+}
+
+function toggleFlashSentence() {
+  flSettings.readSentence = !flSettings.readSentence;
+  flReadSentence = !!flSettings.readSentence;
+  const readSentence = document.getElementById('fl-read-sentence');
+  if (readSentence) readSentence.checked = flReadSentence;
+  save();
+  updateAutoFlashButtons();
 }
 
 function fw(cat) { return cat ? words.filter(w => w.cat === cat) : words; }
@@ -707,6 +818,7 @@ function finishCard(onRetry) {
 
 // FLASH
 function setFlMode(m, btn) {
+  stopAutoFlash();
   flMode = m;
   document.getElementById('fl-en').classList.remove('act');
   document.getElementById('fl-fa').classList.remove('act');
@@ -714,7 +826,8 @@ function setFlMode(m, btn) {
   startFlash();
 }
 
-function startFlash() {
+function startFlash(keepAuto = false) {
+  if (!keepAuto) stopAutoFlash();
   const cat = document.getElementById('fl-cat').value;
   const pool = fw(cat);
   if (!pool.length) { document.getElementById('flash-area').innerHTML = '<div class="empty">کلمه‌ای نیست</div>'; return; }
@@ -724,15 +837,16 @@ function startFlash() {
 
 function renderFlash() {
   const area = document.getElementById('flash-area');
-  if (flIdx >= flOrder.length) { area.innerHTML = finishCard('startFlash()'); return; }
+  updateAutoFlashButtons();
+  if (flIdx >= flOrder.length) { stopAutoFlash(); area.innerHTML = finishCard('startFlash()'); return; }
   const w = words[flOrder[flIdx]];
   const isEn = flMode === 'en';
   const front = isEn
-    ? `<div class="fc-word">${w.en} <button class="speak-btn" onclick="speak('${w.en.replace(/'/g,"\\'")}');event.stopPropagation()">🔊</button></div>${w.pr ? `<div class="fc-pron">${w.pr}</div>` : ''}<div class="fc-hint">برای دیدن ترجمه لمس کن</div>`
-    : `<div class="fc-word" style="font-size:22px">${w.fa}</div><div class="fc-hint">کلمه انگلیسی؟</div>`;
+    ? `<div class="fc-word">${h(w.en)} <button class="speak-btn" onclick="speak('${jsq(w.en)}');event.stopPropagation()">🔊</button></div>${w.pr ? `<div class="fc-pron">${h(w.pr)}</div>` : ''}<div class="fc-hint">برای دیدن ترجمه لمس کن</div>`
+    : `<div class="fc-word" style="font-size:22px">${h(w.fa)}</div><div class="fc-hint">کلمه انگلیسی؟</div>`;
   const back = isEn
-    ? `<div class="fc-back"><div style="font-size:20px;font-weight:700">${w.fa}</div>${w.ex?`<div style="font-size:12px;color:var(--text3);margin-top:6px;font-style:italic;direction:ltr;text-align:left">${w.ex}</div>`:''}</div>`
-    : `<div class="fc-back"><div style="font-size:22px;font-weight:700">${w.en} <button class="speak-btn" onclick="speak('${w.en.replace(/'/g,"\\'")}');event.stopPropagation()">🔊</button></div>${w.pr?`<div class="fc-pron">${w.pr}</div>`:''}</div>`;
+    ? `<div class="fc-back"><div style="font-size:20px;font-weight:700">${h(w.fa)}</div>${w.ex?`<div style="font-size:12px;color:var(--text3);margin-top:6px;font-style:italic;direction:ltr;text-align:left">${h(w.ex)}</div>`:''}</div>`
+    : `<div class="fc-back"><div style="font-size:22px;font-weight:700">${h(w.en)} <button class="speak-btn" onclick="speak('${jsq(w.en)}');event.stopPropagation()">🔊</button></div>${w.pr?`<div class="fc-pron">${h(w.pr)}</div>`:''}</div>`;
   area.innerHTML = `${progHTML(flIdx, flOrder.length)}
     <div class="flashcard" onclick="flShown=true;renderFlash()">${front}${flShown ? back : ''}</div>
     ${flShown
@@ -743,6 +857,57 @@ function renderFlash() {
 function nextFl(k) {
   if (k) { words[flOrder[flIdx]].known = true; save(); updateStats(); }
   flIdx++; flShown = false; renderFlash();
+}
+
+async function toggleAutoFlash() {
+  if (flAuto) { stopAutoFlash(); return; }
+  const pool = fw(document.getElementById('fl-cat').value);
+  if (!pool.length) { document.getElementById('flash-area').innerHTML = '<div class="empty">کلمه‌ای نیست</div>'; return; }
+  flAuto = true;
+  flAutoRunId++;
+  updateAutoFlashButtons();
+  const hasPersianVoice = !!(getVoice('fa-IR') || getVoice('fa'));
+  setAutoFlashNote(hasPersianVoice ? '' : 'صدای فارسی محلی پیدا نشد؛ معنی فارسی با اینترنت پخش می‌شود.');
+  await requestFlashWakeLock();
+  startFlash(true);
+  runAutoFlash(flAutoRunId);
+}
+
+async function runAutoFlash(runId) {
+  while (flAuto && runId === flAutoRunId && flIdx < flOrder.length) {
+    const w = words[flOrder[flIdx]];
+    flShown = false;
+    renderFlash();
+    for (let i = 0; i < flSettings.repeat; i++) {
+      await speakEnglish(w.en);
+      if (!flAuto || runId !== flAutoRunId) break;
+      if (i < flSettings.repeat - 1) await delay(350);
+      if (!flAuto || runId !== flAutoRunId) break;
+    }
+    if (!flAuto || runId !== flAutoRunId) break;
+    await delay(500);
+    if (!flAuto || runId !== flAutoRunId) break;
+    flShown = true;
+    renderFlash();
+    if (flSettings.readMeaning) {
+      await speakPersian(w.fa);
+      if (!flAuto || runId !== flAutoRunId) break;
+    }
+    if (flReadSentence && w.ex) {
+      await delay(650);
+      if (!flAuto || runId !== flAutoRunId) break;
+      await speakExample(w.ex);
+      if (!flAuto || runId !== flAutoRunId) break;
+    }
+    await delay(flSettings.pause);
+    if (!flAuto || runId !== flAutoRunId) break;
+    flIdx++;
+  }
+  if (runId === flAutoRunId) {
+    stopAutoFlash();
+    flShown = false;
+    renderFlash();
+  }
 }
 
 // QUIZ
@@ -761,10 +926,10 @@ function renderQuiz() {
   area.innerHTML = `${progHTML(qzIdx, qzOrder.length)}
     <div class="quiz-q">
       <div style="font-size:12px;color:var(--text3);margin-bottom:8px">ترجمه فارسی چیست؟</div>
-      <div style="font-size:26px;font-weight:700">${w.en} <button class="speak-btn" onclick="speak('${w.en.replace(/'/g,"\\'")}')">🔊</button></div>
-      ${w.pr ? `<div style="font-size:13px;color:var(--text3);font-style:italic;margin-top:4px">${w.pr}</div>` : ''}
+      <div style="font-size:26px;font-weight:700">${h(w.en)} <button class="speak-btn" onclick="speak('${jsq(w.en)}')">🔊</button></div>
+      ${w.pr ? `<div style="font-size:13px;color:var(--text3);font-style:italic;margin-top:4px">${h(w.pr)}</div>` : ''}
     </div>
-    <div id="choices">${choices.map(c => `<button class="choice-btn" onclick="pickQ('${c.replace(/'/g,"\\'")}','${w.fa.replace(/'/g,"\\'")}','${w.id}')">${c}</button>`).join('')}</div>
+    <div id="choices">${choices.map(c => `<button class="choice-btn" onclick="pickQ('${jsq(c)}','${jsq(w.fa)}','${jsq(w.id)}')">${h(c)}</button>`).join('')}</div>
     <div id="qz-res"></div>
     <div id="qz-nx" style="display:none"><button class="btn btn-primary mt-8" onclick="qzIdx++;renderQuiz()">بعدی ←</button></div>`;
 }
@@ -780,7 +945,7 @@ function pickQ(chosen, correct, wid) {
     const w = words.find(x => x.id == wid); if (w) { w.known = true; save(); updateStats(); }
     setTimeout(() => { qzIdx++; renderQuiz(); }, 1000);
   } else {
-    document.getElementById('qz-res').innerHTML = `<div class="result-bad">✗ جواب: «${correct}»</div>`;
+    document.getElementById('qz-res').innerHTML = `<div class="result-bad">✗ جواب: «${h(correct)}»</div>`;
     document.getElementById('qz-nx').style.display = 'block';
   }
 }
@@ -800,13 +965,13 @@ function renderType() {
   area.innerHTML = `${progHTML(tpIdx, tpOrder.length)}
     <div class="type-q">
       <div style="font-size:12px;color:var(--text3);margin-bottom:8px">کلمه انگلیسی بنویس</div>
-      <div style="font-size:24px;font-weight:700">${w.fa}</div>
-      ${w.pr ? `<div style="font-size:13px;color:var(--text3);font-style:italic;margin-top:4px">${w.pr}</div>` : ''}
-      ${w.ex ? `<div style="font-size:11px;color:var(--text3);margin-top:8px;border-top:1px solid var(--border);padding-top:8px;direction:ltr;text-align:left;font-style:italic">${w.ex}</div>` : ''}
+      <div style="font-size:24px;font-weight:700">${h(w.fa)}</div>
+      ${w.pr ? `<div style="font-size:13px;color:var(--text3);font-style:italic;margin-top:4px">${h(w.pr)}</div>` : ''}
+      ${w.ex ? `<div style="font-size:11px;color:var(--text3);margin-top:8px;border-top:1px solid var(--border);padding-top:8px;direction:ltr;text-align:left;font-style:italic">${h(w.ex)}</div>` : ''}
     </div>
     <div class="flex gap-8">
-      <input type="text" id="tp-in" placeholder="type here..." autocomplete="off" autocorrect="off" autocapitalize="off" style="flex:1;direction:ltr;text-align:left" onkeydown="if(event.key==='Enter')checkType('${w.en.replace(/'/g,"\\'")}','${w.id}')">
-      <button class="btn btn-primary btn-sm" onclick="checkType('${w.en.replace(/'/g,"\\'")}','${w.id}')">✓</button>
+      <input type="text" id="tp-in" placeholder="type here..." autocomplete="off" autocorrect="off" autocapitalize="off" style="flex:1;direction:ltr;text-align:left" onkeydown="if(event.key==='Enter')checkType('${jsq(w.en)}','${jsq(w.id)}')">
+      <button class="btn btn-primary btn-sm" onclick="checkType('${jsq(w.en)}','${jsq(w.id)}')">✓</button>
     </div>
     <div id="tp-res"></div>
     <div id="tp-nx" style="display:none"><button class="btn btn-primary mt-8" onclick="tpIdx++;renderType()">بعدی ←</button></div>`;
@@ -819,11 +984,11 @@ function checkType(correct, wid) {
   if (!ans) return;
   inp.disabled = true;
   if (ans === correct.toLowerCase()) {
-    document.getElementById('tp-res').innerHTML = `<div class="result-ok">✓ درست! ${correct} <button class="speak-btn" onclick="speak('${correct.replace(/'/g,"\\'")}')">🔊</button></div>`;
+    document.getElementById('tp-res').innerHTML = `<div class="result-ok">✓ درست! ${h(correct)} <button class="speak-btn" onclick="speak('${jsq(correct)}')">🔊</button></div>`;
     const w = words.find(x => x.id == wid); if (w) { w.known = true; save(); updateStats(); }
     setTimeout(() => { tpIdx++; renderType(); }, 1200);
   } else {
-    document.getElementById('tp-res').innerHTML = `<div class="result-bad">✗ جواب: «${correct}» <button class="speak-btn" onclick="speak('${correct.replace(/'/g,"\\'")}')">🔊</button></div>`;
+    document.getElementById('tp-res').innerHTML = `<div class="result-bad">✗ جواب: «${h(correct)}» <button class="speak-btn" onclick="speak('${jsq(correct)}')">🔊</button></div>`;
     document.getElementById('tp-nx').style.display = 'block';
   }
 }
@@ -840,12 +1005,13 @@ function renderHangman() {
   const area = document.getElementById('hm-area');
   const letterArray = hmWord.en.toLowerCase().split('');
   const unique = [...new Set(letterArray.filter(c => /[a-z]/.test(c)))];
+  const letters = unique;
   const won = unique.every(c => hmGuessed.includes(c));
   const lost = hmMisses >= HM_MAX;
   const wordHTML = letterArray.map(c => {
-    if (!/[a-z]/.test(c)) return `<div class="hm-letter">${c}</div>`;
+    if (!/[a-z]/.test(c)) return `<div class="hm-letter">${h(c)}</div>`;
     const show = hmGuessed.includes(c) || lost;
-    return `<div class="hm-letter" style="${lost && !hmGuessed.includes(c) ? 'color:var(--red)' : ''}">${show ? c : ''}</div>`;
+    return `<div class="hm-letter" style="${lost && !hmGuessed.includes(c) ? 'color:var(--red)' : ''}">${show ? h(c) : ''}</div>`;
   }).join('');
   const keysHTML = ALPHA.map(c => {
     const hit = hmGuessed.includes(c) && letters.includes(c);
@@ -853,15 +1019,15 @@ function renderHangman() {
     return `<button class="hm-key ${hit?'hit':''} ${miss?'miss':''}" ${(hmGuessed.includes(c)||won||lost)?'disabled':''} onclick="guessLetter('${c}')">${c}</button>`;
   }).join('');
   let footer = '';
-  if (won) footer = `<div class="result-ok">🎉 آفرین! «${hmWord.en}» — ${hmWord.fa} <button class="speak-btn" onclick="speak('${hmWord.en.replace(/'/g,"\\'")}')">🔊</button></div>`;
-  else if (lost) footer = `<div class="result-bad">💀 باختی! کلمه «${hmWord.en}» بود — ${hmWord.fa}</div>`;
+  if (won) footer = `<div class="result-ok">🎉 آفرین! «${h(hmWord.en)}» — ${h(hmWord.fa)} <button class="speak-btn" onclick="speak('${jsq(hmWord.en)}')">🔊</button></div>`;
+  else if (lost) footer = `<div class="result-bad">💀 باختی! کلمه «${h(hmWord.en)}» بود — ${h(hmWord.fa)}</div>`;
   area.innerHTML = `<div class="hm-box">
     <div style="display:flex;justify-content:space-between;align-items:center">
-      <div style="font-size:13px;color:var(--text2)">ترجمه: <strong>${hmWord.fa}</strong>${hmWord.pr ? ` (${hmWord.pr})` : ''}</div>
+      <div style="font-size:13px;color:var(--text2)">ترجمه: <strong>${h(hmWord.fa)}</strong>${hmWord.pr ? ` (${h(hmWord.pr)})` : ''}</div>
       <div style="font-size:12px;background:var(--surface2);padding:4px 10px;border-radius:20px">${HM_ST[Math.min(hmMisses,HM_MAX)]}</div>
     </div>
     <div class="hm-word">${wordHTML}</div>
-    ${hmWord.ex && (won||lost) ? `<div style="font-size:11px;color:var(--text3);text-align:center;font-style:italic">${hmWord.ex}</div>` : ''}
+    ${hmWord.ex && (won||lost) ? `<div style="font-size:11px;color:var(--text3);text-align:center;font-style:italic">${h(hmWord.ex)}</div>` : ''}
   </div>
   ${!won && !lost ? `<div class="hm-keys">${keysHTML}</div>` : ''}
   ${footer}
@@ -885,25 +1051,25 @@ function renderList() {
   if (!pool.length) { wrap.innerHTML = '<div class="empty">کلمه‌ای یافت نشد</div>'; return; }
   wrap.innerHTML = pool.map(w => `
     <div class="word-item">
-      <div class="word-en">${w.en} <button class="speak-btn" onclick="speak('${w.en.replace(/'/g,"\\'")}')">🔊</button></div>
-      <div class="word-fa">${w.fa}</div>
-      ${w.pr ? `<div class="word-pr">${w.pr}</div>` : ''}
-      ${w.ex ? `<div class="word-ex">${w.ex}</div>` : ''}
-      ${(w.syn && w.syn.length) ? `<div style="font-size:11px;color:var(--text3);margin-top:4px"><strong>مترادف:</strong> ${w.syn.join('، ')}</div>` : ''}
-      ${(w.ant && w.ant.length) ? `<div style="font-size:11px;color:var(--text3);margin-top:2px"><strong>متضاد:</strong> ${w.ant.join('، ')}</div>` : ''}
+      <div class="word-en">${h(w.en)} <button class="speak-btn" onclick="speak('${jsq(w.en)}')">🔊</button></div>
+      <div class="word-fa">${h(w.fa)}</div>
+      ${w.pr ? `<div class="word-pr">${h(w.pr)}</div>` : ''}
+      ${w.ex ? `<div class="word-ex">${h(w.ex)}</div>` : ''}
+      ${(w.syn && w.syn.length) ? `<div style="font-size:11px;color:var(--text3);margin-top:4px"><strong>مترادف:</strong> ${w.syn.map(h).join('، ')}</div>` : ''}
+      ${(w.ant && w.ant.length) ? `<div style="font-size:11px;color:var(--text3);margin-top:2px"><strong>متضاد:</strong> ${w.ant.map(h).join('، ')}</div>` : ''}
       <div class="word-footer">
         <div class="flex gap-8">
-          ${w.cat ? `<span class="badge badge-blue">${w.cat}</span>` : ''}
+          ${w.cat ? `<span class="badge badge-blue">${h(w.cat)}</span>` : ''}
           ${w.known ? `<span class="badge badge-green">✓ بلدم</span>` : ''}
         </div>
-        <button class="del-btn" onclick="delWord(${w.id})">🗑</button>
+        <button class="del-btn" onclick="delWord('${jsq(w.id)}')">🗑</button>
       </div>
     </div>`).join('');
 }
 
 function delWord(id) {
   if (!confirm('حذف شود؟')) return;
-  words = words.filter(w => w.id !== id);
+  words = words.filter(w => String(w.id) !== String(id));
   save(); updateStats(); renderList();
 }
 
@@ -936,7 +1102,7 @@ function handleXlFile(input) {
       if (!newR.length) { document.getElementById('xl-result').innerHTML = '<div class="result-warn">همه کلمات تکراری هستند</div>'; return; }
       pendingImportRows = newR;
       document.getElementById('import-category-dialog').style.display = 'block';
-    } catch(err) { document.getElementById('xl-result').innerHTML = `<div class="result-bad">خطا: ${err.message}</div>`; }
+    } catch(err) { document.getElementById('xl-result').innerHTML = `<div class="result-bad">خطا: ${h(err.message)}</div>`; }
   };
   reader.readAsArrayBuffer(file);
 }
@@ -961,7 +1127,14 @@ function cancelImport() {
 
 // BACKUP
 function backupJSON() {
-  const blob = new Blob([JSON.stringify(words, null, 2)], { type: 'application/json' });
+  const backup = {
+    version: 2,
+    exportedAt: new Date().toISOString(),
+    words,
+    stats,
+    customCats
+  };
+  const blob = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' });
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
   a.download = `vocab-backup-${new Date().toISOString().slice(0,10)}.json`;
@@ -974,9 +1147,15 @@ function restoreJSON(input) {
   reader.onload = e => {
     try {
       const data = JSON.parse(e.target.result);
-      if (!Array.isArray(data)) throw new Error('فرمت نادرست');
-      if (!confirm(`بازیابی ${data.length} کلمه؟ کلمات فعلی جایگزین می‌شوند.`)) return;
-      words = data; save(); updateStats();
+      const nextWords = Array.isArray(data) ? data : data.words;
+      const nextStats = Array.isArray(data) ? {} : (data.stats || {});
+      const nextCats = Array.isArray(data) ? [] : (data.customCats || []);
+      if (!Array.isArray(nextWords)) throw new Error('فرمت نادرست');
+      if (!confirm(`بازیابی ${nextWords.length} کلمه؟ داده‌های فعلی جایگزین می‌شوند.`)) return;
+      words = nextWords;
+      stats = nextStats && typeof nextStats === 'object' ? nextStats : {};
+      customCats = Array.isArray(nextCats) ? nextCats : [];
+      save(); updateStats(); updateCats(); renderCategories();
       msg('settings-msg', `✓ ${toFa(words.length)} کلمه بازیابی شد`, 'var(--green)');
       input.value = '';
     } catch(err) { msg('settings-msg', 'فایل معتبر نیست', 'var(--red)'); }
@@ -987,25 +1166,26 @@ function restoreJSON(input) {
 function clearAll() {
   if (!confirm('همه کلمات پاک شوند؟')) return;
   if (!confirm('مطمئنی؟ برگشت‌ناپذیره!')) return;
-  words = []; save(); updateStats(); renderList();
+  words = []; stats = {}; customCats = []; save(); updateStats(); renderList(); renderCategories();
   msg('settings-msg', 'همه کلمات پاک شدند', 'var(--red)');
 }
 
 // NAV
 function showPanel(name, btn) {
+  if (name !== 'flash') stopAutoFlash();
   trackSessionTime();
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('act'));
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('act'));
   document.getElementById('p-' + name).classList.add('act');
   btn.classList.add('act');
   document.getElementById('main').scrollTop = 0;
-  if (name === 'flash') startFlash();
+  if (name === 'flash') { loadFlashSettingsUI(); startFlash(); }
   if (name === 'quiz') startQuiz();
   if (name === 'type') startType();
   if (name === 'hangman') startHangman();
   if (name === 'list') renderList();
   if (name === 'stats') updateStatsPanel();
-  if (name === 'more') { renderCategories(); loadNotificationSettings(); }
+  if (name === 'more') renderCategories();
 }
 
 // Hard Refresh
@@ -1049,51 +1229,19 @@ if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('./sw.js').catch(() => {});
 }
 
-// Global Words Management
-let globalWords = [];
-const GLOBAL_KEY = 'vocab_global_v1';
-
-async function loadGlobalWords() {
-  try {
-    msg('global-msg', '⏳ در حال دانلود...', 'var(--accent)');
-    const url = 'https://raw.githubusercontent.com/nua9753/vocapp/master/global-words.json';
-    const res = await fetch(url);
-    if (!res.ok) throw new Error('خطا در دانلود');
-    const data = await res.json();
-    globalWords = data.words || [];
-    localStorage.setItem(GLOBAL_KEY, JSON.stringify(globalWords));
-    updateGlobalCount();
-    msg('global-msg', `✓ ${toFa(globalWords.length)} کلمه دانلود شد`, 'var(--green)');
-  } catch (e) {
-    msg('global-msg', 'خطا: ' + e.message, 'var(--red)');
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible' && flAuto && !flWakeLock) {
+    requestFlashWakeLock();
   }
+});
+
+if (window.speechSynthesis) {
+  speechSynthesis.onvoiceschanged = () => speechSynthesis.getVoices();
+  speechSynthesis.getVoices();
 }
 
-function updateGlobalCount() {
-  document.getElementById('global-count').textContent = toFa(globalWords.length);
-}
-
-function importGlobalWords() {
-  if (!globalWords.length) { msg('global-msg', 'ابتدا کلمات رو دانلود کن', 'var(--yellow)'); return; }
-  const toImport = globalWords.filter(w => !words.find(x => x.en.toLowerCase() === w.en.toLowerCase()));
-  if (!toImport.length) { msg('global-msg', 'همه کلمات قبلاً اضافه شده‌اند', 'var(--yellow)'); return; }
-  toImport.forEach(w => words.unshift({ ...w, known: false, id: Date.now() + Math.random() }));
-  save(); updateStats();
-  msg('global-msg', `✓ ${toFa(toImport.length)} کلمه اضافه شد`, 'var(--green)');
-}
-
-function loadGlobalWordsLocal() {
-  try {
-    globalWords = JSON.parse(localStorage.getItem(GLOBAL_KEY) || '[]');
-    updateGlobalCount();
-  } catch (e) {
-    globalWords = [];
-  }
-}
-
-load(); loadDarkMode(); updateStats(); renderCategories(); loadNotificationSettings(); loadGlobalWordsLocal();
+load(); loadDarkMode(); updateStats(); renderCategories(); loadFlashSettingsUI();
 setInterval(trackSessionTime, 60000);
-setInterval(checkAndSendNotification, 60000);
 </script>
 </body>
 </html>
