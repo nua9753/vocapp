@@ -11,6 +11,13 @@
 <link rel="apple-touch-icon" href="icon-192.png">
 <title>دفترچه لغت</title>
 <style>
+@font-face{
+  font-family:'Vazirmatn';
+  src:url('https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts/webfonts/Vazirmatn[wght].woff2') format('woff2');
+  font-weight:100 900;
+  font-style:normal;
+  font-display:swap;
+}
 :root {
   --bg:#f8f8f7; --surface:#fff; --surface2:#f2f1ef;
   --border:#e4e3e0; --text:#1a1a18; --text2:#6b6b67; --text3:#9e9e9a;
@@ -32,6 +39,7 @@
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;overflow:hidden;background:var(--bg)}
 body{font-family:'Vazirmatn','Segoe UI',Tahoma,system-ui,sans-serif;color:var(--text);font-size:14px;display:flex;flex-direction:column}
+button,input,select,textarea{font-family:'Vazirmatn','Segoe UI',Tahoma,system-ui,sans-serif}
 
 /* Header */
 .header{background:var(--surface);border-bottom:1px solid var(--border);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;position:sticky;top:0;z-index:10}
@@ -75,6 +83,10 @@ input:focus,select:focus{border-color:var(--accent)}
 .stat{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:10px 6px;text-align:center}
 .stat .n{font-size:20px;font-weight:700;color:var(--text)}
 .stat .l{font-size:10px;color:var(--text3);margin-top:2px}
+.stats-list{display:grid;gap:8px;max-height:260px;overflow:auto}
+.stats-word{background:var(--surface2);border:1px solid var(--border);border-radius:var(--r);padding:10px}
+.stats-word .word-en{font-size:14px;margin-bottom:2px}
+.stats-word-meta{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
 
 /* Word list */
 .word-item{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:12px;margin-bottom:8px}
@@ -104,6 +116,8 @@ input:focus,select:focus{border-color:var(--accent)}
 .fc-back{border-top:1px solid var(--border);padding-top:14px;margin-top:14px;width:100%}
 .fc-hint{font-size:12px;color:var(--text3);margin-top:10px}
 .card-btns{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.flash-settings-panel{display:none}
+.flash-settings-panel.open{display:block}
 
 /* Progress */
 .prog-wrap{margin-bottom:14px}
@@ -230,10 +244,11 @@ input:focus,select:focus{border-color:var(--accent)}
     <div class="mode-row">
       <button class="btn btn-primary btn-sm" id="fl-auto-btn" onclick="toggleAutoFlash()">مرور خودکار</button>
       <button class="btn btn-sm btn-outline" id="fl-sentence-btn" onclick="toggleFlashSentence()">با جمله: خاموش</button>
+      <button class="btn btn-sm btn-outline" id="fl-sound-toggle" onclick="toggleFlashSoundSettings()">تنظیمات صدا</button>
       <button class="btn btn-sm" id="fl-auto-stop" onclick="stopAutoFlash()" style="display:none">توقف</button>
     </div>
     <div id="fl-auto-note" style="font-size:12px;color:var(--text3);text-align:center;margin:-4px 0 10px;min-height:18px"></div>
-    <div class="card" style="padding:12px;margin-bottom:12px">
+    <div class="card flash-settings-panel" id="fl-sound-panel" style="padding:12px;margin-bottom:12px">
       <div class="card-title">تنظیمات صدا</div>
       <div class="settings-item">
         <span class="settings-label">خواندن معنی فارسی</span>
@@ -336,6 +351,16 @@ input:focus,select:focus{border-color:var(--accent)}
         <span class="settings-label">امروز</span>
         <span class="settings-val" id="st-time-today">۰ دقیقه</span>
       </div>
+    </div>
+    <div class="card">
+      <div class="card-title">✅ کلمات یاد گرفته</div>
+      <select id="st-learned-cat" onchange="renderStatsWordBoxes()" style="border-radius:20px;padding:6px 10px;font-size:12px;border:1px solid var(--border);margin-bottom:10px"><option value="">همه دسته‌ها</option></select>
+      <div id="st-learned-list" class="stats-list"><div class="empty">هنوز کلمه‌ای یاد گرفته نشده</div></div>
+    </div>
+    <div class="card">
+      <div class="card-title">↩ کلمات سخت</div>
+      <select id="st-hard-cat" onchange="renderStatsWordBoxes()" style="border-radius:20px;padding:6px 10px;font-size:12px;border:1px solid var(--border);margin-bottom:10px"><option value="">همه دسته‌ها</option></select>
+      <div id="st-hard-list" class="stats-list"><div class="empty">هنوز کلمه سختی ثبت نشده</div></div>
     </div>
   </div>
 
@@ -474,12 +499,32 @@ function load() {
     customCats = JSON.parse(localStorage.getItem(CATS_KEY) || '[]');
     flSettings = { ...flSettings, ...JSON.parse(localStorage.getItem(FLASH_SETTINGS_KEY) || '{}') };
     flReadSentence = !!flSettings.readSentence;
+    words.forEach(w => {
+      w.known = !!w.known;
+      w.hard = !!w.hard && !w.known;
+    });
   } catch(e) {
     words = []; stats = {}; customCats = [];
   }
 }
 function save() { localStorage.setItem(KEY, JSON.stringify(words)); localStorage.setItem(STATS_KEY, JSON.stringify(stats)); localStorage.setItem(CATS_KEY, JSON.stringify(customCats)); localStorage.setItem(FLASH_SETTINGS_KEY, JSON.stringify(flSettings)); }
-function getCats() { const s = new Set(customCats); words.forEach(w => { if(w.cat) s.add(w.cat); }); return [...s].sort(); }
+function activeWords() { return words.filter(w => !w.known); }
+function learnedWords() { return words.filter(w => w.known); }
+function hardWords() { return words.filter(w => w.hard && !w.known); }
+function getCats() { const s = new Set(customCats); activeWords().forEach(w => { if(w.cat) s.add(w.cat); }); return [...s].sort(); }
+function getAllWordCats() { const s = new Set(customCats); words.forEach(w => { if(w.cat) s.add(w.cat); }); return [...s].sort(); }
+function markKnown(w) {
+  if (!w) return;
+  w.known = true;
+  w.hard = false;
+  save(); updateStats();
+}
+function markHard(w) {
+  if (!w) return;
+  w.hard = true;
+  w.known = false;
+  save(); updateStats();
+}
 
 function addCategory() {
   const name = document.getElementById('new-cat-input').value.trim();
@@ -499,7 +544,7 @@ function renderCategories() {
   const list = document.getElementById('cat-list');
   if (!cats.length) { list.innerHTML = '<div style="font-size:12px;color:var(--text3)">هیچ دسته‌بندی‌ای وجود ندارد</div>'; return; }
   list.innerHTML = cats.map(c => {
-    const count = words.filter(w => w.cat === c).length;
+    const count = activeWords().filter(w => w.cat === c).length;
     return `<div style="background:var(--accent-bg);border:1px solid var(--accent-border);color:var(--accent);padding:6px 10px;border-radius:20px;font-size:12px;display:flex;align-items:center;gap:6px">
       <span>${h(c)} <span style="font-size:10px">(${toFa(count)})</span></span>
       <button onclick="renameCategory('${jsq(c)}',event)" style="background:none;border:none;color:var(--accent);cursor:pointer;padding:0;font-size:13px">ویرایش</button>
@@ -549,7 +594,7 @@ function updateCats() {
 }
 
 function updateStats() {
-  const t = words.length, kn = words.filter(w => w.known).length;
+  const t = words.length, kn = learnedWords().length;
   const tod = words.filter(w => w.date === TODAY).length;
   document.getElementById('s-total').textContent = toFa(t);
   document.getElementById('s-today').textContent = toFa(tod);
@@ -564,7 +609,7 @@ function updateStats() {
 }
 
 function updateStatsPanel() {
-  const t = words.length, kn = words.filter(w => w.known).length;
+  const t = words.length, kn = learnedWords().length;
   document.getElementById('st-total').textContent = toFa(t);
   document.getElementById('st-known').textContent = toFa(kn);
   const tod = words.filter(w => w.date === TODAY).length;
@@ -581,6 +626,44 @@ function updateStatsPanel() {
 
   renderStreakChart();
   updateTimeStats();
+  renderStatsWordBoxes();
+}
+
+function renderStatsWordBoxes() {
+  updateStatsCategoryFilters();
+  const learnedCat = document.getElementById('st-learned-cat')?.value || '';
+  const hardCat = document.getElementById('st-hard-cat')?.value || '';
+  const learned = learnedWords().filter(w => !learnedCat || w.cat === learnedCat);
+  const hard = hardWords().filter(w => !hardCat || w.cat === hardCat);
+  renderStatsWordList('st-learned-list', learned, learnedCat ? 'در این دسته کلمه یاد گرفته‌ای نیست' : 'هنوز کلمه‌ای یاد گرفته نشده');
+  renderStatsWordList('st-hard-list', hard, hardCat ? 'در این دسته کلمه سختی نیست' : 'هنوز کلمه سختی ثبت نشده');
+}
+
+function updateStatsCategoryFilters() {
+  const cats = getAllWordCats();
+  const opts = '<option value="">همه دسته‌ها</option>' + cats.map(c => `<option value="${attr(c)}">${h(c)}</option>`).join('');
+  ['st-learned-cat','st-hard-cat'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const cur = el.value;
+    el.innerHTML = opts;
+    if (cur && cats.includes(cur)) el.value = cur;
+  });
+}
+
+function renderStatsWordList(id, list, emptyText) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  if (!list.length) { el.innerHTML = `<div class="empty">${emptyText}</div>`; return; }
+  el.innerHTML = list.map(w => `<div class="stats-word">
+    <div class="word-en">${h(w.en)} <button class="speak-btn" onclick="speak('${jsq(w.en)}')">🔊</button></div>
+    <div class="word-fa">${h(w.fa)}</div>
+    <div class="stats-word-meta">
+      ${w.cat ? `<span class="badge badge-blue">${h(w.cat)}</span>` : ''}
+      ${w.hard && !w.known ? `<span class="badge badge-gray">سخت</span>` : ''}
+      ${w.known ? `<span class="badge badge-green">یاد گرفته</span>` : ''}
+    </div>
+  </div>`).join('');
 }
 
 function renderStreakChart() {
@@ -635,7 +718,7 @@ function addWord() {
   const cat = nc || document.getElementById('in-cat').value;
   if (!en || !fa) { msg('add-msg', 'کلمه و ترجمه لازم است', 'var(--red)'); return; }
   if (words.find(w => w.en.toLowerCase() === en.toLowerCase())) { msg('add-msg', 'قبلاً اضافه شده', 'var(--yellow)'); return; }
-  words.unshift({ en, fa, pr, ex, syn, ant, cat, date: TODAY, known: false, id: Date.now() });
+  words.unshift({ en, fa, pr, ex, syn, ant, cat, date: TODAY, known: false, hard: false, id: Date.now() });
   save(); updateStats();
   ['in-en','in-fa','in-pr','in-ex','in-syn','in-ant','in-newcat'].forEach(id => document.getElementById(id).value = '');
   document.getElementById('in-en').focus();
@@ -725,15 +808,30 @@ function updateAutoFlashButtons() {
   const start = document.getElementById('fl-auto-btn');
   const stop = document.getElementById('fl-auto-stop');
   const sentence = document.getElementById('fl-sentence-btn');
+  const sound = document.getElementById('fl-sound-toggle');
+  const panel = document.getElementById('fl-sound-panel');
   if (!start || !stop) return;
   start.textContent = flAuto ? 'در حال مرور...' : 'مرور خودکار';
   start.disabled = flAuto;
   stop.style.display = flAuto ? 'flex' : 'none';
+  if (sound && panel) {
+    const open = panel.classList.contains('open');
+    sound.textContent = open ? 'بستن صدا' : 'تنظیمات صدا';
+    sound.classList.toggle('btn-primary', open);
+    sound.classList.toggle('btn-outline', !open);
+  }
   if (sentence) {
     sentence.textContent = flReadSentence ? 'با جمله: روشن' : 'با جمله: خاموش';
     sentence.classList.toggle('btn-outline', !flReadSentence);
     sentence.classList.toggle('btn-primary', flReadSentence);
   }
+}
+
+function toggleFlashSoundSettings() {
+  const panel = document.getElementById('fl-sound-panel');
+  if (!panel) return;
+  panel.classList.toggle('open');
+  updateAutoFlashButtons();
 }
 
 function loadFlashSettingsUI() {
@@ -800,7 +898,10 @@ function toggleFlashSentence() {
   updateAutoFlashButtons();
 }
 
-function fw(cat) { return cat ? words.filter(w => w.cat === cat) : words; }
+function fw(cat) {
+  const pool = activeWords();
+  return cat ? pool.filter(w => w.cat === cat) : pool;
+}
 function shuf(a) { const b=[...a]; for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];} return b; }
 
 function progHTML(cur, total) {
@@ -855,7 +956,9 @@ function renderFlash() {
 }
 
 function nextFl(k) {
-  if (k) { words[flOrder[flIdx]].known = true; save(); updateStats(); }
+  const w = words[flOrder[flIdx]];
+  if (k) markKnown(w);
+  else markHard(w);
   flIdx++; flShown = false; renderFlash();
 }
 
@@ -942,7 +1045,7 @@ function pickQ(chosen, correct, wid) {
   });
   if (chosen === correct) {
     document.getElementById('qz-res').innerHTML = '<div class="result-ok">✓ درست!</div>';
-    const w = words.find(x => x.id == wid); if (w) { w.known = true; save(); updateStats(); }
+    markKnown(words.find(x => x.id == wid));
     setTimeout(() => { qzIdx++; renderQuiz(); }, 1000);
   } else {
     document.getElementById('qz-res').innerHTML = `<div class="result-bad">✗ جواب: «${h(correct)}»</div>`;
@@ -985,7 +1088,7 @@ function checkType(correct, wid) {
   inp.disabled = true;
   if (ans === correct.toLowerCase()) {
     document.getElementById('tp-res').innerHTML = `<div class="result-ok">✓ درست! ${h(correct)} <button class="speak-btn" onclick="speak('${jsq(correct)}')">🔊</button></div>`;
-    const w = words.find(x => x.id == wid); if (w) { w.known = true; save(); updateStats(); }
+    markKnown(words.find(x => x.id == wid));
     setTimeout(() => { tpIdx++; renderType(); }, 1200);
   } else {
     document.getElementById('tp-res').innerHTML = `<div class="result-bad">✗ جواب: «${h(correct)}» <button class="speak-btn" onclick="speak('${jsq(correct)}')">🔊</button></div>`;
@@ -1109,7 +1212,7 @@ function handleXlFile(input) {
 
 function confirmImport() {
   const cat = document.getElementById('import-cat-input').value.trim();
-  pendingImportRows.forEach(r => words.unshift({ ...r, cat, date: TODAY, known: false, id: Date.now() + Math.random() }));
+  pendingImportRows.forEach(r => words.unshift({ ...r, cat, date: TODAY, known: false, hard: false, id: Date.now() + Math.random() }));
   save(); updateStats();
   document.getElementById('xl-result').innerHTML = `<div class="result-ok">✓ ${toFa(pendingImportRows.length)} کلمه وارد شد!</div>`;
   document.getElementById('import-category-dialog').style.display = 'none';
