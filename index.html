@@ -89,8 +89,12 @@ input:focus,select:focus,textarea:focus{border-color:var(--accent);box-shadow:0 
 /* Stats */
 .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px}
 .stat{background:var(--surface);border:1px solid transparent;border-radius:var(--rl);box-shadow:var(--shadow-1);padding:12px 6px;text-align:center}
+.stat-click{cursor:pointer;transition:transform .12s,box-shadow .12s}
+.stat-click:active{transform:scale(.97);box-shadow:var(--shadow-1)}
 .stat .n{font-size:21px;font-weight:850;color:var(--accent)}
 .stat .l{font-size:10px;color:var(--text2);font-weight:700;margin-top:2px}
+#add-list-panel{display:none}
+#add-list-panel.open{display:block}
 .stats-list{display:grid;gap:8px;max-height:260px;overflow:auto}
 .stats-word{background:var(--surface);border:1px solid transparent;border-radius:var(--rl);box-shadow:var(--shadow-1);padding:11px;cursor:pointer}
 .stats-word .word-en{font-size:14px;margin-bottom:2px}
@@ -197,6 +201,34 @@ input:focus,select:focus,textarea:focus{border-color:var(--accent);box-shadow:0 
 .settings-val{font-size:11px;color:var(--text3)}
 .empty{text-align:center;padding:3rem 1rem;color:var(--text3)}
 
+/* Notebook */
+.note-editor{min-height:180px;background:var(--surface2);border:1px solid transparent;border-bottom-color:var(--border);border-radius:var(--r) var(--r) 4px 4px;padding:12px;outline:none;line-height:1.9;color:var(--text);overflow:auto}
+.note-editor:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(26,115,232,.16);background:var(--surface)}
+.note-editor:empty:before{content:attr(data-placeholder);color:var(--text3)}
+.note-editor img,.note-body img{max-width:100%;border-radius:var(--rl);display:block;margin:10px auto;box-shadow:var(--shadow-1)}
+.note-editor a,.note-body a{color:var(--accent);font-weight:800;text-decoration:underline;text-underline-offset:3px}
+.note-toolbar{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0;align-items:center}
+.tool-btn{width:auto;min-width:38px;min-height:38px;padding:8px 10px;border-radius:12px;font-size:13px;box-shadow:var(--shadow-1)}
+.tool-select{width:auto;min-height:38px;padding:8px 10px;border:1px solid transparent;border-radius:12px;background:var(--surface);box-shadow:var(--shadow-1);color:var(--text);font-size:12px;font-weight:800}
+.tool-color{width:38px;height:38px;border:0;border-radius:12px;background:var(--surface);box-shadow:var(--shadow-1);padding:5px}
+.note-editor table,.note-body table{width:100%;border-collapse:collapse;margin:10px 0;background:var(--surface);direction:rtl}
+.note-editor td,.note-editor th,.note-body td,.note-body th{border:1px solid var(--border);padding:8px;min-width:54px;vertical-align:top}
+.note-editor th,.note-body th{background:var(--accent-bg);color:var(--accent);font-weight:900}
+.note-editor h2,.note-body h2{font-size:19px;font-weight:900;margin:10px 0 6px;color:var(--text)}
+.note-editor h3,.note-body h3{font-size:16px;font-weight:900;margin:8px 0 5px;color:var(--accent)}
+.note-editor ul,.note-editor ol,.note-body ul,.note-body ol{padding-right:22px;margin:8px 0}
+.note-list{display:grid;gap:10px}
+.note-item{background:var(--surface);border-radius:var(--rl);box-shadow:var(--shadow-1);padding:12px;cursor:pointer}
+.note-item-title{font-size:15px;font-weight:900;color:var(--text);margin-bottom:4px}
+.note-item-meta{font-size:11px;color:var(--text3)}
+.note-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.note-tag{background:var(--accent-bg);color:var(--accent);border-radius:999px;padding:3px 9px;font-size:10px;font-weight:800}
+.note-review{display:none}
+.note-review.open{display:block}
+.note-body{background:var(--surface2);border-radius:var(--rl);padding:12px;line-height:1.9;margin-top:10px;overflow-wrap:anywhere}
+.note-review-head{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.note-review-count{font-size:11px;color:var(--text3);font-weight:800}
+
 /* Detail, analytics and motion */
 .detail-backdrop{position:fixed;inset:0;background:rgba(32,33,36,.42);z-index:30;display:none;align-items:flex-end;justify-content:center;padding:16px}
 .detail-backdrop.open{display:flex;animation:fadeIn .16s ease-out}
@@ -282,10 +314,21 @@ input:focus,select:focus,textarea:focus{border-color:var(--accent);box-shadow:0 
       <div id="add-msg" style="font-size:13px;text-align:center;min-height:20px;margin-top:8px"></div>
     </div>
     <div class="stats-row">
-      <div class="stat"><div class="n" id="s-total">۰</div><div class="l">کل</div></div>
+      <div class="stat stat-click" onclick="toggleAddList()"><div class="n" id="s-total">۰</div><div class="l">کل</div></div>
       <div class="stat"><div class="n" id="s-today">۰</div><div class="l">امروز</div></div>
       <div class="stat"><div class="n" id="s-known">۰</div><div class="l">بلدم</div></div>
       <div class="stat"><div class="n" id="s-cats">۰</div><div class="l">دسته</div></div>
+    </div>
+    <div class="card" id="add-list-panel">
+      <div class="card-title">لیست کلمات</div>
+      <div class="search-wrap">
+        <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="search" id="ls-search" placeholder="جستجو..." oninput="renderList()">
+      </div>
+      <div class="mode-row">
+        <select id="ls-cat" onchange="renderList()" style="border-radius:20px;padding:6px 10px;font-size:12px;border:1px solid var(--border)"><option value="">همه دسته‌ها</option></select>
+      </div>
+      <div id="word-list"></div>
     </div>
   </div>
 
@@ -369,18 +412,6 @@ input:focus,select:focus,textarea:focus{border-color:var(--accent);box-shadow:0 
     <div id="hm-area"><div class="empty">ابتدا کلمه اضافه کن</div></div>
   </div>
 
-  <!-- LIST -->
-  <div id="p-list" class="panel">
-    <div class="search-wrap">
-      <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      <input type="search" id="ls-search" placeholder="جستجو..." oninput="renderList()">
-    </div>
-    <div class="mode-row">
-      <select id="ls-cat" onchange="renderList()" style="border-radius:20px;padding:6px 10px;font-size:12px;border:1px solid var(--border)"><option value="">همه دسته‌ها</option></select>
-    </div>
-    <div id="word-list"></div>
-  </div>
-
   <!-- STATS -->
   <div id="p-stats" class="panel">
     <div class="card">
@@ -431,6 +462,60 @@ input:focus,select:focus,textarea:focus{border-color:var(--accent);box-shadow:0 
       <div class="card-title">↩ کلمات سخت</div>
       <select id="st-hard-cat" onchange="renderStatsWordBoxes()" style="border-radius:20px;padding:6px 10px;font-size:12px;border:1px solid var(--border);margin-bottom:10px"><option value="">همه دسته‌ها</option></select>
       <div id="st-hard-list" class="stats-list"><div class="empty">هنوز کلمه سختی ثبت نشده</div></div>
+    </div>
+  </div>
+
+  <!-- NOTEBOOK -->
+  <div id="p-notes" class="panel">
+    <div class="card">
+      <div class="card-title">نوت‌بوک درس‌ها</div>
+      <input type="hidden" id="note-id">
+      <div class="field"><label>عنوان درس</label><input type="text" id="note-title" placeholder="مثلاً: زمان حال ساده"></div>
+      <div class="field"><label>تگ‌ها</label><input type="text" id="note-tags" placeholder="grammar, lesson 1, tense"></div>
+      <div class="note-toolbar">
+        <select class="tool-select" onchange="formatNoteBlock(this.value);this.value=''">
+          <option value="">استایل</option>
+          <option value="p">متن</option>
+          <option value="h2">هدینگ بزرگ</option>
+          <option value="h3">هدینگ کوچک</option>
+        </select>
+        <button class="btn tool-btn" onclick="noteCmd('bold')"><strong>B</strong></button>
+        <button class="btn tool-btn" onclick="noteCmd('italic')"><em>I</em></button>
+        <button class="btn tool-btn" onclick="noteCmd('insertUnorderedList')">•</button>
+        <button class="btn tool-btn" onclick="insertNoteLink()">لینک</button>
+        <button class="btn tool-btn" onclick="insertNoteTable()">جدول</button>
+        <button class="btn tool-btn" onclick="addTableRow()">+ردیف</button>
+        <button class="btn tool-btn" onclick="addTableCol()">+ستون</button>
+        <button class="btn tool-btn" onclick="deleteTableRow()">حذف ردیف</button>
+        <button class="btn tool-btn" onclick="deleteTableCol()">حذف ستون</button>
+        <input class="tool-color" type="color" value="#1a73e8" onchange="noteColor(this.value)" title="رنگ متن">
+        <button class="btn tool-btn" onclick="document.getElementById('note-img').click()">عکس</button>
+        <button class="btn tool-btn" onclick="clearNoteForm()">جدید</button>
+        <input type="file" id="note-img" accept="image/*" style="display:none" onchange="insertNoteImage(this)">
+      </div>
+      <div id="note-content" class="note-editor" contenteditable="true" onkeyup="saveNoteSelection()" onmouseup="saveNoteSelection()" oninput="saveNoteSelection()" data-placeholder="قواعد، نکته‌ها، مثال‌ها و توضیحات درس را اینجا بنویس..."></div>
+      <button class="btn btn-primary mt-8" onclick="saveNote()">ذخیره درس</button>
+      <div id="note-msg" style="font-size:13px;text-align:center;min-height:20px;margin-top:8px"></div>
+    </div>
+    <div class="card note-review" id="note-review-box">
+      <div class="note-review-head">
+        <div class="card-title" style="margin:0">مرور درس به درس</div>
+        <span class="note-review-count" id="note-review-count">۰ / ۰</span>
+      </div>
+      <div id="note-review-content"></div>
+      <div class="detail-actions">
+        <button class="btn" onclick="prevNoteReview()">قبلی</button>
+        <button class="btn btn-primary" onclick="nextNoteReview()">بعدی</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">درس‌های ذخیره‌شده</div>
+      <div class="search-wrap">
+        <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="search" id="note-search" placeholder="جستجو در عنوان، متن یا تگ..." oninput="renderNotes()">
+      </div>
+      <button class="btn btn-outline mt-8" onclick="startNoteReview()">شروع مرور درس‌ها</button>
+      <div id="note-list" class="note-list mt-12"></div>
     </div>
   </div>
 
@@ -489,9 +574,18 @@ input:focus,select:focus,textarea:focus{border-color:var(--accent);box-shadow:0 
         <button class="btn btn-sm btn-outline" onclick="backupJSON()">دانلود</button>
       </div>
       <div class="settings-item">
+        <span class="settings-label">دانلود بکاپ نوت‌ها</span>
+        <button class="btn btn-sm btn-outline" onclick="backupNotesJSON()">دانلود</button>
+      </div>
+      <div class="settings-item">
         <span class="settings-label">بازیابی از JSON</span>
         <button class="btn btn-sm" onclick="document.getElementById('restore-file').click()">انتخاب فایل</button>
         <input type="file" id="restore-file" accept=".json" style="display:none" onchange="restoreJSON(this)">
+      </div>
+      <div class="settings-item">
+        <span class="settings-label">بازیابی نوت‌ها</span>
+        <button class="btn btn-sm" onclick="document.getElementById('restore-notes-file').click()">انتخاب فایل</button>
+        <input type="file" id="restore-notes-file" accept=".json" style="display:none" onchange="restoreNotesJSON(this)">
       </div>
       <div class="settings-item">
         <span class="settings-label">ریست بلدم و مرورها</span>
@@ -531,13 +625,13 @@ input:focus,select:focus,textarea:focus{border-color:var(--accent);box-shadow:0 
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="3"/><path d="M12 11v5M9 16l3 3 3-3M9 13l-3 1M15 13l3 1"/></svg>
     بازی<div class="dot"></div>
   </button>
-  <button class="nav-btn" onclick="showPanel('list',this)">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><circle cx="3" cy="6" r="1" fill="currentColor"/><circle cx="3" cy="12" r="1" fill="currentColor"/><circle cx="3" cy="18" r="1" fill="currentColor"/></svg>
-    لیست<div class="dot"></div>
-  </button>
   <button class="nav-btn" onclick="showPanel('stats',this)">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="3" x2="3" y2="21"/><line x1="21" y1="21" x2="21" y2="3"/><line x1="3" y1="18" x2="21" y2="18"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/></svg>
     آمار<div class="dot"></div>
+  </button>
+  <button class="nav-btn" onclick="showPanel('notes',this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5V5a2 2 0 0 1 2-2h11l3 3v13.5a1.5 1.5 0 0 1-1.5 1.5H6A2 2 0 0 1 4 19.5z"/><path d="M16 3v4h4"/><line x1="8" y1="11" x2="16" y2="11"/><line x1="8" y1="15" x2="14" y2="15"/></svg>
+    نوت<div class="dot"></div>
   </button>
   <button class="nav-btn" onclick="showPanel('more',this)">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
@@ -551,10 +645,12 @@ const KEY = 'vocab_pwa_v1';
 const STATS_KEY = 'vocab_stats_v1';
 const CATS_KEY = 'vocab_cats_v1';
 const FLASH_SETTINGS_KEY = 'vocab_flash_settings_v1';
+const NOTES_KEY = 'vocab_notes_v1';
 const TODAY = new Date().toDateString();
 let words = [];
 let stats = {};
 let customCats = [];
+let notes = [];
 let pendingImportRows = [];
 let flMode = 'en', flIdx = 0, flShown = false, flOrder = [];
 let flAuto = false, flAutoTimer = null, flWakeLock = null, flAutoRunId = 0;
@@ -564,6 +660,8 @@ let qzIdx = 0, qzOrder = [];
 let tpIdx = 0, tpOrder = [];
 let hmWord = null, hmGuessed = [], hmMisses = 0;
 let detailWordId = null;
+let noteReviewIdx = 0;
+let noteSavedRange = null;
 const HM_MAX = 6;
 const ALPHA = 'abcdefghijklmnopqrstuvwxyz'.split('');
 const HM_ST = ['😶 ۰/۶','😟 ۱/۶','😨 ۲/۶','😰 ۳/۶','😱 ۴/۶','😵 ۵/۶','💀 باختی'];
@@ -578,6 +676,7 @@ function load() {
     words = JSON.parse(localStorage.getItem(KEY) || '[]');
     stats = JSON.parse(localStorage.getItem(STATS_KEY) || '{}');
     customCats = JSON.parse(localStorage.getItem(CATS_KEY) || '[]');
+    notes = JSON.parse(localStorage.getItem(NOTES_KEY) || '[]');
     flSettings = { ...flSettings, ...JSON.parse(localStorage.getItem(FLASH_SETTINGS_KEY) || '{}') };
     flReadSentence = !!flSettings.readSentence;
     words.forEach(w => {
@@ -590,12 +689,20 @@ function load() {
       w.date = w.date || TODAY;
       if (w.known && !w.learnedAt) w.learnedAt = TODAY;
     });
+    notes = Array.isArray(notes) ? notes : [];
+    notes.forEach(n => {
+      if (!n.id) n.id = Date.now() + Math.random();
+      n.title = String(n.title || '');
+      n.content = String(n.content || '');
+      n.tags = Array.isArray(n.tags) ? n.tags : splitTerms(n.tags);
+      n.date = n.date || TODAY;
+    });
     syncAllRelatedWords();
   } catch(e) {
-    words = []; stats = {}; customCats = [];
+    words = []; stats = {}; customCats = []; notes = [];
   }
 }
-function save() { localStorage.setItem(KEY, JSON.stringify(words)); localStorage.setItem(STATS_KEY, JSON.stringify(stats)); localStorage.setItem(CATS_KEY, JSON.stringify(customCats)); localStorage.setItem(FLASH_SETTINGS_KEY, JSON.stringify(flSettings)); }
+function save() { localStorage.setItem(KEY, JSON.stringify(words)); localStorage.setItem(STATS_KEY, JSON.stringify(stats)); localStorage.setItem(CATS_KEY, JSON.stringify(customCats)); localStorage.setItem(FLASH_SETTINGS_KEY, JSON.stringify(flSettings)); localStorage.setItem(NOTES_KEY, JSON.stringify(notes)); }
 function activeWords() { return words.filter(w => !w.known); }
 function learnedWords() { return words.filter(w => w.known); }
 function hardWords() { return words.filter(w => w.hard && !w.known); }
@@ -943,6 +1050,7 @@ function addWord() {
   words.unshift(word);
   syncRelatedWords(word);
   save(); updateStats();
+  if (document.getElementById('add-list-panel')?.classList.contains('open')) renderList();
   ['in-en','in-fa','in-pr','in-ex','in-syn','in-ant','in-newcat'].forEach(id => document.getElementById(id).value = '');
   document.getElementById('in-en').focus();
   msg('add-msg', '✓ «' + en + '» اضافه شد', 'var(--green)');
@@ -1381,6 +1489,16 @@ function guessLetter(c) {
 }
 
 // LIST
+function toggleAddList() {
+  const panel = document.getElementById('add-list-panel');
+  if (!panel) return;
+  panel.classList.toggle('open');
+  if (panel.classList.contains('open')) {
+    renderList();
+    panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
+
 function renderList() {
   const cat = document.getElementById('ls-cat').value;
   const q = (document.getElementById('ls-search').value || '').toLowerCase();
@@ -1519,6 +1637,316 @@ function delWord(id) {
   return true;
 }
 
+// NOTEBOOK
+function cleanNoteHTML(html) {
+  const doc = new DOMParser().parseFromString(String(html || ''), 'text/html');
+  doc.querySelectorAll('script,style,iframe,object,embed').forEach(el => el.remove());
+  const allowedTags = new Set('P BR DIV SPAN B STRONG I EM U UL OL LI H2 H3 TABLE TBODY THEAD TR TD TH IMG A'.split(' '));
+  doc.body.querySelectorAll('*').forEach(el => {
+    if (!allowedTags.has(el.tagName)) {
+      el.replaceWith(...el.childNodes);
+    }
+  });
+  doc.body.querySelectorAll('*').forEach(el => {
+    [...el.attributes].forEach(a => {
+      if (/^on/i.test(a.name)) el.removeAttribute(a.name);
+      if ((a.name === 'href' || a.name === 'src') && /^javascript:/i.test(a.value)) el.removeAttribute(a.name);
+      if (!['style','src','alt','href','target','rel','colspan','rowspan'].includes(a.name)) el.removeAttribute(a.name);
+    });
+    if (el.tagName === 'A') {
+      const href = el.getAttribute('href') || '';
+      if (!/^(https?:\/\/|mailto:|tel:)/i.test(href)) el.removeAttribute('href');
+      else {
+        el.setAttribute('target', '_blank');
+        el.setAttribute('rel', 'noopener noreferrer');
+      }
+    }
+    const style = el.getAttribute('style') || '';
+    const color = (style.match(/(?:^|;)\s*color\s*:\s*([^;]+)/i) || [])[1];
+    const bg = (style.match(/(?:^|;)\s*background(?:-color)?\s*:\s*([^;]+)/i) || [])[1];
+    const safe = [];
+    if (color && !/url|expression|javascript/i.test(color)) safe.push(`color:${color.trim()}`);
+    if (bg && !/url|expression|javascript/i.test(bg)) safe.push(`background-color:${bg.trim()}`);
+    if (safe.length) el.setAttribute('style', safe.join(';'));
+    else el.removeAttribute('style');
+  });
+  return doc.body.innerHTML;
+}
+
+function notePlainText(html) {
+  const div = document.createElement('div');
+  div.innerHTML = html || '';
+  return div.textContent || '';
+}
+
+function clearNoteForm() {
+  document.getElementById('note-id').value = '';
+  document.getElementById('note-title').value = '';
+  document.getElementById('note-tags').value = '';
+  document.getElementById('note-content').innerHTML = '';
+  document.getElementById('note-title').focus();
+}
+
+function focusNoteEditor() {
+  const editor = document.getElementById('note-content');
+  editor.focus();
+  restoreNoteSelection();
+  return editor;
+}
+
+function saveNoteSelection() {
+  const sel = window.getSelection();
+  const editor = document.getElementById('note-content');
+  if (sel && sel.rangeCount && editor.contains(sel.anchorNode)) noteSavedRange = sel.getRangeAt(0).cloneRange();
+}
+
+function restoreNoteSelection() {
+  if (!noteSavedRange) return;
+  const sel = window.getSelection();
+  sel.removeAllRanges();
+  sel.addRange(noteSavedRange);
+}
+
+function noteCmd(cmd, value = null) {
+  focusNoteEditor();
+  document.execCommand(cmd, false, value);
+}
+
+function formatNoteBlock(tag) {
+  if (!tag) return;
+  noteCmd('formatBlock', tag);
+}
+
+function noteColor(color) {
+  noteCmd('foreColor', color);
+}
+
+function normalizeUrl(url) {
+  const clean = String(url || '').trim();
+  if (!clean) return '';
+  if (/^(https?:\/\/|mailto:|tel:)/i.test(clean)) return clean;
+  if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(clean)) return 'mailto:' + clean;
+  return 'https://' + clean;
+}
+
+function insertNoteLink() {
+  restoreNoteSelection();
+  const url = normalizeUrl(prompt('آدرس لینک را وارد کن:', 'https://'));
+  if (!url) return;
+  focusNoteEditor();
+  const sel = window.getSelection();
+  if (sel && sel.rangeCount && !sel.isCollapsed) {
+    document.execCommand('createLink', false, url);
+    const anchor = sel.anchorNode?.parentElement?.closest?.('a');
+    if (anchor) {
+      anchor.target = '_blank';
+      anchor.rel = 'noopener noreferrer';
+    }
+  } else {
+    document.execCommand('insertHTML', false, `<a href="${attr(url)}" target="_blank" rel="noopener noreferrer">${h(url)}</a>`);
+  }
+}
+
+function insertNoteTable() {
+  const rows = Math.max(1, Math.min(8, parseInt(prompt('چند ردیف؟', '3'), 10) || 3));
+  const cols = Math.max(1, Math.min(6, parseInt(prompt('چند ستون؟', '2'), 10) || 2));
+  let html = '<table><tbody>';
+  for (let r = 0; r < rows; r++) {
+    html += '<tr>';
+    for (let c = 0; c < cols; c++) html += r === 0 ? '<th>عنوان</th>' : '<td><br></td>';
+    html += '</tr>';
+  }
+  html += '</tbody></table><p><br></p>';
+  focusNoteEditor();
+  document.execCommand('insertHTML', false, html);
+}
+
+function getActiveTableCell() {
+  restoreNoteSelection();
+  const sel = window.getSelection();
+  if (!sel || !sel.rangeCount) return null;
+  let node = sel.anchorNode;
+  if (node && node.nodeType === Node.TEXT_NODE) node = node.parentElement;
+  const editor = document.getElementById('note-content');
+  const cell = node?.closest?.('td,th');
+  return cell && editor.contains(cell) ? cell : null;
+}
+
+function tableCellMsg() {
+  msg('note-msg', 'اول داخل یکی از خانه‌های جدول کلیک کن', 'var(--yellow)');
+}
+
+function addTableRow() {
+  const cell = getActiveTableCell();
+  if (!cell) return tableCellMsg();
+  const row = cell.parentElement;
+  const next = row.cloneNode(true);
+  next.querySelectorAll('td,th').forEach(c => {
+    if (c.tagName === 'TH') {
+      const td = document.createElement('td');
+      td.innerHTML = '<br>';
+      c.replaceWith(td);
+    } else {
+      c.innerHTML = '<br>';
+    }
+  });
+  row.after(next);
+}
+
+function addTableCol() {
+  const cell = getActiveTableCell();
+  if (!cell) return tableCellMsg();
+  const index = cell.cellIndex;
+  const table = cell.closest('table');
+  table.querySelectorAll('tr').forEach(row => {
+    const ref = row.children[index];
+    const tag = ref?.tagName === 'TH' ? 'th' : 'td';
+    const fresh = document.createElement(tag);
+    fresh.innerHTML = tag === 'th' ? 'عنوان' : '<br>';
+    if (ref) ref.after(fresh);
+    else row.appendChild(fresh);
+  });
+}
+
+function deleteTableRow() {
+  const cell = getActiveTableCell();
+  if (!cell) return tableCellMsg();
+  const row = cell.parentElement;
+  const table = cell.closest('table');
+  if (table.rows.length <= 1) return msg('note-msg', 'جدول باید حداقل یک ردیف داشته باشد', 'var(--yellow)');
+  row.remove();
+}
+
+function deleteTableCol() {
+  const cell = getActiveTableCell();
+  if (!cell) return tableCellMsg();
+  const index = cell.cellIndex;
+  const table = cell.closest('table');
+  const maxCols = Math.max(...[...table.rows].map(r => r.cells.length));
+  if (maxCols <= 1) return msg('note-msg', 'جدول باید حداقل یک ستون داشته باشد', 'var(--yellow)');
+  [...table.rows].forEach(row => {
+    if (row.cells[index]) row.deleteCell(index);
+  });
+}
+
+function saveNote() {
+  const id = document.getElementById('note-id').value;
+  const title = document.getElementById('note-title').value.trim();
+  const tags = splitTerms(document.getElementById('note-tags').value);
+  const content = cleanNoteHTML(document.getElementById('note-content').innerHTML);
+  if (!title) { msg('note-msg', 'عنوان درس لازم است', 'var(--red)'); return; }
+  if (!notePlainText(content).trim() && !/<img/i.test(content)) { msg('note-msg', 'متن درس خالی است', 'var(--red)'); return; }
+  const existing = notes.find(n => String(n.id) === String(id));
+  if (existing) {
+    existing.title = title;
+    existing.tags = tags;
+    existing.content = content;
+    existing.updatedAt = TODAY;
+  } else {
+    notes.unshift({ id: Date.now() + Math.random(), title, tags, content, date: TODAY, updatedAt: TODAY, reviewCount: 0 });
+  }
+  save();
+  renderNotes();
+  clearNoteForm();
+  msg('note-msg', 'درس ذخیره شد', 'var(--green)');
+}
+
+function editNote(id) {
+  const n = notes.find(x => String(x.id) === String(id));
+  if (!n) return;
+  document.getElementById('note-id').value = n.id;
+  document.getElementById('note-title').value = n.title || '';
+  document.getElementById('note-tags').value = (n.tags || []).join(', ');
+  document.getElementById('note-content').innerHTML = n.content || '';
+  document.getElementById('note-title').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function deleteNote(id, e) {
+  if (e) e.stopPropagation();
+  if (!confirm('این درس حذف شود؟')) return;
+  notes = notes.filter(n => String(n.id) !== String(id));
+  save();
+  renderNotes();
+  renderNoteReview(false);
+}
+
+function renderNotes() {
+  const list = document.getElementById('note-list');
+  if (!list) return;
+  const q = (document.getElementById('note-search')?.value || '').toLowerCase();
+  const filtered = notes.filter(n => {
+    const hay = [n.title, notePlainText(n.content), ...(n.tags || [])].join(' ').toLowerCase();
+    return !q || hay.includes(q);
+  });
+  if (!filtered.length) { list.innerHTML = '<div class="empty">هنوز درسی ذخیره نشده</div>'; return; }
+  list.innerHTML = filtered.map(n => {
+    const preview = notePlainText(n.content).trim().slice(0, 110);
+    return `<div class="note-item" onclick="editNote('${jsq(n.id)}')">
+      <div class="note-item-title">${h(n.title)}</div>
+      <div class="note-item-meta">${h(preview)}${preview.length >= 110 ? '...' : ''}</div>
+      <div class="note-tags">${(n.tags || []).map(t => `<span class="note-tag">${h(t)}</span>`).join('')}</div>
+      <div class="detail-actions">
+        <button class="btn btn-sm btn-outline" onclick="editNote('${jsq(n.id)}');event.stopPropagation()">ویرایش</button>
+        <button class="btn btn-sm btn-danger" onclick="deleteNote('${jsq(n.id)}',event)">حذف</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function insertNoteImage(input) {
+  const file = input.files && input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const editor = document.getElementById('note-content');
+    editor.focus();
+    document.execCommand('insertImage', false, e.target.result);
+    input.value = '';
+  };
+  reader.readAsDataURL(file);
+}
+
+function startNoteReview() {
+  if (!notes.length) { msg('note-msg', 'درسی برای مرور وجود ندارد', 'var(--yellow)'); return; }
+  noteReviewIdx = 0;
+  document.getElementById('note-review-box').classList.add('open');
+  renderNoteReview(true);
+  document.getElementById('note-review-box').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function renderNoteReview(track = true) {
+  const box = document.getElementById('note-review-content');
+  const count = document.getElementById('note-review-count');
+  if (!box || !count) return;
+  if (!notes.length) {
+    document.getElementById('note-review-box').classList.remove('open');
+    return;
+  }
+  noteReviewIdx = Math.max(0, Math.min(noteReviewIdx, notes.length - 1));
+  const n = notes[noteReviewIdx];
+  if (track) {
+    n.reviewCount = Number(n.reviewCount || 0) + 1;
+    n.lastReviewedAt = TODAY;
+    save();
+  }
+  count.textContent = `${toFa(noteReviewIdx + 1)} / ${toFa(notes.length)}`;
+  box.innerHTML = `<div class="note-item-title">${h(n.title)}</div>
+    <div class="note-tags">${(n.tags || []).map(t => `<span class="note-tag">${h(t)}</span>`).join('')}</div>
+    <div class="note-body">${cleanNoteHTML(n.content)}</div>`;
+}
+
+function nextNoteReview() {
+  if (!notes.length) return;
+  noteReviewIdx = (noteReviewIdx + 1) % notes.length;
+  renderNoteReview();
+}
+
+function prevNoteReview() {
+  if (!notes.length) return;
+  noteReviewIdx = (noteReviewIdx - 1 + notes.length) % notes.length;
+  renderNoteReview();
+}
+
 // IMPORT
 function handleXlFile(input) {
   const file = input.files[0]; if (!file) return;
@@ -1580,12 +2008,27 @@ function backupJSON() {
     exportedAt: new Date().toISOString(),
     words,
     stats,
-    customCats
+    customCats,
+    notes
   };
   const blob = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' });
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
   a.download = `vocab-backup-${new Date().toISOString().slice(0,10)}.json`;
+  a.click();
+}
+
+function backupNotesJSON() {
+  const backup = {
+    version: 1,
+    type: 'vocab-notes',
+    exportedAt: new Date().toISOString(),
+    notes
+  };
+  const blob = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `vocab-notes-${new Date().toISOString().slice(0,10)}.json`;
   a.click();
 }
 
@@ -1598,15 +2041,37 @@ function restoreJSON(input) {
       const nextWords = Array.isArray(data) ? data : data.words;
       const nextStats = Array.isArray(data) ? {} : (data.stats || {});
       const nextCats = Array.isArray(data) ? [] : (data.customCats || []);
+      const nextNotes = Array.isArray(data) ? [] : (data.notes || []);
       if (!Array.isArray(nextWords)) throw new Error('فرمت نادرست');
       if (!confirm(`بازیابی ${nextWords.length} کلمه؟ داده‌های فعلی جایگزین می‌شوند.`)) return;
       words = nextWords;
       stats = nextStats && typeof nextStats === 'object' ? nextStats : {};
       customCats = Array.isArray(nextCats) ? nextCats : [];
-      save(); updateStats(); updateCats(); renderCategories();
+      notes = Array.isArray(nextNotes) ? nextNotes : [];
+      save(); load(); updateStats(); updateCats(); renderCategories(); renderNotes();
       msg('settings-msg', `✓ ${toFa(words.length)} کلمه بازیابی شد`, 'var(--green)');
       input.value = '';
     } catch(err) { msg('settings-msg', 'فایل معتبر نیست', 'var(--red)'); }
+  };
+  reader.readAsText(file);
+}
+
+function restoreNotesJSON(input) {
+  const file = input.files[0]; if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      const data = JSON.parse(e.target.result);
+      const nextNotes = Array.isArray(data) ? data : data.notes;
+      if (!Array.isArray(nextNotes)) throw new Error('فرمت نوت معتبر نیست');
+      if (!confirm(`بازیابی ${nextNotes.length} نوت؟ نوت‌های فعلی جایگزین می‌شوند.`)) return;
+      notes = nextNotes;
+      save();
+      load();
+      renderNotes();
+      msg('settings-msg', `✓ ${toFa(notes.length)} نوت بازیابی شد`, 'var(--green)');
+      input.value = '';
+    } catch(err) { msg('settings-msg', 'فایل نوت معتبر نیست', 'var(--red)'); }
   };
   reader.readAsText(file);
 }
@@ -1642,7 +2107,7 @@ function resetLearningProgress() {
 function clearAll() {
   if (!confirm('همه کلمات پاک شوند؟')) return;
   if (!confirm('مطمئنی؟ برگشت‌ناپذیره!')) return;
-  words = []; stats = {}; customCats = []; save(); updateStats(); renderList(); renderCategories();
+  words = []; stats = {}; customCats = []; notes = []; save(); updateStats(); renderList(); renderCategories(); renderNotes(); clearNoteForm();
   msg('settings-msg', 'همه کلمات پاک شدند', 'var(--red)');
 }
 
@@ -1659,8 +2124,9 @@ function showPanel(name, btn) {
   if (name === 'quiz') startQuiz();
   if (name === 'type') startType();
   if (name === 'hangman') startHangman();
-  if (name === 'list') renderList();
+  if (name === 'add' && document.getElementById('add-list-panel')?.classList.contains('open')) renderList();
   if (name === 'stats') updateStatsPanel();
+  if (name === 'notes') renderNotes();
   if (name === 'more') renderCategories();
 }
 
@@ -1716,7 +2182,7 @@ if (window.speechSynthesis) {
   speechSynthesis.getVoices();
 }
 
-load(); loadDarkMode(); updateStats(); renderCategories(); loadFlashSettingsUI();
+load(); loadDarkMode(); updateStats(); renderCategories(); renderNotes(); loadFlashSettingsUI();
 setInterval(trackSessionTime, 60000);
 </script>
 </body>
