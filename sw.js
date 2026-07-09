@@ -1,10 +1,10 @@
-const CACHE = 'vocab-v11';
+const CACHE = 'vocab-v12';
 const FILES = [
   './',
   './index.html',
   './manifest.json',
-  './vocab-icon-192.png',
-  './vocab-icon-512.png'
+  './icon-192.png',
+  './icon-512.png'
 ];
 
 self.addEventListener('install', e => {
