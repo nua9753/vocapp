@@ -213,10 +213,6 @@ input:focus,select:focus,textarea:focus{border-color:var(--accent);box-shadow:0 
 .note-editor:empty:before{content:attr(data-placeholder);color:var(--text3)}
 .note-editor img,.note-body img{max-width:100%;border-radius:var(--rl);display:block;margin:10px auto;box-shadow:var(--shadow-1)}
 .note-editor a,.note-body a{color:var(--accent);font-weight:800;text-decoration:underline;text-underline-offset:3px}
-.note-toolbar{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0;align-items:center}
-.tool-btn{width:auto;min-width:38px;min-height:38px;padding:8px 10px;border-radius:12px;font-size:13px;box-shadow:var(--shadow-1)}
-.tool-select{width:auto;min-height:38px;padding:8px 10px;border:1px solid transparent;border-radius:12px;background:var(--surface);box-shadow:var(--shadow-1);color:var(--text);font-size:12px;font-weight:800}
-.tool-color{width:38px;height:38px;border:0;border-radius:12px;background:var(--surface);box-shadow:var(--shadow-1);padding:5px}
 .note-editor table,.note-body table{width:100%;border-collapse:collapse;margin:10px 0;background:var(--surface);direction:rtl}
 .note-editor td,.note-editor th,.note-body td,.note-body th{border:1px solid var(--border);padding:8px;min-width:54px;vertical-align:top}
 .note-editor th,.note-body th{background:var(--accent-bg);color:var(--accent);font-weight:900}
@@ -285,10 +281,10 @@ input:focus,select:focus,textarea:focus{border-color:var(--accent);box-shadow:0 
 .practice-sub.act{display:block;animation:riseIn .18s ease-out both}
 
 /* FAB */
-.fab{position:fixed;bottom:calc(78px + var(--safe-bottom));left:50%;transform:translateX(-50%);width:56px;height:56px;border-radius:50%;
+.fab{position:fixed;bottom:calc(78px + var(--safe-bottom));right:auto;left:calc((100vw - min(100vw, 430px)) / 2 + min(100vw, 430px) - 78px);transform:none;width:56px;height:56px;border-radius:50%;
   background:var(--accent);border:none;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;
   box-shadow:0 14px 26px -8px rgba(79,60,201,.55);z-index:25;transition:transform .15s}
-.fab:active{transform:translateX(-50%) scale(.92)}
+.fab:active{transform:scale(.92)}
 .fab svg{width:24px;height:24px}
 :root.dark-mode .fab{box-shadow:0 14px 26px -8px rgba(0,0,0,.6)}
 
@@ -515,14 +511,18 @@ input:focus,select:focus,textarea:focus,.note-editor:focus{
 }
 :root.dark-mode .nav-btn.act{background:var(--accent-bg)}
 .nav-btn svg{width:22px;height:22px;padding:1px}
+.bottom-nav .nav-btn{font-size:9.5px;padding-inline:2px}
+.bottom-nav .nav-btn svg{width:21px;height:21px}
 .fab{
   bottom:calc(94px + var(--safe-bottom));
+  right:auto;
+  left:calc((100vw - min(100vw, 430px)) / 2 + min(100vw, 430px) - 78px);
   width:60px;
   height:60px;
   background:var(--accent);
   box-shadow:0 18px 40px rgba(81,56,216,.38),inset 0 1px 0 rgba(255,255,255,.35);
 }
-.mode-row,.note-toolbar{gap:10px}
+.mode-row{gap:10px}
 .mode-btn,.segmented{
   background:rgba(255,255,255,.58);
   border:1px solid var(--hairline);
@@ -633,7 +633,6 @@ input:focus,select:focus,textarea:focus,.note-editor:focus{
   padding:16px;
   border-radius:22px;
 }
-.tool-btn,.tool-select,.tool-color{border:1px solid var(--hairline);border-radius:16px;min-height:42px}
 .sheet{
   border:1px solid var(--hairline);
   border-bottom:0;
@@ -762,7 +761,7 @@ body.sheet-open .sheet-backdrop{backdrop-filter:blur(8px);-webkit-backdrop-filte
 .stat{border-radius:18px}
 .word-item,.stats-word,.note-item,.quiz-q,.type-q,.hm-box,.choice-btn{border-radius:18px}
 .more-toggle{border-radius:18px}
-.btn,.mode-btn,.tool-btn,.tool-select,.tool-color{
+.btn,.mode-btn{
   box-shadow:none;
 }
 .btn-primary{box-shadow:none}
@@ -772,6 +771,56 @@ body.sheet-open .sheet-backdrop{backdrop-filter:blur(8px);-webkit-backdrop-filte
 }
 :root.dark-mode .bottom-nav{box-shadow:0 10px 32px rgba(0,0,0,.28)}
 .fab{box-shadow:0 12px 28px rgba(81,56,216,.22)}
+.streak-chart{
+  height:132px;
+  display:grid;
+  grid-template-columns:repeat(30,minmax(0,1fr));
+  align-items:end;
+  gap:3px;
+  background:var(--surface2);
+  border:1px solid var(--hairline);
+  border-radius:22px;
+  padding:14px 12px 12px;
+  overflow:hidden;
+}
+.chart-bar{
+  min-width:0;
+  width:100%;
+  border-radius:999px 999px 5px 5px;
+  background:var(--accent-bg);
+  transition:height .2s ease, background .2s ease;
+}
+.chart-bar.on{background:var(--accent)}
+.chart-bar.today{box-shadow:0 0 0 2px var(--surface),0 0 0 3px var(--accent)}
+.note-tag-cloud{display:flex;flex-wrap:wrap;gap:8px}
+.note-tag-btn{width:auto;min-height:36px;padding:8px 12px;border-radius:999px}
+.tag-note-list{display:grid;gap:10px;margin-top:14px}
+.chat-shell{display:flex;flex-direction:column;gap:12px}
+.chat-hero{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;background:var(--surface2);border:1px solid var(--hairline);border-radius:22px;padding:14px}
+.chat-title{font-size:18px;font-weight:950;color:var(--text);margin-bottom:4px}
+.chat-sub{font-size:12px;color:var(--text3);font-weight:750;line-height:1.8}
+.chat-mode-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.chat-mode{min-height:64px;align-items:flex-start;text-align:right;justify-content:flex-start;border-radius:18px;padding:12px}
+.chat-mode.active{border-color:var(--accent-border);background:var(--accent-bg);color:var(--accent)}
+.chat-feed{display:flex;flex-direction:column;gap:10px;min-height:330px;max-height:52vh;overflow:auto;padding:14px 10px;background:var(--surface2);border:1px solid var(--hairline);border-radius:24px;scrollbar-width:none}
+.chat-feed::-webkit-scrollbar{display:none}
+.chat-msg{max-width:88%;border:1px solid var(--hairline);border-radius:22px;padding:12px 14px;line-height:1.95;font-size:14px;white-space:pre-wrap;overflow-wrap:anywhere}
+.chat-msg.user{align-self:flex-start;background:var(--accent);color:#fff;border-color:transparent;border-bottom-left-radius:8px}
+.chat-msg.assistant{align-self:flex-end;background:var(--surface);color:var(--text);border-bottom-right-radius:8px;box-shadow:0 1px 2px rgba(28,24,20,.04)}
+.chat-meta{font-size:10px;color:var(--text3);font-weight:800;margin-bottom:4px}
+.chat-msg.user .chat-meta{color:rgba(255,255,255,.72)}
+.chat-input-card{padding-top:8px}
+.chat-input-row{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:end;background:var(--surface);border:1px solid var(--hairline);border-radius:22px;padding:8px;margin-top:8px}
+.chat-input-row textarea{min-height:52px;max-height:130px;resize:none;border:0;background:transparent;box-shadow:none;padding:11px 12px;border-radius:16px}
+.chat-input-row textarea:focus{box-shadow:none;background:transparent;border:0}
+.chat-send{width:52px;height:52px;padding:0;border-radius:18px;align-self:end}
+.chat-status{min-height:20px;font-size:12px;color:var(--text3);text-align:center;font-weight:750}
+.chat-quick-row{display:flex;gap:8px;overflow:auto;padding:2px 0 8px;scrollbar-width:none}
+.chat-quick-row::-webkit-scrollbar{display:none}
+.chat-chip{width:auto;white-space:nowrap;min-height:34px;padding:7px 11px;border-radius:999px;font-size:12px}
+.chat-settings-grid{display:grid;gap:10px}
+.chat-api-warning{font-size:12px;color:var(--text3);line-height:1.8;background:var(--surface2);border-radius:16px;padding:10px 12px}
+@media (max-width:360px){.chat-mode-grid{grid-template-columns:1fr}.chat-msg{max-width:94%}}
 .flashcard{
   border-radius:26px;
   box-shadow:0 12px 30px rgba(81,56,216,.12);
@@ -855,13 +904,14 @@ body.sheet-open .sheet-backdrop{backdrop-filter:blur(8px);-webkit-backdrop-filte
 .flash-controls .btn{
   border-radius:16px;
 }
-.note-toolbar{
-  margin:10px 0 12px;
-}
 .note-editor{
   margin-top:4px;
   padding:16px;
 }
+.cke{margin-top:4px!important;border-color:var(--hairline)!important;border-radius:18px!important;overflow:hidden}
+.cke_top,.cke_bottom{background:var(--surface2)!important;border-color:var(--hairline)!important}
+.cke_contents{background:var(--surface)!important;min-height:240px!important}
+.cke_editable{direction:rtl;text-align:right;line-height:1.9;color:var(--text);font-family:'Vazirmatn','Segoe UI',Tahoma,system-ui,sans-serif}
 .search-wrap{
   margin-bottom:14px;
 }
@@ -1003,7 +1053,7 @@ body.sheet-open .sheet-backdrop{backdrop-filter:blur(8px);-webkit-backdrop-filte
     </div>
     <div class="card">
       <div class="card-title"><span class="ui-icon title-icon" data-icon="activity"></span>تمرین روزانه (۳۰ روز اخیر)</div>
-      <div id="streak-chart" style="display:flex;gap:2px;align-items:flex-end;height:120px;background:var(--surface2);padding:12px;border-radius:var(--r)"></div>
+      <div id="streak-chart" class="streak-chart"></div>
     </div>
     <div class="card">
       <div class="card-title">تقویم مطالعه</div>
@@ -1057,28 +1107,8 @@ body.sheet-open .sheet-backdrop{backdrop-filter:blur(8px);-webkit-backdrop-filte
         <input type="hidden" id="note-id">
         <div class="field mt-12"><label>عنوان درس</label><input type="text" id="note-title" placeholder="مثلاً: زمان حال ساده"></div>
         <div class="field"><label>تگ‌ها</label><input type="text" id="note-tags" placeholder="grammar, lesson 1, tense"></div>
-        <div class="note-toolbar">
-          <select class="tool-select" onchange="formatNoteBlock(this.value);this.value=''">
-            <option value="">استایل</option>
-            <option value="p">متن</option>
-            <option value="h2">هدینگ بزرگ</option>
-            <option value="h3">هدینگ کوچک</option>
-          </select>
-          <button class="btn tool-btn" onclick="noteCmd('bold')"><strong>B</strong></button>
-          <button class="btn tool-btn" onclick="noteCmd('italic')"><em>I</em></button>
-          <button class="btn tool-btn" onclick="noteCmd('insertUnorderedList')">•</button>
-          <button class="btn tool-btn" onclick="insertNoteLink()">لینک</button>
-          <button class="btn tool-btn" onclick="insertNoteTable()">جدول</button>
-          <button class="btn tool-btn" onclick="addTableRow()">+ردیف</button>
-          <button class="btn tool-btn" onclick="addTableCol()">+ستون</button>
-          <button class="btn tool-btn" onclick="deleteTableRow()">حذف ردیف</button>
-          <button class="btn tool-btn" onclick="deleteTableCol()">حذف ستون</button>
-          <input class="tool-color" type="color" value="#1a73e8" onchange="noteColor(this.value)" title="رنگ متن">
-          <button class="btn tool-btn" onclick="document.getElementById('note-img').click()">عکس</button>
-          <button class="btn tool-btn" onclick="clearNoteForm()">جدید</button>
-          <input type="file" id="note-img" accept="image/*" style="display:none" onchange="insertNoteImage(this)">
-        </div>
-        <div id="note-content" class="note-editor" contenteditable="true" onkeyup="saveNoteSelection()" onmouseup="saveNoteSelection()" oninput="saveNoteSelection()" data-placeholder="قواعد، نکته‌ها، مثال‌ها و توضیحات درس را اینجا بنویس..."></div>
+        <textarea id="note-content" class="note-editor" data-placeholder="قواعد، نکته‌ها، مثال‌ها و توضیحات درس را اینجا بنویس..."></textarea>
+        <button class="btn btn-outline mt-8" onclick="clearNoteForm()">درس جدید</button>
         <button class="btn btn-primary mt-8" onclick="saveNote()">ذخیره درس</button>
         <div id="note-msg" style="font-size:13px;text-align:center;min-height:20px;margin-top:8px"></div>
       </div>
@@ -1102,6 +1132,64 @@ body.sheet-open .sheet-backdrop{backdrop-filter:blur(8px);-webkit-backdrop-filte
       </div>
       <button class="btn btn-outline mt-8" onclick="startNoteReview()">شروع مرور درس‌ها</button>
       <div id="note-list" class="note-list mt-12"></div>
+    </div>
+  </div>
+
+  <!-- CHAT -->
+  <div id="p-chat" class="panel">
+    <div class="card">
+      <div class="chat-shell">
+        <div class="chat-hero">
+          <div>
+            <div class="chat-title">چت زبان</div>
+            <div class="chat-sub">مربی انگلیسی فارسی‌زبان، هماهنگ با کلمات و نوت‌های خودت.</div>
+          </div>
+          <button class="btn btn-sm btn-outline" onclick="clearChatHistory()">پاک کردن</button>
+        </div>
+        <div class="chat-mode-grid" id="chat-modes">
+          <button class="btn chat-mode active" data-mode="free" onclick="setChatMode('free', this)">چت آزاد<br><span class="chat-sub">سوال، تمرین، توضیح</span></button>
+          <button class="btn chat-mode" data-mode="correct" onclick="setChatMode('correct', this)">تصحیح جمله<br><span class="chat-sub">اشتباهات را با دلیل بگو</span></button>
+          <button class="btn chat-mode" data-mode="word" onclick="setChatMode('word', this)">توضیح کلمه<br><span class="chat-sub">معنی، مثال، کاربرد</span></button>
+          <button class="btn chat-mode" data-mode="lesson" onclick="setChatMode('lesson', this)">ساخت درس<br><span class="chat-sub">با کلمات و نوت‌ها</span></button>
+          <button class="btn chat-mode" data-mode="conversation" onclick="setChatMode('conversation', this)">مکالمه<br><span class="chat-sub">نقش‌آفرینی و اصلاح</span></button>
+          <button class="btn chat-mode" data-mode="quiz" onclick="setChatMode('quiz', this)">تمرین با کلمات من<br><span class="chat-sub">کوییز و مرور</span></button>
+        </div>
+        <div id="chat-feed" class="chat-feed"></div>
+        <div class="chat-input-card">
+          <div class="chat-quick-row">
+            <button class="btn btn-outline chat-chip" onclick="fillChatPrompt('یک مکالمه کوتاه برای تمرین شروع کن و اشتباهاتم را اصلاح کن.')">شروع مکالمه</button>
+            <button class="btn btn-outline chat-chip" onclick="fillChatPrompt('با کلمات سخت من یک کوییز ۵ سوالی بساز.')">کوییز سریع</button>
+            <button class="btn btn-outline chat-chip" onclick="fillChatPrompt('این جمله را اصلاح کن و دلیلش را فارسی بگو: ')">تصحیح جمله</button>
+          </div>
+          <div class="chat-input-row">
+            <textarea id="chat-input" placeholder="پیامت را بنویس..." oninput="autoResizeChatInput()" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendChatMessage()}"></textarea>
+            <button class="btn btn-primary chat-send" onclick="sendChatMessage()" title="ارسال"><span class="ui-icon" data-icon="play"></span></button>
+          </div>
+        </div>
+        <div id="chat-status" class="chat-status"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <button class="more-toggle" id="chat-settings-toggle" onclick="toggleMoreSection('chat-settings-panel', this)">
+        <span class="more-toggle-main">
+          <span class="ui-icon title-icon" data-icon="settings"></span>
+          <span>تنظیمات اتصال<span class="more-toggle-sub">OpenAI یا DeepSeek را انتخاب کن</span></span>
+        </span>
+        <span class="ui-icon more-chevron" data-icon="rotate"></span>
+      </button>
+      <div class="more-collapse" id="chat-settings-panel">
+        <div class="chat-settings-grid mt-12">
+          <div class="row2">
+            <div class="field"><label>سرویس</label><select id="chat-provider" onchange="applyChatProviderDefaults()"><option value="openai">OpenAI</option><option value="deepseek">DeepSeek</option><option value="custom">Custom</option></select></div>
+            <div class="field"><label>مدل</label><input type="text" id="chat-model" placeholder="gpt-4o-mini"></div>
+          </div>
+          <div class="field"><label>API Key</label><input type="password" id="chat-api-key" placeholder="sk-..." autocomplete="off"></div>
+          <div class="field"><label>Base URL</label><input type="text" id="chat-base-url" placeholder="https://api.openai.com/v1"></div>
+          <div class="chat-api-warning">کلید فقط روی همین دستگاه ذخیره می‌شود. برای انتشار عمومی اپ، بهتر است بعداً یک سرور واسط امن داشته باشیم.</div>
+          <button class="btn btn-primary" onclick="saveChatSettings()">ذخیره تنظیمات</button>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -1149,6 +1237,20 @@ body.sheet-open .sheet-backdrop{backdrop-filter:blur(8px);-webkit-backdrop-filte
           <div style="font-size:12px;color:var(--text2);margin-bottom:8px"><strong>دسته‌بندی‌های موجود:</strong></div>
           <div id="cat-list" style="display:flex;flex-wrap:wrap;gap:6px"></div>
         </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <button class="more-toggle" id="more-note-tags-toggle" onclick="toggleMoreSection('more-note-tags-panel', this)">
+        <span class="more-toggle-main">
+          <span class="ui-icon title-icon" data-icon="book"></span>
+          <span>تگ‌های نوت<span class="more-toggle-sub">با کلیک روی هر تگ، نوت‌های همان تگ را ببین</span></span>
+        </span>
+        <span class="ui-icon more-chevron" data-icon="rotate"></span>
+      </button>
+      <div class="more-collapse" id="more-note-tags-panel">
+        <div id="note-tag-cloud" class="note-tag-cloud"></div>
+        <div id="tag-note-list" class="tag-note-list"></div>
       </div>
     </div>
 
@@ -1268,6 +1370,10 @@ body.sheet-open .sheet-backdrop{backdrop-filter:blur(8px);-webkit-backdrop-filte
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5V5a2 2 0 0 1 2-2h11l3 3v13.5a1.5 1.5 0 0 1-1.5 1.5H6A2 2 0 0 1 4 19.5z"/><path d="M16 3v4h4"/><line x1="8" y1="11" x2="16" y2="11"/><line x1="8" y1="15" x2="14" y2="15"/></svg>
     نوت<div class="dot"></div>
   </button>
+  <button class="nav-btn" onclick="showPanel('chat',this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-8 8H6l-3 2 1.2-4A8 8 0 1 1 21 12Z"/><path d="M8 11h8M8 15h5"/></svg>
+    چت<div class="dot"></div>
+  </button>
   <button class="nav-btn" onclick="showPanel('stats',this)">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20h18"/><rect x="5" y="12" width="3.5" height="8" rx="1"/><rect x="10.3" y="7" width="3.5" height="13" rx="1"/><rect x="15.6" y="3" width="3.5" height="17" rx="1"/></svg>
     آمار<div class="dot"></div>
@@ -1285,6 +1391,8 @@ const STATS_KEY = 'vocab_stats_v1';
 const CATS_KEY = 'vocab_cats_v1';
 const FLASH_SETTINGS_KEY = 'vocab_flash_settings_v1';
 const NOTES_KEY = 'vocab_notes_v1';
+const CHAT_SETTINGS_KEY = 'vocab_chat_settings_v1';
+const CHAT_HISTORY_KEY = 'vocab_chat_history_v1';
 const TODAY = new Date().toDateString();
 let words = [];
 let stats = {};
@@ -1301,6 +1409,10 @@ let hmWord = null, hmGuessed = [], hmMisses = 0;
 let detailWordId = null;
 let noteReviewIdx = 0;
 let noteSavedRange = null;
+let noteEditorInstance = null;
+let chatMode = 'free';
+let chatHistory = [];
+let chatSettings = { provider: 'openai', model: 'gpt-4o-mini', baseUrl: 'https://api.openai.com/v1', apiKey: '' };
 const HM_MAX = 6;
 const ALPHA = 'abcdefghijklmnopqrstuvwxyz'.split('');
 const HM_ST = ['۰/۶','۱/۶','۲/۶','۳/۶','۴/۶','۵/۶','باختی'];
@@ -1320,6 +1432,7 @@ function icon(name, cls = '') {
     x: '<path d="M18 6 6 18M6 6l12 12"/>',
     trash: '<path d="M3 6h18"/><path d="M8 6V4h8v2"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v5M14 11v5"/>',
     volume: '<path d="M11 5 6 9H3v6h3l5 4V5Z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/>',
+    mic: '<path d="M12 14a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v5a3 3 0 0 0 3 3Z"/><path d="M19 11a7 7 0 0 1-14 0"/><path d="M12 18v4M8 22h8"/>',
     play: '<path d="M8 5v14l11-7Z"/>',
     stop: '<rect x="6" y="6" width="12" height="12" rx="2"/>',
     settings: '<path d="M12 15.5A3.5 3.5 0 1 0 12 8a3.5 3.5 0 0 0 0 7.5Z"/><path d="M19.4 15a1.8 1.8 0 0 0 .36 1.98l.04.04-2.12 2.12-.04-.04a1.8 1.8 0 0 0-1.98-.36 1.8 1.8 0 0 0-1.1 1.66V20h-3v-.06a1.8 1.8 0 0 0-1.1-1.66 1.8 1.8 0 0 0-1.98.36l-.04.04-2.12-2.12.04-.04A1.8 1.8 0 0 0 4.6 15a1.8 1.8 0 0 0-1.66-1.1H3v-3h.06A1.8 1.8 0 0 0 4.72 9.8a1.8 1.8 0 0 0-.36-1.98l-.04-.04 2.12-2.12.04.04a1.8 1.8 0 0 0 1.98.36A1.8 1.8 0 0 0 9.56 4.4V4h3v.06a1.8 1.8 0 0 0 1.1 1.66 1.8 1.8 0 0 0 1.98-.36l.04-.04 2.12 2.12-.04.04a1.8 1.8 0 0 0-.36 1.98 1.8 1.8 0 0 0 1.66 1.1H21v3h-.06A1.8 1.8 0 0 0 19.4 15Z"/>',
@@ -1356,6 +1469,12 @@ function load() {
     stats = JSON.parse(localStorage.getItem(STATS_KEY) || '{}');
     customCats = JSON.parse(localStorage.getItem(CATS_KEY) || '[]');
     notes = JSON.parse(localStorage.getItem(NOTES_KEY) || '[]');
+    chatHistory = JSON.parse(localStorage.getItem(CHAT_HISTORY_KEY) || '[]');
+    chatSettings = { ...chatSettings, ...JSON.parse(localStorage.getItem(CHAT_SETTINGS_KEY) || '{}') };
+    if (chatSettings.provider === 'deepseek' && (!chatSettings.baseUrl || chatSettings.baseUrl.includes('/v1') || chatSettings.model === 'deepseek-chat')) {
+      chatSettings.baseUrl = 'https://api.deepseek.com';
+      if (!chatSettings.model || chatSettings.model === 'deepseek-chat') chatSettings.model = 'deepseek-v4-flash';
+    }
     flSettings = { ...flSettings, ...JSON.parse(localStorage.getItem(FLASH_SETTINGS_KEY) || '{}') };
     flReadSentence = !!flSettings.readSentence;
     words.forEach(w => {
@@ -1369,6 +1488,7 @@ function load() {
       if (w.known && !w.learnedAt) w.learnedAt = TODAY;
     });
     notes = Array.isArray(notes) ? notes : [];
+    chatHistory = Array.isArray(chatHistory) ? chatHistory : [];
     notes.forEach(n => {
       if (!n.id) n.id = Date.now() + Math.random();
       n.title = String(n.title || '');
@@ -1378,10 +1498,10 @@ function load() {
     });
     syncAllRelatedWords();
   } catch(e) {
-    words = []; stats = {}; customCats = []; notes = [];
+    words = []; stats = {}; customCats = []; notes = []; chatHistory = [];
   }
 }
-function save() { localStorage.setItem(KEY, JSON.stringify(words)); localStorage.setItem(STATS_KEY, JSON.stringify(stats)); localStorage.setItem(CATS_KEY, JSON.stringify(customCats)); localStorage.setItem(FLASH_SETTINGS_KEY, JSON.stringify(flSettings)); localStorage.setItem(NOTES_KEY, JSON.stringify(notes)); }
+function save() { localStorage.setItem(KEY, JSON.stringify(words)); localStorage.setItem(STATS_KEY, JSON.stringify(stats)); localStorage.setItem(CATS_KEY, JSON.stringify(customCats)); localStorage.setItem(FLASH_SETTINGS_KEY, JSON.stringify(flSettings)); localStorage.setItem(NOTES_KEY, JSON.stringify(notes)); localStorage.setItem(CHAT_HISTORY_KEY, JSON.stringify(chatHistory)); localStorage.setItem(CHAT_SETTINGS_KEY, JSON.stringify(chatSettings)); }
 function activeWords() { return words.filter(w => !w.known); }
 function learnedWords() { return words.filter(w => w.known); }
 function hardWords() { return words.filter(w => w.hard && !w.known); }
@@ -1562,7 +1682,7 @@ function updateCats() {
 
 function updateStats() {
   const t = words.length, kn = learnedWords().length;
-  const tod = words.filter(w => w.date === TODAY).length;
+  const tod = getStudyCount(TODAY);
   document.getElementById('s-total').textContent = toFa(t);
   document.getElementById('s-today').textContent = toFa(tod);
   document.getElementById('s-known').textContent = toFa(kn);
@@ -1579,14 +1699,14 @@ function updateStatsPanel() {
   const t = words.length, kn = learnedWords().length;
   document.getElementById('st-total').textContent = toFa(t);
   document.getElementById('st-known').textContent = toFa(kn);
-  const tod = words.filter(w => w.date === TODAY).length;
+  const tod = getStudyCount(TODAY);
   document.getElementById('st-today').textContent = toFa(tod);
 
   let streak = 0;
   const d = new Date();
   for (let i = 0; i < 365; i++) {
     const dateStr = new Date(d.getTime() - i * 86400000).toDateString();
-    if (stats[dateStr] && stats[dateStr].words > 0) streak++;
+    if (getStudyCount(dateStr) > 0) streak++;
     else break;
   }
   document.getElementById('st-streak').textContent = toFa(streak);
@@ -1603,7 +1723,8 @@ function getStudyCount(dateStr) {
   const added = words.filter(w => w.date === dateStr).length;
   const learned = words.filter(w => w.learnedAt === dateStr).length;
   const hard = words.filter(w => w.hardAt === dateStr).length;
-  return Math.max(day.words || 0, added + learned + hard);
+  const updated = words.filter(w => w.updatedAt === dateStr).length;
+  return Math.max(day.words || 0, added + learned + hard + updated);
 }
 
 function renderStatsWordBoxes() {
@@ -1692,15 +1813,18 @@ function renderStudyCalendar() {
 
 function renderStreakChart() {
   const chart = document.getElementById('streak-chart');
+  if (!chart) return;
   let html = '';
-  const maxHeight = 100;
-  const maxWords = 50;
+  const counts = Array.from({ length: 30 }, (_, i) => {
+    const dateStr = new Date(Date.now() - (29 - i) * 86400000).toDateString();
+    return { dateStr, count: getStudyCount(dateStr) };
+  });
+  const maxWords = Math.max(1, ...counts.map(d => d.count));
   for (let i = 29; i >= 0; i--) {
-    const dateStr = new Date(Date.now() - i * 86400000).toDateString();
-    const count = (stats[dateStr] && stats[dateStr].words) || 0;
-    const height = (count / maxWords * maxHeight) || 2;
-    const color = count > 0 ? 'var(--accent)' : 'var(--surface2)';
-    html += `<div style="flex:1;height:${Math.max(height, 2)}px;background:${color};border-radius:2px" title="${dateStr}: ${toFa(count)} کلمه"></div>`;
+    const item = counts[29 - i];
+    const height = Math.max(8, Math.round((item.count / maxWords) * 100));
+    const cls = [item.count ? 'on' : '', item.dateStr === TODAY ? 'today' : ''].filter(Boolean).join(' ');
+    html += `<div class="chart-bar ${cls}" style="height:${height}%" title="${item.dateStr}: ${toFa(item.count)} فعالیت"></div>`;
   }
   chart.innerHTML = html;
 }
@@ -2397,46 +2521,98 @@ function notePlainText(html) {
   return div.textContent || '';
 }
 
+async function initNoteEditor() {
+  const el = document.getElementById('note-content');
+  if (!el || noteEditorInstance) return;
+  try {
+    if (!window.CKEDITOR) await loadCkEditorScript();
+    if (!window.CKEDITOR) return;
+    noteEditorInstance = CKEDITOR.replace('note-content', {
+      language: 'fa',
+      contentsLangDirection: 'rtl',
+      height: 280,
+      toolbarCanCollapse: false,
+      resize_enabled: true,
+      extraPlugins: 'colorbutton,font,justify,tableresize',
+      removePlugins: 'easyimage,cloudservices',
+      allowedContent: true,
+      toolbar: [
+        { name: 'styles', items: ['Format', 'Font', 'FontSize'] },
+        { name: 'basicstyles', items: ['Bold', 'Italic', 'Underline', 'Strike', 'RemoveFormat'] },
+        { name: 'colors', items: ['TextColor', 'BGColor'] },
+        { name: 'paragraph', items: ['NumberedList', 'BulletedList', 'JustifyRight', 'JustifyCenter', 'JustifyLeft', 'JustifyBlock', 'Outdent', 'Indent'] },
+        { name: 'insert', items: ['Table', 'HorizontalRule', 'Blockquote'] },
+        { name: 'links', items: ['Link', 'Unlink'] },
+        { name: 'clipboard', items: ['Undo', 'Redo'] },
+        { name: 'tools', items: ['Maximize', 'Source'] }
+      ]
+    });
+  } catch (e) {
+    noteEditorInstance = null;
+    console.warn('CKEditor unavailable, using fallback editor.', e);
+  }
+}
+
+function loadCkEditorScript() {
+  return new Promise(resolve => {
+    if (window.CKEDITOR) { resolve(); return; }
+    const existing = document.querySelector('script[data-ckeditor]');
+    if (existing) {
+      existing.addEventListener('load', resolve, { once: true });
+      existing.addEventListener('error', resolve, { once: true });
+      return;
+    }
+    const script = document.createElement('script');
+    script.src = 'https://cdn.ckeditor.com/4.25.1-lts/full-all/ckeditor.js?v=4.25.1-lts';
+    script.async = true;
+    script.dataset.ckeditor = '1';
+    script.onload = resolve;
+    script.onerror = resolve;
+    document.head.appendChild(script);
+  });
+}
+
+function getNoteContentHTML() {
+  const el = document.getElementById('note-content');
+  return noteEditorInstance ? noteEditorInstance.getData() : (el.value ?? el.innerHTML);
+}
+
+function setNoteContentHTML(html) {
+  if (noteEditorInstance) noteEditorInstance.setData(html || '');
+  else {
+    const el = document.getElementById('note-content');
+    if ('value' in el) el.value = html || '';
+    else el.innerHTML = html || '';
+  }
+}
+
+function insertNoteHTML(html) {
+  if (noteEditorInstance) {
+    noteEditorInstance.insertHtml(html);
+  } else {
+    focusNoteEditor();
+    const el = document.getElementById('note-content');
+    if ('value' in el) el.value += html;
+    else document.execCommand('insertHTML', false, html);
+  }
+}
+
 function clearNoteForm() {
   document.getElementById('note-id').value = '';
   document.getElementById('note-title').value = '';
   document.getElementById('note-tags').value = '';
-  document.getElementById('note-content').innerHTML = '';
+  setNoteContentHTML('');
   document.getElementById('note-title').focus();
 }
 
 function focusNoteEditor() {
+  if (noteEditorInstance) {
+    noteEditorInstance.focus();
+    return noteEditorInstance;
+  }
   const editor = document.getElementById('note-content');
   editor.focus();
-  restoreNoteSelection();
   return editor;
-}
-
-function saveNoteSelection() {
-  const sel = window.getSelection();
-  const editor = document.getElementById('note-content');
-  if (sel && sel.rangeCount && editor.contains(sel.anchorNode)) noteSavedRange = sel.getRangeAt(0).cloneRange();
-}
-
-function restoreNoteSelection() {
-  if (!noteSavedRange) return;
-  const sel = window.getSelection();
-  sel.removeAllRanges();
-  sel.addRange(noteSavedRange);
-}
-
-function noteCmd(cmd, value = null) {
-  focusNoteEditor();
-  document.execCommand(cmd, false, value);
-}
-
-function formatNoteBlock(tag) {
-  if (!tag) return;
-  noteCmd('formatBlock', tag);
-}
-
-function noteColor(color) {
-  noteCmd('foreColor', color);
 }
 
 function normalizeUrl(url) {
@@ -2447,111 +2623,11 @@ function normalizeUrl(url) {
   return 'https://' + clean;
 }
 
-function insertNoteLink() {
-  restoreNoteSelection();
-  const url = normalizeUrl(prompt('آدرس لینک را وارد کن:', 'https://'));
-  if (!url) return;
-  focusNoteEditor();
-  const sel = window.getSelection();
-  if (sel && sel.rangeCount && !sel.isCollapsed) {
-    document.execCommand('createLink', false, url);
-    const anchor = sel.anchorNode?.parentElement?.closest?.('a');
-    if (anchor) {
-      anchor.target = '_blank';
-      anchor.rel = 'noopener noreferrer';
-    }
-  } else {
-    document.execCommand('insertHTML', false, `<a href="${attr(url)}" target="_blank" rel="noopener noreferrer">${h(url)}</a>`);
-  }
-}
-
-function insertNoteTable() {
-  const rows = Math.max(1, Math.min(8, parseInt(prompt('چند ردیف؟', '3'), 10) || 3));
-  const cols = Math.max(1, Math.min(6, parseInt(prompt('چند ستون؟', '2'), 10) || 2));
-  let html = '<table><tbody>';
-  for (let r = 0; r < rows; r++) {
-    html += '<tr>';
-    for (let c = 0; c < cols; c++) html += r === 0 ? '<th>عنوان</th>' : '<td><br></td>';
-    html += '</tr>';
-  }
-  html += '</tbody></table><p><br></p>';
-  focusNoteEditor();
-  document.execCommand('insertHTML', false, html);
-}
-
-function getActiveTableCell() {
-  restoreNoteSelection();
-  const sel = window.getSelection();
-  if (!sel || !sel.rangeCount) return null;
-  let node = sel.anchorNode;
-  if (node && node.nodeType === Node.TEXT_NODE) node = node.parentElement;
-  const editor = document.getElementById('note-content');
-  const cell = node?.closest?.('td,th');
-  return cell && editor.contains(cell) ? cell : null;
-}
-
-function tableCellMsg() {
-  msg('note-msg', 'اول داخل یکی از خانه‌های جدول کلیک کن', 'var(--yellow)');
-}
-
-function addTableRow() {
-  const cell = getActiveTableCell();
-  if (!cell) return tableCellMsg();
-  const row = cell.parentElement;
-  const next = row.cloneNode(true);
-  next.querySelectorAll('td,th').forEach(c => {
-    if (c.tagName === 'TH') {
-      const td = document.createElement('td');
-      td.innerHTML = '<br>';
-      c.replaceWith(td);
-    } else {
-      c.innerHTML = '<br>';
-    }
-  });
-  row.after(next);
-}
-
-function addTableCol() {
-  const cell = getActiveTableCell();
-  if (!cell) return tableCellMsg();
-  const index = cell.cellIndex;
-  const table = cell.closest('table');
-  table.querySelectorAll('tr').forEach(row => {
-    const ref = row.children[index];
-    const tag = ref?.tagName === 'TH' ? 'th' : 'td';
-    const fresh = document.createElement(tag);
-    fresh.innerHTML = tag === 'th' ? 'عنوان' : '<br>';
-    if (ref) ref.after(fresh);
-    else row.appendChild(fresh);
-  });
-}
-
-function deleteTableRow() {
-  const cell = getActiveTableCell();
-  if (!cell) return tableCellMsg();
-  const row = cell.parentElement;
-  const table = cell.closest('table');
-  if (table.rows.length <= 1) return msg('note-msg', 'جدول باید حداقل یک ردیف داشته باشد', 'var(--yellow)');
-  row.remove();
-}
-
-function deleteTableCol() {
-  const cell = getActiveTableCell();
-  if (!cell) return tableCellMsg();
-  const index = cell.cellIndex;
-  const table = cell.closest('table');
-  const maxCols = Math.max(...[...table.rows].map(r => r.cells.length));
-  if (maxCols <= 1) return msg('note-msg', 'جدول باید حداقل یک ستون داشته باشد', 'var(--yellow)');
-  [...table.rows].forEach(row => {
-    if (row.cells[index]) row.deleteCell(index);
-  });
-}
-
 function saveNote() {
   const id = document.getElementById('note-id').value;
   const title = document.getElementById('note-title').value.trim();
   const tags = splitTerms(document.getElementById('note-tags').value);
-  const content = cleanNoteHTML(document.getElementById('note-content').innerHTML);
+  const content = cleanNoteHTML(getNoteContentHTML());
   if (!title) { msg('note-msg', 'عنوان درس لازم است', 'var(--red)'); return; }
   if (!notePlainText(content).trim() && !/<img/i.test(content)) { msg('note-msg', 'متن درس خالی است', 'var(--red)'); return; }
   const existing = notes.find(n => String(n.id) === String(id));
@@ -2576,7 +2652,7 @@ function editNote(id) {
   document.getElementById('note-id').value = n.id;
   document.getElementById('note-title').value = n.title || '';
   document.getElementById('note-tags').value = (n.tags || []).join(', ');
-  document.getElementById('note-content').innerHTML = n.content || '';
+  setNoteContentHTML(n.content || '');
   document.getElementById('note-title').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
@@ -2597,32 +2673,65 @@ function renderNotes() {
     const hay = [n.title, notePlainText(n.content), ...(n.tags || [])].join(' ').toLowerCase();
     return !q || hay.includes(q);
   });
-  if (!filtered.length) { list.innerHTML = emptyState('هنوز درسی ذخیره نشده', 'در نوت‌بوک، قواعد و درس‌هایت را مرتب ذخیره کن.', 'book'); return; }
+  if (!filtered.length) {
+    list.innerHTML = emptyState('هنوز درسی ذخیره نشده', 'در نوت‌بوک، قواعد و درس‌هایت را مرتب ذخیره کن.', 'book');
+    renderNoteTags();
+    return;
+  }
   list.innerHTML = filtered.map(n => {
     const preview = notePlainText(n.content).trim().slice(0, 110);
     return `<div class="note-item" onclick="editNote('${jsq(n.id)}')">
       <div class="note-item-title">${h(n.title)}</div>
       <div class="note-item-meta">${h(preview)}${preview.length >= 110 ? '...' : ''}</div>
-      <div class="note-tags">${(n.tags || []).map(t => `<span class="note-tag">${h(t)}</span>`).join('')}</div>
       <div class="detail-actions">
         <button class="btn btn-sm btn-outline" onclick="editNote('${jsq(n.id)}');event.stopPropagation()">ویرایش</button>
         <button class="btn btn-sm btn-danger" onclick="deleteNote('${jsq(n.id)}',event)">حذف</button>
       </div>
     </div>`;
   }).join('');
+  renderNoteTags();
 }
 
-function insertNoteImage(input) {
-  const file = input.files && input.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = e => {
-    const editor = document.getElementById('note-content');
-    editor.focus();
-    document.execCommand('insertImage', false, e.target.result);
-    input.value = '';
-  };
-  reader.readAsDataURL(file);
+function getNoteTags() {
+  const counts = new Map();
+  notes.forEach(n => (n.tags || []).forEach(tag => {
+    const clean = String(tag || '').trim();
+    if (clean) counts.set(clean, (counts.get(clean) || 0) + 1);
+  }));
+  return [...counts.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+}
+
+function renderNoteTags() {
+  const cloud = document.getElementById('note-tag-cloud');
+  const list = document.getElementById('tag-note-list');
+  if (!cloud) return;
+  const tags = getNoteTags();
+  if (!tags.length) {
+    cloud.innerHTML = emptyState('هنوز تگی نداری', 'برای هر درس چند تگ بنویس تا اینجا دسته‌بندی شود.', 'book');
+    if (list) list.innerHTML = '';
+    return;
+  }
+  cloud.innerHTML = tags.map(([tag, count]) =>
+    `<button class="btn btn-outline note-tag-btn" onclick="showNotesByTag('${jsq(tag)}')">${h(tag)} <span class="badge badge-blue">${toFa(count)}</span></button>`
+  ).join('');
+}
+
+function showNotesByTag(tag) {
+  const list = document.getElementById('tag-note-list');
+  if (!list) return;
+  const filtered = notes.filter(n => (n.tags || []).some(t => String(t).trim() === tag));
+  if (!filtered.length) {
+    list.innerHTML = emptyState('نوتی برای این تگ نیست', 'تگ دیگری را انتخاب کن.', 'book');
+    return;
+  }
+  list.innerHTML = filtered.map(n => {
+    const preview = notePlainText(n.content).trim().slice(0, 90);
+    return `<div class="note-item" onclick="editNote('${jsq(n.id)}')">
+      <div class="note-item-title">${h(n.title)}</div>
+      <div class="note-item-meta">${h(preview)}${preview.length >= 90 ? '...' : ''}</div>
+      <div class="note-tags">${(n.tags || []).map(t => `<span class="note-tag">${h(t)}</span>`).join('')}</div>
+    </div>`;
+  }).join('');
 }
 
 function startNoteReview() {
@@ -2650,7 +2759,6 @@ function renderNoteReview(track = true) {
   }
   count.textContent = `${toFa(noteReviewIdx + 1)} / ${toFa(notes.length)}`;
   box.innerHTML = `<div class="note-item-title">${h(n.title)}</div>
-    <div class="note-tags">${(n.tags || []).map(t => `<span class="note-tag">${h(t)}</span>`).join('')}</div>
     <div class="note-body">${cleanNoteHTML(n.content)}</div>`;
 }
 
@@ -2664,6 +2772,192 @@ function prevNoteReview() {
   if (!notes.length) return;
   noteReviewIdx = (noteReviewIdx - 1 + notes.length) % notes.length;
   renderNoteReview();
+}
+
+// CHAT
+function chatProviderDefaults(provider) {
+  if (provider === 'deepseek') return { baseUrl: 'https://api.deepseek.com', model: 'deepseek-v4-flash' };
+  if (provider === 'openai') return { baseUrl: 'https://api.openai.com/v1', model: 'gpt-4o-mini' };
+  return { baseUrl: chatSettings.baseUrl || '', model: chatSettings.model || '' };
+}
+
+function loadChatSettingsUI() {
+  const provider = document.getElementById('chat-provider');
+  const model = document.getElementById('chat-model');
+  const key = document.getElementById('chat-api-key');
+  const base = document.getElementById('chat-base-url');
+  if (provider) provider.value = chatSettings.provider || 'openai';
+  if (model) model.value = chatSettings.model || '';
+  if (key) key.value = chatSettings.apiKey || '';
+  if (base) base.value = chatSettings.baseUrl || '';
+}
+
+function applyChatProviderDefaults() {
+  const provider = document.getElementById('chat-provider')?.value || 'openai';
+  const def = chatProviderDefaults(provider);
+  document.getElementById('chat-base-url').value = def.baseUrl;
+  document.getElementById('chat-model').value = def.model;
+}
+
+function saveChatSettings() {
+  chatSettings = {
+    provider: document.getElementById('chat-provider')?.value || 'openai',
+    model: document.getElementById('chat-model')?.value.trim() || 'gpt-4o-mini',
+    apiKey: document.getElementById('chat-api-key')?.value.trim() || '',
+    baseUrl: (document.getElementById('chat-base-url')?.value.trim() || 'https://api.openai.com/v1').replace(/\/+$/, '')
+  };
+  save();
+  renderChatStatus(chatSettings.apiKey ? 'تنظیمات ذخیره شد.' : 'تنظیمات ذخیره شد؛ API Key هنوز خالی است.');
+}
+
+function setChatMode(mode, btn) {
+  chatMode = mode;
+  document.querySelectorAll('.chat-mode').forEach(b => b.classList.toggle('active', b === btn || b.dataset.mode === mode));
+  const input = document.getElementById('chat-input');
+  const placeholders = {
+    free: 'هر سوالی درباره انگلیسی داری بنویس...',
+    correct: 'یک جمله انگلیسی بنویس تا اصلاحش کنم...',
+    word: 'یک کلمه انگلیسی بنویس تا توضیح بدهم...',
+    lesson: 'موضوع درس را بنویس، مثلاً present perfect...',
+    conversation: 'نقش مکالمه را بنویس، مثلاً airport یا job interview...',
+    quiz: 'بگو از کدام دسته یا کلمات برایت تمرین بسازم...'
+  };
+  if (input) input.placeholder = placeholders[mode] || placeholders.free;
+}
+
+function autoResizeChatInput() {
+  const input = document.getElementById('chat-input');
+  if (!input) return;
+  input.style.height = 'auto';
+  input.style.height = Math.min(input.scrollHeight, 130) + 'px';
+}
+
+function fillChatPrompt(text) {
+  const input = document.getElementById('chat-input');
+  if (!input) return;
+  input.value = text;
+  autoResizeChatInput();
+  input.focus();
+}
+
+function renderChatStatus(text = '') {
+  const el = document.getElementById('chat-status');
+  if (el) el.textContent = text;
+}
+
+function renderChat() {
+  loadChatSettingsUI();
+  const feed = document.getElementById('chat-feed');
+  if (!feed) return;
+  if (!chatHistory.length) {
+    feed.innerHTML = emptyState('چت آماده است', 'یک حالت انتخاب کن و از مربی زبانت سوال بپرس.', 'book');
+    return;
+  }
+  feed.innerHTML = chatHistory.map((m, i) => `<div class="chat-msg ${m.role === 'user' ? 'user' : 'assistant'}">
+    <div class="chat-meta">${m.role === 'user' ? 'تو' : 'مربی زبان'}</div>${h(m.content)}
+  </div>`).join('');
+  feed.scrollTop = feed.scrollHeight;
+}
+
+function getLearningContext() {
+  const active = activeWords().slice(0, 24).map(w => `${w.en}: ${w.fa}${w.pr ? ` (${w.pr})` : ''}${w.cat ? ` [${w.cat}]` : ''}`).join('\n');
+  const hard = hardWords().slice(0, 12).map(w => `${w.en}: ${w.fa}`).join('\n');
+  const recentNotes = notes.slice(0, 8).map(n => `- ${n.title}${(n.tags || []).length ? ` | tags: ${(n.tags || []).join(', ')}` : ''}`).join('\n');
+  return [
+    active ? `Saved vocabulary:\n${active}` : '',
+    hard ? `Hard words:\n${hard}` : '',
+    recentNotes ? `Notebook lessons:\n${recentNotes}` : ''
+  ].filter(Boolean).join('\n\n');
+}
+
+function chatSystemPrompt() {
+  const modes = {
+    free: 'Answer the learner question clearly.',
+    correct: 'Correct the English sentence. Explain mistakes in Persian, then provide a natural version and 2 alternatives.',
+    word: 'Explain the word for a Persian speaker: meaning, pronunciation hint if useful, examples, synonyms, antonyms, common mistakes.',
+    lesson: 'Create a short practical English lesson with examples, mini practice, and Persian explanations.',
+    conversation: 'Role-play a realistic English conversation. Ask one short question at a time, correct the learner gently in Persian.',
+    quiz: 'Create a short quiz using the saved vocabulary. Ask one item at a time and wait for the learner answer.'
+  };
+  return `You are a bilingual English learning coach for Persian speakers.
+Explain mainly in Persian, include English examples, be practical and concise.
+Be encouraging but not childish. Keep answers structured and easy to scan.
+Current mode: ${chatMode}. ${modes[chatMode] || modes.free}
+Use the user's saved vocabulary and notes when relevant. If there is not enough app data, still help normally.`;
+}
+
+function buildChatMessages(userText) {
+  const context = getLearningContext();
+  const recent = chatHistory.slice(-8).map(m => ({ role: m.role, content: m.content }));
+  return [
+    { role: 'system', content: chatSystemPrompt() },
+    ...(context ? [{ role: 'system', content: `App context:\n${context}` }] : []),
+    ...recent,
+    { role: 'user', content: userText }
+  ];
+}
+
+async function sendChatMessage() {
+  const input = document.getElementById('chat-input');
+  const text = (input?.value || '').trim();
+  if (!text) return;
+  saveChatSettings();
+  if (!chatSettings.apiKey) {
+    renderChatStatus('اول API Key را در تنظیمات اتصال وارد کن.');
+    openCollapseSection('chat-settings-panel', 'chat-settings-toggle');
+    return;
+  }
+  chatHistory.push({ role: 'user', content: text, ts: Date.now(), mode: chatMode });
+  input.value = '';
+  renderChat();
+  renderChatStatus('در حال فکر کردن...');
+  try {
+    const endpoint = `${chatSettings.baseUrl.replace(/\/+$/, '')}/chat/completions`;
+    const payload = {
+      model: chatSettings.model,
+      messages: buildChatMessages(text),
+      temperature: chatMode === 'quiz' || chatMode === 'correct' ? 0.35 : 0.55
+    };
+    let res = await fetch(endpoint, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${chatSettings.apiKey}`
+      },
+      body: JSON.stringify(payload)
+    });
+    let data = await res.json().catch(() => ({}));
+    if (!res.ok && chatSettings.provider === 'deepseek' && chatSettings.model === 'deepseek-chat') {
+      payload.model = 'deepseek-v4-flash';
+      res = await fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${chatSettings.apiKey}` },
+        body: JSON.stringify(payload)
+      });
+      data = await res.json().catch(() => ({}));
+      if (res.ok) {
+        chatSettings.model = 'deepseek-v4-flash';
+        save();
+        loadChatSettingsUI();
+      }
+    }
+    if (!res.ok) throw new Error(data.error?.message || `خطای اتصال (${res.status})`);
+    const answer = data.choices?.[0]?.message?.content || 'پاسخی دریافت نشد.';
+    chatHistory.push({ role: 'assistant', content: answer, ts: Date.now(), mode: chatMode });
+    save();
+    renderChat();
+    renderChatStatus('');
+  } catch (e) {
+    renderChatStatus('خطا: ' + e.message);
+  }
+}
+
+function clearChatHistory() {
+  if (chatHistory.length && !confirm('تاریخچه چت پاک شود؟')) return;
+  chatHistory = [];
+  save();
+  renderChat();
+  renderChatStatus('');
 }
 
 // IMPORT
@@ -2849,7 +3143,8 @@ function showPanel(name, btn) {
   if (name === 'add' && document.getElementById('add-list-panel')?.classList.contains('open')) renderList();
   if (name === 'stats') updateStatsPanel();
   if (name === 'notes') renderNotes();
-  if (name === 'more') renderCategories();
+  if (name === 'chat') renderChat();
+  if (name === 'more') { renderCategories(); renderNoteTags(); }
 }
 
 function toggleMoreSection(id, btn) {
@@ -2860,6 +3155,7 @@ function toggleMoreSection(id, btn) {
   btn?.classList.toggle('open', open);
   if (open && id === 'more-list-panel') renderList();
   if (open && id === 'more-cats-panel') renderCategories();
+  if (open && id === 'more-note-tags-panel') renderNoteTags();
 }
 
 function openCollapseSection(id, btnId) {
@@ -2943,7 +3239,7 @@ if (window.speechSynthesis) {
   speechSynthesis.getVoices();
 }
 
-load(); loadDarkMode(); hydrateIcons(); updateStats(); renderCategories(); renderNotes(); loadFlashSettingsUI(); startFlash();
+load(); loadDarkMode(); hydrateIcons(); initNoteEditor(); updateStats(); renderCategories(); renderNotes(); renderChat(); loadFlashSettingsUI(); startFlash();
 setInterval(trackSessionTime, 60000);
 </script>
 </body>
