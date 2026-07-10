@@ -225,6 +225,9 @@ input:focus,select:focus,textarea:focus{border-color:var(--accent);box-shadow:0 
 .note-item-meta{font-size:11px;color:var(--text3)}
 .note-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
 .note-tag{background:var(--accent-bg);color:var(--accent);border-radius:999px;padding:3px 9px;font-size:10px;font-weight:800}
+.note-item .detail-actions{grid-template-columns:1fr auto 1fr;align-items:center}
+.note-export-btn{width:36px!important;height:36px!important;min-width:36px;padding:0!important;border-radius:999px}
+.note-export-btn .ui-icon{width:17px;height:17px}
 .note-review{display:none}
 .note-review.open{display:block}
 .note-body{background:var(--surface2);border-radius:var(--rl);padding:12px;line-height:1.9;margin-top:10px;overflow-wrap:anywhere}
@@ -1300,6 +1303,11 @@ body.sheet-open .sheet-backdrop{backdrop-filter:blur(8px);-webkit-backdrop-filte
         <button class="btn btn-sm btn-outline" onclick="backupNotesJSON()">دانلود</button>
       </div>
       <div class="settings-item">
+        <span class="settings-label">بازیابی نوت تکی</span>
+        <button class="btn btn-sm" onclick="document.getElementById('restore-single-note-file').click()">انتخاب فایل</button>
+        <input type="file" id="restore-single-note-file" accept=".json" style="display:none" onchange="restoreSingleNoteJSON(this)">
+      </div>
+      <div class="settings-item">
         <span class="settings-label">بازیابی از JSON</span>
         <button class="btn btn-sm" onclick="document.getElementById('restore-file').click()">انتخاب فایل</button>
         <input type="file" id="restore-file" accept=".json" style="display:none" onchange="restoreJSON(this)">
@@ -1447,6 +1455,7 @@ function icon(name, cls = '') {
     rotate: '<path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/><path d="M3 21v-5h5"/>',
     folder: '<path d="M3 7a2 2 0 0 1 2-2h5l2 2h7a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/>',
     fileSpreadsheet: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6"/><path d="M8 13h8M8 17h8M8 9h2M12 9h4"/>',
+    download: '<path d="M12 3v11"/><path d="m7 9 5 5 5-5"/><path d="M5 20h14"/>',
     refresh: '<path d="M21 12a9 9 0 0 1-15.5 6.2L3 16"/><path d="M3 21v-5h5"/><path d="M3 12A9 9 0 0 1 18.5 5.8L21 8"/><path d="M21 3v5h-5"/>'
   };
   const key = String(name || '').replace(/-([a-z])/g, (_, c) => c.toUpperCase());
@@ -2685,6 +2694,7 @@ function renderNotes() {
       <div class="note-item-meta">${h(preview)}${preview.length >= 110 ? '...' : ''}</div>
       <div class="detail-actions">
         <button class="btn btn-sm btn-outline" onclick="editNote('${jsq(n.id)}');event.stopPropagation()">ویرایش</button>
+        <button class="btn btn-sm btn-outline note-export-btn" title="خروجی نوت" aria-label="خروجی نوت" onclick="backupSingleNoteJSON('${jsq(n.id)}',event)">${icon('download')}</button>
         <button class="btn btn-sm btn-danger" onclick="deleteNote('${jsq(n.id)}',event)">حذف</button>
       </div>
     </div>`;
@@ -2730,6 +2740,10 @@ function showNotesByTag(tag) {
       <div class="note-item-title">${h(n.title)}</div>
       <div class="note-item-meta">${h(preview)}${preview.length >= 90 ? '...' : ''}</div>
       <div class="note-tags">${(n.tags || []).map(t => `<span class="note-tag">${h(t)}</span>`).join('')}</div>
+      <div class="detail-actions">
+        <button class="btn btn-sm btn-outline" onclick="editNote('${jsq(n.id)}');event.stopPropagation()">ویرایش</button>
+        <button class="btn btn-sm btn-outline note-export-btn" title="خروجی نوت" aria-label="خروجی نوت" onclick="backupSingleNoteJSON('${jsq(n.id)}',event)">${icon('download')}</button>
+      </div>
     </div>`;
   }).join('');
 }
@@ -3045,6 +3059,51 @@ function backupNotesJSON() {
   a.click();
 }
 
+function safeFileName(text, fallback = 'note') {
+  const clean = String(text || fallback)
+    .trim()
+    .replace(/[\\/:*?"<>|]+/g, '-')
+    .replace(/\s+/g, '-')
+    .slice(0, 80);
+  return clean || fallback;
+}
+
+function normalizeImportedNote(raw) {
+  const source = raw?.note && typeof raw.note === 'object' ? raw.note : raw;
+  if (!source || typeof source !== 'object') throw new Error('فرمت نوت معتبر نیست');
+  const title = String(source.title || '').trim();
+  const content = String(source.content || '');
+  if (!title || (!notePlainText(content).trim() && !/<img/i.test(content))) throw new Error('نوت ناقص است');
+  return {
+    id: source.id || Date.now() + Math.random(),
+    title,
+    content,
+    tags: Array.isArray(source.tags) ? source.tags.map(String).map(s => s.trim()).filter(Boolean) : splitTerms(source.tags),
+    date: source.date || TODAY,
+    updatedAt: source.updatedAt || TODAY,
+    reviewCount: Number(source.reviewCount || 0),
+    lastReviewedAt: source.lastReviewedAt || ''
+  };
+}
+
+function backupSingleNoteJSON(id, e) {
+  if (e) e.stopPropagation();
+  const note = notes.find(n => String(n.id) === String(id));
+  if (!note) return;
+  const backup = {
+    version: 1,
+    type: 'vocab-note',
+    exportedAt: new Date().toISOString(),
+    note
+  };
+  const blob = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `${safeFileName(note.title, 'note')}.json`;
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
 function restoreJSON(input) {
   const file = input.files[0]; if (!file) return;
   const reader = new FileReader();
@@ -3085,6 +3144,36 @@ function restoreNotesJSON(input) {
       msg('settings-msg', `${toFa(notes.length)} نوت بازیابی شد`, 'var(--green)');
       input.value = '';
     } catch(err) { msg('settings-msg', 'فایل نوت معتبر نیست', 'var(--red)'); }
+  };
+  reader.readAsText(file);
+}
+
+function restoreSingleNoteJSON(input) {
+  const file = input.files[0]; if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      const data = JSON.parse(e.target.result);
+      const note = normalizeImportedNote(data);
+      const idx = notes.findIndex(n => String(n.id) === String(note.id));
+      if (idx >= 0) {
+        if (!confirm(`نوت «${note.title}» قبلاً وجود دارد. جایگزین شود؟`)) {
+          input.value = '';
+          return;
+        }
+        notes[idx] = note;
+      } else {
+        notes.unshift(note);
+      }
+      save();
+      renderNotes();
+      renderNoteTags();
+      msg('settings-msg', `نوت «${note.title}» وارد شد`, 'var(--green)');
+      input.value = '';
+    } catch(err) {
+      msg('settings-msg', 'فایل نوت تکی معتبر نیست', 'var(--red)');
+      input.value = '';
+    }
   };
   reader.readAsText(file);
 }
