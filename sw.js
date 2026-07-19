@@ -1,7 +1,8 @@
-const CACHE = 'vocab-v12';
+const CACHE = 'vocab-v39';
 const FILES = [
   './',
   './index.html',
+  './lucide.min.js',
   './manifest.json',
   './icon-192.png',
   './icon-512.png'
