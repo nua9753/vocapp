@@ -1818,7 +1818,18 @@ body.sheet-open .sheet-backdrop{backdrop-filter:blur(8px);-webkit-backdrop-filte
   </button>
 </nav>
 
-<script src="lucide.min.js"></script>
+<script>
+(function loadLucideIcons() {
+  const load = (src, onerror) => {
+    const script = document.createElement('script');
+    script.src = src;
+    script.onload = () => window.refreshLucideIcons?.();
+    script.onerror = onerror || null;
+    document.head.appendChild(script);
+  };
+  load('./lucide.min.js', () => load('https://cdn.jsdelivr.net/npm/lucide@1.25.0/dist/umd/lucide.min.js'));
+})();
+</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script>
 const KEY = 'vocab_pwa_v1';
