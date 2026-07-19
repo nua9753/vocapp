@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="theme-color" content="#1a73e8">
+<meta name="theme-color" content="#10101b">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="لغت‌نامه">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-192.png">
@@ -59,6 +59,7 @@ button,input,select,textarea{font-family:'Vazirmatn','Segoe UI',Tahoma,system-ui
 .title-icon{width:20px;height:20px;margin-left:6px;color:var(--accent)}
 .icon-only{width:34px;height:34px;padding:0!important;display:inline-flex;align-items:center;justify-content:center}
 .icon-only .ui-icon{width:19px;height:19px}
+.icon-only .lucide{pointer-events:none}
 .result-ok .ui-icon,.result-bad .ui-icon{margin-left:6px}
 
 /* Main scroll area */
@@ -133,7 +134,20 @@ input:focus,select:focus,textarea:focus{border-color:var(--accent);box-shadow:0 
 .flashcard:active{box-shadow:var(--shadow-1);transform:scale(.99)}
 .fc-word{font-size:32px;font-weight:850;color:var(--text);margin-bottom:6px}
 .fc-pron{font-size:14px;color:var(--text3);font-style:italic}
+.fc-pron-row{display:inline-flex;align-items:center;justify-content:center;gap:8px;margin:8px 0 2px;padding:6px 10px;border-radius:999px;background:var(--surface2);direction:rtl}
+.fc-pron-label{font-size:9.5px;font-weight:900;color:var(--accent);font-style:normal}
+.fc-pron-row .fc-pron{font-size:13px;color:var(--text2);font-style:normal}
 .fc-back{border-top:1px solid var(--border);padding-top:14px;margin-top:14px;width:100%}
+.fc-answer-label{font-size:10px;font-weight:900;color:var(--text3);margin-bottom:5px;letter-spacing:.2px}
+.fc-meaning{font-size:22px;font-weight:900;line-height:1.7;color:var(--accent)}
+.fc-example{display:flex;align-items:flex-start;gap:10px;margin-top:16px;padding:13px 14px;border:1px solid var(--hairline);border-radius:17px;text-align:left;direction:ltr}
+.fc-example .ui-icon{width:18px;height:18px;margin-top:2px;color:var(--accent)}
+.fc-example-copy{min-width:0;flex:1}
+.fc-example-label{display:block;font-size:9.5px;font-weight:900;color:var(--accent);direction:rtl;text-align:right;margin-bottom:4px}
+.fc-example-text{font-size:13.5px;font-weight:650;line-height:1.7;color:var(--text);overflow-wrap:anywhere}
+.fc-example-empty .fc-example-text{color:var(--text3);font-weight:600;direction:rtl;text-align:right}
+:root.dark-mode .fc-example{background:rgba(255,255,255,.045)}
+:root:not(.dark-mode) .fc-example{background:rgba(255,255,255,.56)}
 .fc-hint{font-size:12px;color:var(--text3);margin-top:10px}
 .flash-relations{margin-top:12px;text-align:right;background:var(--surface2);border-radius:var(--rl);padding:10px;cursor:pointer}
 .flash-relations summary{font-size:12px;font-weight:800;color:var(--accent);list-style:none}
@@ -141,8 +155,24 @@ input:focus,select:focus,textarea:focus{border-color:var(--accent);box-shadow:0 
 .relation-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;align-items:center}
 .relation-label{font-size:11px;font-weight:800;color:var(--text2)}
 .relation-chip{direction:ltr;background:var(--surface);color:var(--text);border-radius:999px;padding:4px 9px;font-size:12px;font-weight:800;box-shadow:var(--shadow-1)}
-.card-btns{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.flash-controls{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-bottom:10px;overflow:visible;padding-bottom:0}
+.card-btns{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) 48px;gap:10px;align-items:center}
+.card-btns .flash-delete-btn{
+  width:48px;height:48px;min-height:48px;padding:0;border-radius:16px;
+  color:var(--red);border-color:var(--red-border);background:var(--red-bg);
+}
+.card-btns .flash-delete-btn .ui-icon{width:19px;height:19px;margin:0}
+body.flash-answer-open #flash-area>.card-btns{
+  position:static;transform:none;width:100%;max-width:none;padding:0;gap:10px;border:0;
+  border-radius:0;backdrop-filter:none;-webkit-backdrop-filter:none;box-shadow:none;
+}
+body.flash-answer-open .fab{opacity:0;pointer-events:none;transform:scale(.8)}
+body.flash-answer-open #p-flash>.mode-row,
+body.flash-answer-open #p-flash>.flash-controls,
+body.flash-answer-open #p-flash>#fl-auto-note,
+body.flash-answer-open #p-flash>#fl-sound-panel{display:none!important}
+body.flash-answer-open #flash-area>.flashcard{min-height:455px;margin-top:2px}
+body.flash-answer-open .flashcard>.fc-hint{display:none}
+.flash-controls{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:12px;margin-bottom:10px;overflow:visible;padding-bottom:0}
 .flash-controls .btn{width:100%;min-width:0;min-height:44px;padding:9px 8px;border-radius:12px;font-size:12px;line-height:1.25;white-space:normal;box-shadow:0 1px 0 rgba(0,0,0,.03)}
 .flash-controls .btn .ui-icon{width:16px;height:16px}
 #fl-auto-btn::before,#fl-sentence-btn::before,#fl-sound-toggle::before,#fl-auto-stop::before{content:none}
@@ -225,14 +255,7 @@ input:focus,select:focus,textarea:focus{border-color:var(--accent);box-shadow:0 
 .note-item-meta{font-size:11px;color:var(--text3)}
 .note-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
 .note-tag{background:var(--accent-bg);color:var(--accent);border-radius:999px;padding:3px 9px;font-size:10px;font-weight:800}
-.note-item .detail-actions{grid-template-columns:1fr auto 1fr;align-items:center}
-.note-export-btn{width:36px!important;height:36px!important;min-width:36px;padding:0!important;border-radius:999px}
-.note-export-btn .ui-icon{width:17px;height:17px}
-.note-review{display:none}
-.note-review.open{display:block}
 .note-body{background:var(--surface2);border-radius:var(--rl);padding:12px;line-height:1.9;margin-top:10px;overflow-wrap:anywhere}
-.note-review-head{display:flex;align-items:center;justify-content:space-between;gap:8px}
-.note-review-count{font-size:11px;color:var(--text3);font-weight:800}
 
 /* Detail, analytics and motion */
 .detail-backdrop{position:fixed;inset:0;background:rgba(32,33,36,.42);z-index:30;display:none;align-items:flex-end;justify-content:center;padding:16px}
@@ -251,14 +274,31 @@ input:focus,select:focus,textarea:focus{border-color:var(--accent);box-shadow:0 
 .cat-stat-top{display:flex;justify-content:space-between;gap:8px;font-size:12px;font-weight:800;margin-bottom:7px}
 .mini-bar{height:7px;border-radius:999px;background:var(--border);overflow:hidden}
 .mini-fill{height:100%;border-radius:999px;background:var(--accent)}
-.study-calendar{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-top:10px;direction:ltr}
-.cal-day{aspect-ratio:1;border-radius:9px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:var(--text3);position:relative}
-.cal-day.on{background:var(--accent-bg);color:var(--accent)}
-.cal-day.hot{background:var(--accent);color:#fff}
-.cal-day.today{box-shadow:0 0 0 2px var(--accent)}
-.cal-head{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;direction:ltr;margin-top:8px;color:var(--text3);font-size:10px;text-align:center;font-weight:800}
-.panel.act .card,.panel.act .word-item,.panel.act .flashcard,.panel.act .quiz-q,.panel.act .type-q,.panel.act .hm-box{animation:riseIn .18s ease-out both}
-.word-item,.stats-word,.choice-btn,.hm-key,.btn,.mode-btn,.nav-btn,.flashcard{will-change:transform}
+.persian-cal-toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:4px}
+.persian-cal-title-wrap{min-width:0;text-align:center}
+.persian-cal-title{font-size:14px;font-weight:950;color:var(--text)}
+.persian-cal-progress{margin-top:2px;font-size:9.5px;font-weight:750;color:var(--text3)}
+.persian-cal-nav{display:grid;place-items:center;width:34px;height:34px;min-width:34px;border:1px solid var(--hairline);border-radius:11px;background:var(--surface2);color:var(--accent);cursor:pointer}
+.persian-cal-nav .ui-icon{width:16px;height:16px}
+.study-calendar{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-top:8px;direction:rtl}
+.cal-day{aspect-ratio:1;border:1px solid transparent;border-radius:11px;background:var(--surface2);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-size:10px;font-weight:850;color:var(--text3);position:relative}
+.cal-day .cal-check{display:none;width:12px;height:12px}
+.cal-day.on{background:var(--green-bg);border-color:var(--green-border);color:var(--green)}
+.cal-day.on .cal-check{display:block}
+.cal-day.partial::after{content:"";position:absolute;bottom:5px;width:4px;height:4px;border-radius:50%;background:var(--accent)}
+.cal-day.today{box-shadow:0 0 0 2px var(--surface),0 0 0 4px var(--accent)}
+.cal-day.future,.cal-day.blank{opacity:.35;background:transparent}.cal-day.blank{border:0}
+.cal-head{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;direction:rtl;margin-top:10px;color:var(--text3);font-size:9.5px;text-align:center;font-weight:850}
+.stat-action{position:relative;cursor:pointer;font-family:inherit;color:inherit}
+.stat-action::after{content:"";position:absolute;left:7px;top:7px;width:5px;height:5px;border-left:1.5px solid var(--accent);border-bottom:1.5px solid var(--accent);transform:rotate(45deg);opacity:.7}
+.learned-modal{z-index:29}
+.learned-modal-sheet{display:flex;flex-direction:column;max-height:min(82vh,720px);overflow:hidden}
+.learned-modal-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
+.learned-modal-title{display:flex;align-items:center;gap:8px;font-size:15px;font-weight:950}.learned-modal-title .ui-icon{color:var(--accent)}
+.learned-modal-count{font-size:10px;color:var(--text3);font-weight:850}
+.learned-modal-sheet .stats-list{max-height:none;overflow:auto;padding:2px;overscroll-behavior:contain}
+body.learned-modal-open .main{overflow:hidden}
+.choice-btn,.hm-key,.btn,.mode-btn,.nav-btn,.flashcard{will-change:transform}
 .word-item:active,.stats-word:active{transform:scale(.99)}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 @keyframes sheetUp{from{transform:translateY(24px);opacity:.9}to{transform:translateY(0);opacity:1}}
@@ -284,11 +324,12 @@ input:focus,select:focus,textarea:focus{border-color:var(--accent);box-shadow:0 
 .practice-sub.act{display:block;animation:riseIn .18s ease-out both}
 
 /* FAB */
-.fab{position:fixed;bottom:calc(78px + var(--safe-bottom));right:auto;left:calc((100vw - min(100vw, 430px)) / 2 + min(100vw, 430px) - 78px);transform:none;width:56px;height:56px;border-radius:50%;
+.fab{position:fixed;bottom:calc(78px + var(--safe-bottom));right:auto;left:calc((100vw - min(100vw, 430px)) / 2 + 22px);transform:none;width:56px;height:56px;border-radius:50%;
   background:var(--accent);border:none;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;
   box-shadow:0 14px 26px -8px rgba(79,60,201,.55);z-index:25;transition:transform .15s}
 .fab:active{transform:scale(.92)}
 .fab svg{width:24px;height:24px}
+body:not([data-panel="flash"]) #fab-add{opacity:0;visibility:hidden;pointer-events:none;transform:translateY(8px) scale(.85)}
 :root.dark-mode .fab{box-shadow:0 14px 26px -8px rgba(0,0,0,.6)}
 
 /* Bottom sheet (add word) */
@@ -519,7 +560,7 @@ input:focus,select:focus,textarea:focus,.note-editor:focus{
 .fab{
   bottom:calc(94px + var(--safe-bottom));
   right:auto;
-  left:calc((100vw - min(100vw, 430px)) / 2 + min(100vw, 430px) - 78px);
+  left:calc((100vw - min(100vw, 430px)) / 2 + 22px);
   width:60px;
   height:60px;
   background:var(--accent);
@@ -797,33 +838,83 @@ body.sheet-open .sheet-backdrop{backdrop-filter:blur(8px);-webkit-backdrop-filte
 .chart-bar.today{box-shadow:0 0 0 2px var(--surface),0 0 0 3px var(--accent)}
 .note-tag-cloud{display:flex;flex-wrap:wrap;gap:8px}
 .note-tag-btn{width:auto;min-height:36px;padding:8px 12px;border-radius:999px}
+.note-tag-btn.active{color:#fff;border-color:transparent;background:var(--accent);box-shadow:0 8px 18px rgba(112,71,198,.20)}
+.note-tag-btn.active .badge{color:#fff;border-color:rgba(255,255,255,.28);background:rgba(255,255,255,.16)}
+.note-tag-filter{margin-bottom:12px;padding:11px;border:1px solid var(--hairline);border-radius:18px;background:var(--surface2)}
+.note-tag-filter-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:9px;color:var(--text2);font-size:12px;font-weight:900}
+.note-tag-filter-head>span:first-child{display:inline-flex;align-items:center}
+.note-tag-filter-head .ui-icon{width:16px;height:16px;color:var(--accent);margin-left:5px}
+.note-tag-filter-count{color:var(--text3);font-size:10px;font-weight:800}
+.note-tag-empty{color:var(--text3);font-size:11px;font-weight:700;padding:3px}
 .tag-note-list{display:grid;gap:10px;margin-top:14px}
-.chat-shell{display:flex;flex-direction:column;gap:12px}
-.chat-hero{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;background:var(--surface2);border:1px solid var(--hairline);border-radius:22px;padding:14px}
-.chat-title{font-size:18px;font-weight:950;color:var(--text);margin-bottom:4px}
-.chat-sub{font-size:12px;color:var(--text3);font-weight:750;line-height:1.8}
-.chat-mode-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-.chat-mode{min-height:64px;align-items:flex-start;text-align:right;justify-content:flex-start;border-radius:18px;padding:12px}
+.chat-main-card{padding:0!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+.chat-shell{display:flex;flex-direction:column;gap:9px}
+.chat-hero{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--surface2);border:1px solid var(--hairline);border-radius:20px;padding:10px 12px}
+.chat-hero-copy{display:flex;align-items:center;gap:10px;min-width:0}
+.chat-hero-icon{display:grid;place-items:center;flex:0 0 auto;width:38px;height:38px;border-radius:13px;color:var(--accent);background:var(--accent-bg);border:1px solid var(--accent-border)}
+.chat-hero-icon .ui-icon{width:20px;height:20px}
+.chat-title{font-size:15px;font-weight:950;color:var(--text);margin-bottom:1px}
+.chat-sub{font-size:10.5px;color:var(--text3);font-weight:750;line-height:1.65}
+.chat-clear-btn{display:grid!important;place-items:center;width:38px!important;height:38px!important;min-width:38px;min-height:38px;padding:0!important;border-radius:13px!important;color:var(--text3)}
+.chat-clear-btn .ui-icon{width:17px;height:17px;margin:0}
+.chat-mode-grid{display:flex;flex-wrap:nowrap;width:100%;max-width:100%;gap:7px;overflow-x:auto;overflow-y:hidden;direction:rtl;padding:1px 1px 7px;scroll-snap-type:x mandatory;scroll-padding-inline:1px;scrollbar-width:thin;scrollbar-color:rgba(128,88,216,.34) transparent;-webkit-overflow-scrolling:touch;overscroll-behavior-inline:contain;touch-action:pan-x}
+.chat-mode-grid::-webkit-scrollbar{display:block;height:3px}
+.chat-mode-grid::-webkit-scrollbar-track{background:transparent}
+.chat-mode-grid::-webkit-scrollbar-thumb{border-radius:999px;background:rgba(128,88,216,.34)}
+.chat-mode{display:flex;align-items:center;flex:0 0 124px;width:124px;min-width:124px;min-height:42px;gap:7px;text-align:right;justify-content:center;border-radius:15px;padding:8px 9px;scroll-snap-align:start;scroll-snap-stop:always}
+.chat-mode .ui-icon{width:16px;height:16px;margin:0;color:var(--text3)}
+.chat-mode-label{font-size:11px;font-weight:900;white-space:nowrap}
+.chat-mode .chat-sub{display:none}
 .chat-mode.active{border-color:var(--accent-border);background:var(--accent-bg);color:var(--accent)}
-.chat-feed{display:flex;flex-direction:column;gap:10px;min-height:330px;max-height:52vh;overflow:auto;padding:14px 10px;background:var(--surface2);border:1px solid var(--hairline);border-radius:24px;scrollbar-width:none}
+.chat-mode.active .ui-icon{color:var(--accent)}
+.chat-flow{display:none}
+.chat-flow.open{display:block}
+.chat-flow-card{padding:11px;border:1px solid var(--accent-border);border-radius:18px;background:var(--accent-bg)}
+.chat-flow-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:9px}
+.chat-flow-question{display:flex;align-items:center;gap:7px;color:var(--text);font-size:12px;font-weight:950}
+.chat-flow-question .ui-icon{width:17px;height:17px;color:var(--accent)}
+.chat-flow-back{display:grid!important;place-items:center;width:31px!important;height:31px!important;min-width:31px;min-height:31px;padding:0!important;border-radius:10px!important}
+.chat-flow-back .ui-icon{width:15px;height:15px;margin:0}
+.chat-choice-grid{display:flex;flex-wrap:wrap;gap:6px;max-height:150px;overflow:auto;scrollbar-width:none}
+.chat-choice-grid::-webkit-scrollbar{display:none}
+.chat-choice{display:inline-flex;align-items:center;gap:6px;width:auto;min-height:36px;padding:7px 10px;border:1px solid var(--hairline);border-radius:12px;background:var(--surface);color:var(--text2);font-size:11px;font-weight:850}
+.chat-choice .badge{margin:0;font-size:9px}
+.chat-word-search{height:40px!important;min-height:40px!important;margin-bottom:8px!important;border-radius:13px!important;font-size:12px!important}
+.chat-word-choice{display:flex;flex-direction:column;align-items:flex-start;min-width:88px;line-height:1.4}
+.chat-word-choice strong{font-size:12px;color:var(--text)}
+.chat-word-choice small{max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--text3);font-size:9.5px}
+.chat-feed{display:flex;flex-direction:column;gap:10px;height:clamp(330px,45dvh,500px);overflow:auto;padding:13px 10px;background:var(--surface2);border:1px solid var(--hairline);border-radius:22px;scrollbar-width:none;overscroll-behavior:contain}
 .chat-feed::-webkit-scrollbar{display:none}
-.chat-msg{max-width:88%;border:1px solid var(--hairline);border-radius:22px;padding:12px 14px;line-height:1.95;font-size:14px;white-space:pre-wrap;overflow-wrap:anywhere}
-.chat-msg.user{align-self:flex-start;background:var(--accent);color:#fff;border-color:transparent;border-bottom-left-radius:8px}
-.chat-msg.assistant{align-self:flex-end;background:var(--surface);color:var(--text);border-bottom-right-radius:8px;box-shadow:0 1px 2px rgba(28,24,20,.04)}
-.chat-meta{font-size:10px;color:var(--text3);font-weight:800;margin-bottom:4px}
+.chat-msg{max-width:91%;border:1px solid var(--hairline);border-radius:19px;padding:10px 12px;line-height:1.85;font-size:13px;overflow-wrap:anywhere}
+.chat-msg.user{align-self:flex-start;background:linear-gradient(145deg,#9B6DE7,#7047C6);color:#fff;border-color:transparent;border-bottom-left-radius:7px;box-shadow:0 8px 20px rgba(91,54,164,.16)}
+.chat-msg.assistant{align-self:flex-end;background:var(--surface);color:var(--text);border-bottom-right-radius:7px;box-shadow:0 4px 14px rgba(28,24,20,.045)}
+.chat-meta{display:flex;align-items:center;gap:5px;font-size:9.5px;color:var(--text3);font-weight:850;margin-bottom:5px}
+.chat-meta .ui-icon{width:13px;height:13px}
 .chat-msg.user .chat-meta{color:rgba(255,255,255,.72)}
-.chat-input-card{padding-top:8px}
-.chat-input-row{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:end;background:var(--surface);border:1px solid var(--hairline);border-radius:22px;padding:8px;margin-top:8px}
-.chat-input-row textarea{min-height:52px;max-height:130px;resize:none;border:0;background:transparent;box-shadow:none;padding:11px 12px;border-radius:16px}
+.chat-content{white-space:normal}
+.chat-content p{margin:0 0 9px}.chat-content p:last-child{margin-bottom:0}
+.chat-content h3,.chat-content h4{margin:10px 0 5px;color:var(--text);line-height:1.55}.chat-content h3{font-size:14px}.chat-content h4{font-size:13px}
+.chat-content ul,.chat-content ol{margin:6px 0 10px;padding-right:19px}.chat-content li{margin:3px 0}
+.chat-content strong{font-weight:950;color:inherit}.chat-content em{color:var(--text2)}
+.chat-content code{direction:ltr;display:inline-block;padding:1px 5px;border-radius:6px;background:var(--surface2);font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.92em}
+.chat-content pre{direction:ltr;overflow:auto;margin:7px 0;padding:10px;border-radius:12px;background:var(--surface2);text-align:left}.chat-content pre code{padding:0;background:transparent}
+.chat-content blockquote{margin:7px 0;padding:7px 10px;border-right:3px solid var(--accent);border-radius:8px;background:var(--accent-bg);color:var(--text2)}
+.chat-content hr{border:0;border-top:1px solid var(--hairline);margin:10px 0}
+.chat-input-card{padding-top:0}
+.chat-input-row{display:grid;grid-template-columns:1fr auto;gap:7px;align-items:end;background:var(--surface);border:1px solid var(--hairline);border-radius:20px;padding:7px;margin-top:4px;box-shadow:0 8px 24px rgba(37,25,62,.06)}
+.chat-input-row:focus-within{border-color:var(--accent-border);box-shadow:0 0 0 3px rgba(128,88,216,.08),0 8px 24px rgba(37,25,62,.06)}
+.chat-input-row textarea{min-height:46px;max-height:120px;resize:none;border:0;background:transparent;box-shadow:none;padding:9px 10px;border-radius:14px;font-size:13px;line-height:1.7}
 .chat-input-row textarea:focus{box-shadow:none;background:transparent;border:0}
-.chat-send{width:52px;height:52px;padding:0;border-radius:18px;align-self:end}
-.chat-status{min-height:20px;font-size:12px;color:var(--text3);text-align:center;font-weight:750}
-.chat-quick-row{display:flex;gap:8px;overflow:auto;padding:2px 0 8px;scrollbar-width:none}
+.chat-send{width:46px;height:46px;padding:0;border-radius:15px;align-self:end}
+.chat-send .ui-icon{width:19px;height:19px;margin:0}
+.chat-status{min-height:17px;font-size:10.5px;color:var(--text3);text-align:center;font-weight:750}
+.chat-quick-row{display:flex;gap:6px;overflow:auto;padding:1px 0 4px;scrollbar-width:none}
 .chat-quick-row::-webkit-scrollbar{display:none}
-.chat-chip{width:auto;white-space:nowrap;min-height:34px;padding:7px 11px;border-radius:999px;font-size:12px}
+.chat-chip{display:inline-flex;align-items:center;gap:5px;width:auto;white-space:nowrap;min-height:31px;padding:6px 9px;border-radius:999px;font-size:10.5px}
+.chat-chip .ui-icon{width:14px;height:14px;margin:0}
 .chat-settings-grid{display:grid;gap:10px}
 .chat-api-warning{font-size:12px;color:var(--text3);line-height:1.8;background:var(--surface2);border-radius:16px;padding:10px 12px}
-@media (max-width:360px){.chat-mode-grid{grid-template-columns:1fr}.chat-msg{max-width:94%}}
+@media (max-width:360px){.chat-msg{max-width:95%}.chat-feed{height:clamp(310px,43dvh,430px)}}
 .flashcard{
   border-radius:26px;
   box-shadow:0 12px 30px rgba(81,56,216,.12);
@@ -933,9 +1024,308 @@ body.sheet-open .sheet-backdrop{backdrop-filter:blur(8px);-webkit-backdrop-filte
   padding:34px 18px;
   border-radius:22px;
 }
+
+/* Midnight glass visual system — matched to the supplied mobile reference */
+:root.dark-mode{
+  --bg:#10101B;
+  --surface:rgba(34,34,52,.78);
+  --surface2:rgba(255,255,255,.055);
+  --surface3:rgba(29,29,46,.84);
+  --border:rgba(202,190,255,.13);
+  --hairline:rgba(202,190,255,.12);
+  --text:#F8F7FF;
+  --text2:#C0BCCF;
+  --text3:#858195;
+  --accent:#AE8BFF;
+  --accent2:#8C67EF;
+  --accent-bg:rgba(166,130,255,.15);
+  --accent-border:rgba(180,147,255,.34);
+  --green:#B39BFF;
+  --green-bg:rgba(174,139,255,.14);
+  --green-border:rgba(180,147,255,.32);
+  --shadow-1:0 16px 38px rgba(0,0,0,.22),inset 0 1px 0 rgba(255,255,255,.035);
+  --shadow-2:0 24px 60px rgba(0,0,0,.34),0 0 40px rgba(128,91,224,.09);
+  --shadow-soft:0 30px 100px rgba(0,0,0,.55);
+  --blur:saturate(125%) blur(22px);
+}
+:root.dark-mode html,
+:root.dark-mode body{background:#10101B}
+:root.dark-mode body{
+  background:
+    radial-gradient(ellipse 90% 38% at 70% -5%,rgba(118,88,210,.13),transparent 70%),
+    radial-gradient(ellipse 70% 48% at -20% 48%,rgba(91,72,163,.08),transparent 72%),
+    linear-gradient(180deg,#12121F 0%,#10101B 55%,#0E0E18 100%);
+  border-inline:1px solid rgba(255,255,255,.025);
+}
+:root.dark-mode body::before{
+  content:"";position:fixed;inset:0;max-width:430px;margin:auto;pointer-events:none;
+  background:linear-gradient(105deg,transparent 25%,rgba(255,255,255,.018) 46%,transparent 66%);z-index:0;
+}
+:root.dark-mode .header,:root.dark-mode .main,:root.dark-mode .bottom-nav,:root.dark-mode .fab{position:relative;z-index:1}
+:root.dark-mode .header{
+  min-height:82px;margin:0;padding:22px 20px 12px;border:0;border-radius:0;background:transparent;
+  box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none;justify-content:center;
+}
+:root.dark-mode .header h1{
+  position:absolute;left:50%;transform:translateX(-50%);direction:rtl;white-space:nowrap;
+  font-size:20px;font-weight:900;color:var(--text);
+}
+:root.dark-mode .header h1 .title-icon{
+  width:38px;height:38px;padding:9px;margin-left:10px;border:1px solid var(--accent-border);
+  border-radius:14px;color:#C4A8FF;background:linear-gradient(145deg,rgba(190,160,255,.18),rgba(111,73,202,.16));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.09),0 12px 28px rgba(48,30,91,.23);
+}
+:root.dark-mode .header-pills{position:absolute;left:16px;direction:ltr;z-index:2}
+:root.dark-mode .header .pill{
+  min-width:34px;min-height:34px;padding:6px 9px;border:1px solid rgba(255,255,255,.065);
+  background:rgba(255,255,255,.045);color:var(--text2);box-shadow:none;
+}
+:root.dark-mode .header .pill-green{color:#C4A8FF;background:rgba(174,139,255,.10)}
+:root.dark-mode .main{padding:10px 16px 128px}
+:root.dark-mode .panel.act{animation:midnightRise .28s ease-out both}
+@keyframes midnightRise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+.vocab-overview{
+  display:block;margin:2px 0 12px;padding:8px 10px;border:1px solid var(--hairline);border-radius:20px;
+  box-shadow:var(--shadow-1);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);overflow:hidden;position:relative;
+}
+.vocab-overview::after{content:"";position:absolute;width:90px;height:90px;left:-38px;top:-52px;border-radius:50%;pointer-events:none;filter:blur(2px)}
+.vocab-count-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;position:relative;z-index:1}
+.vocab-count-card{display:flex;align-items:center;justify-content:center;gap:9px;min-height:48px;padding:4px 10px;border:0;border-radius:0}
+.vocab-count-card.learned{border-right:1px solid var(--hairline)}
+.vocab-count-icon{width:34px;height:34px;display:grid;place-items:center;flex:0 0 auto;border-radius:12px;color:var(--accent)}
+.vocab-count-icon .ui-icon{width:18px;height:18px}
+.vocab-count-card strong{display:block;font-size:19px;line-height:1;font-weight:950;color:var(--text)}
+.vocab-count-card small{display:block;margin-top:4px;font-size:9.5px;font-weight:750;color:var(--text2);white-space:nowrap}
+:root.dark-mode .vocab-overview{background:linear-gradient(135deg,rgba(43,43,65,.84),rgba(28,28,45,.74))}
+:root.dark-mode .vocab-overview::after{background:rgba(153,107,244,.11)}
+:root.dark-mode .vocab-count-card{background:transparent;box-shadow:none}
+:root.dark-mode .vocab-count-icon{background:linear-gradient(145deg,rgba(187,151,255,.20),rgba(105,69,185,.13));border:1px solid rgba(190,157,255,.18)}
+:root.dark-mode .vocab-count-card.learned .vocab-count-icon{background:linear-gradient(145deg,rgba(152,118,236,.28),rgba(89,55,161,.16));color:#CEB5FF}
+
+:root.dark-mode .card{
+  background:linear-gradient(145deg,rgba(39,39,58,.73),rgba(25,25,41,.74));border:1px solid var(--hairline);
+  border-radius:27px;padding:17px;box-shadow:var(--shadow-1);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
+}
+:root.dark-mode .card-title{font-size:14px;color:var(--text);padding:0 2px}
+:root.dark-mode .mode-row{padding:0 1px 3px;gap:8px;margin-bottom:12px}
+:root.dark-mode .mode-btn,:root.dark-mode .mode-row select,:root.dark-mode .segmented{
+  min-height:43px;border:1px solid var(--hairline)!important;border-radius:16px!important;
+  background:rgba(255,255,255,.045);color:var(--text2);box-shadow:inset 0 1px 0 rgba(255,255,255,.035);
+}
+:root.dark-mode .mode-btn.act,:root.dark-mode .segmented button.act{
+  background:linear-gradient(135deg,#A981F6,#7651D4);color:#fff;border-color:rgba(194,165,255,.42)!important;
+  box-shadow:0 10px 24px rgba(91,55,181,.28);
+}
+:root.dark-mode .flash-controls{gap:8px;margin-bottom:13px}
+:root.dark-mode .flash-controls .btn{
+  min-height:48px;border-radius:16px;border:1px solid var(--hairline);background:rgba(255,255,255,.045);color:var(--text2);box-shadow:none;
+}
+:root.dark-mode .flash-controls .btn-primary,:root.dark-mode #fl-auto-btn{
+  color:#C8AFFF;border-color:var(--accent-border);background:linear-gradient(145deg,rgba(177,137,255,.16),rgba(102,68,180,.11));
+}
+:root.dark-mode .prog-wrap{margin:0 4px 14px}:root.dark-mode .prog-row{color:var(--text2);padding-inline:2px}
+:root.dark-mode .prog-bar{height:5px;background:rgba(255,255,255,.075)}
+:root.dark-mode .prog-fill{background:linear-gradient(90deg,#7B55DA,#BE9BFF);box-shadow:0 0 14px rgba(174,139,255,.45)}
+:root.dark-mode .flashcard{
+  min-height:375px;margin:0 0 14px;padding:42px 24px 36px;border:1px solid rgba(190,164,255,.18);border-radius:34px;
+  background:radial-gradient(ellipse 90% 32% at 72% 11%,rgba(136,94,232,.20),transparent 68%),radial-gradient(ellipse 75% 20% at 8% 38%,rgba(159,125,236,.10),transparent 72%),linear-gradient(155deg,rgba(44,43,67,.92),rgba(25,25,41,.94));
+  box-shadow:0 26px 66px rgba(0,0,0,.31),inset 0 1px 0 rgba(255,255,255,.05),0 0 0 1px rgba(119,87,191,.04);overflow:hidden;
+}
+:root.dark-mode .flashcard::before{
+  content:"";position:absolute;width:135%;height:112px;left:-20%;top:54px;border-radius:50%;
+  background:radial-gradient(ellipse at center,rgba(151,112,242,.18),rgba(92,62,170,.03) 62%,transparent 70%);transform:rotate(-8deg);filter:blur(5px);pointer-events:none;
+}
+:root.dark-mode .flashcard::after{
+  content:"";display:block;position:absolute;inset:auto -10% -44px;height:105px;border-radius:50% 50% 0 0;
+  background:rgba(123,83,210,.07);filter:blur(8px);pointer-events:none;
+}
+:root.dark-mode .flashcard>*{position:relative;z-index:1}
+:root.dark-mode .fc-word{display:flex;flex-direction:column;align-items:center;font-size:38px;font-weight:900;letter-spacing:.2px;color:#fff;margin-bottom:10px}
+:root.dark-mode .fc-word .speak-btn{
+  order:-1;width:70px;height:70px;margin:0 0 30px;border:1px solid rgba(190,160,255,.20);border-radius:50%;
+  background:radial-gradient(circle at 38% 30%,rgba(190,159,255,.31),rgba(80,54,142,.28));color:#C3A4FF;
+  box-shadow:0 14px 34px rgba(29,18,58,.36),inset 0 1px 0 rgba(255,255,255,.08);
+}
+:root.dark-mode .fc-word .speak-btn .ui-icon{width:30px;height:30px}
+:root.dark-mode .fc-pron{font-size:15px;color:#8E8A9C;direction:ltr}:root.dark-mode .fc-hint{margin-top:28px;font-size:12px;color:#777386}
+:root.dark-mode .fc-back{border-top-color:rgba(255,255,255,.09);padding-top:20px;margin-top:20px}
+:root.dark-mode .fc-meaning{color:#C4A7FF}
+:root.dark-mode .btn{min-height:50px;border:1px solid var(--hairline);border-radius:17px;background:rgba(255,255,255,.055);color:var(--text2);box-shadow:none}
+:root.dark-mode .btn-primary{
+  border-color:rgba(191,159,255,.32);background:linear-gradient(135deg,#986DE8 0%,#7049C7 100%);color:#fff;
+  box-shadow:0 16px 34px rgba(72,42,139,.28),inset 0 1px 0 rgba(255,255,255,.13);
+}
+:root.dark-mode .btn-outline{border-color:var(--accent-border);background:var(--accent-bg);color:#C4A7FF}
+:root.dark-mode .card-btns .btn{min-height:60px}
+:root.dark-mode .card-btns .flash-delete-btn{height:48px;min-height:48px}
+:root.dark-mode button:focus-visible,
+:root.dark-mode input:focus-visible,
+:root.dark-mode select:focus-visible,
+:root.dark-mode textarea:focus-visible{
+  outline:2px solid #B996FF;
+  outline-offset:2px;
+}
+:root.dark-mode input[type=text],:root.dark-mode input[type=search],:root.dark-mode input[type=password],:root.dark-mode select,:root.dark-mode textarea,:root.dark-mode .note-editor{
+  border:1px solid var(--hairline);border-radius:18px;background:rgba(255,255,255,.05);color:var(--text);box-shadow:inset 0 1px 0 rgba(255,255,255,.025);
+}
+:root.dark-mode input:focus,:root.dark-mode select:focus,:root.dark-mode textarea:focus,:root.dark-mode .note-editor:focus{border-color:var(--accent-border);box-shadow:0 0 0 4px rgba(166,130,255,.10)}
+:root.dark-mode .stat,:root.dark-mode .word-item,:root.dark-mode .stats-word,:root.dark-mode .note-item,:root.dark-mode .quiz-q,:root.dark-mode .type-q,:root.dark-mode .hm-box,:root.dark-mode .choice-btn,:root.dark-mode .more-toggle,:root.dark-mode .chat-hero,:root.dark-mode .chat-feed,:root.dark-mode .chat-input-row{
+  border-color:var(--hairline);background:rgba(255,255,255,.045);box-shadow:inset 0 1px 0 rgba(255,255,255,.025);
+}
+:root.dark-mode .stat{border-radius:20px}:root.dark-mode .stat .n{color:#B798FF}
+:root.dark-mode .word-item,:root.dark-mode .stats-word,:root.dark-mode .note-item,:root.dark-mode .choice-btn{border-radius:21px}
+:root.dark-mode .badge-blue,:root.dark-mode .note-tag{color:#C5AAFF;background:rgba(174,139,255,.12);border-color:var(--accent-border)}
+:root.dark-mode .empty{border-color:rgba(190,164,255,.13);background:rgba(255,255,255,.025);color:var(--text3)}
+:root.dark-mode .sheet,:root.dark-mode .detail-sheet{border-color:rgba(197,171,255,.16);background:rgba(25,25,40,.96);box-shadow:0 -24px 70px rgba(0,0,0,.48)}
+:root.dark-mode .sheet-backdrop{display:none;backdrop-filter:none;-webkit-backdrop-filter:none}
+:root.dark-mode body.sheet-open .sheet-backdrop{display:block;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+:root.dark-mode .bottom-nav{
+  position:fixed;z-index:10;bottom:10px;width:calc(100% - 24px);max-width:406px;min-height:76px;padding:7px 7px calc(7px + var(--safe-bottom));
+  border:1px solid rgba(194,168,255,.10);border-radius:28px;background:rgba(29,29,46,.88);
+  box-shadow:0 20px 52px rgba(0,0,0,.38),inset 0 1px 0 rgba(255,255,255,.035);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
+}
+:root.dark-mode .nav-btn{min-height:60px;border-radius:21px;color:#9290A2;font-size:9.5px;gap:4px}:root.dark-mode .nav-btn svg{width:23px;height:23px}
+:root.dark-mode .nav-btn.act{color:#F8F4FF;background:linear-gradient(145deg,rgba(156,109,236,.93),rgba(101,65,183,.93));box-shadow:0 10px 23px rgba(69,40,132,.34),inset 0 1px 0 rgba(255,255,255,.13)}
+:root.dark-mode .nav-btn.act svg{background:none}:root.dark-mode .nav-btn .dot{display:none}
+:root.dark-mode .fab{
+  position:fixed;z-index:12;width:56px;height:56px;bottom:96px;border:1px solid rgba(206,181,255,.34);
+  background:linear-gradient(145deg,#A979F2,#7047C6);box-shadow:0 16px 36px rgba(58,33,115,.42),inset 0 1px 0 rgba(255,255,255,.16);
+}
+
+/* Pearl glass light mode — the same design language with daylight contrast */
+:root:not(.dark-mode){
+  --bg:#F4F2FA;--surface:rgba(255,255,255,.78);--surface2:#F5F2FB;--surface3:rgba(255,255,255,.82);
+  --border:rgba(83,61,133,.10);--hairline:rgba(83,61,133,.10);--text:#211D2E;--text2:#6F687C;--text3:#9B94A8;
+  --accent:#8058D8;--accent2:#A47AEE;--accent-bg:rgba(128,88,216,.10);--accent-border:rgba(128,88,216,.22);
+  --green:#7651C9;--green-bg:rgba(128,88,216,.10);--green-border:rgba(128,88,216,.20);
+  --shadow-1:0 16px 38px rgba(56,39,91,.09),inset 0 1px 0 rgba(255,255,255,.88);
+  --shadow-2:0 24px 55px rgba(84,51,149,.16),inset 0 1px 0 rgba(255,255,255,.82);
+  --shadow-soft:0 30px 90px rgba(55,37,88,.14);--blur:saturate(130%) blur(22px);
+}
+:root:not(.dark-mode),:root:not(.dark-mode) body{background:#F4F2FA}
+:root:not(.dark-mode) body{
+  background:radial-gradient(ellipse 90% 38% at 75% -8%,rgba(153,115,232,.18),transparent 70%),radial-gradient(ellipse 70% 45% at -15% 48%,rgba(126,91,207,.09),transparent 72%),linear-gradient(180deg,#F8F6FC 0%,#F3F0F9 58%,#EEEBF5 100%);
+  border-inline:1px solid rgba(84,59,139,.035);
+}
+:root:not(.dark-mode) body::before{content:"";position:fixed;inset:0;max-width:430px;margin:auto;pointer-events:none;background:linear-gradient(105deg,transparent 25%,rgba(255,255,255,.28) 46%,transparent 66%);z-index:0}
+:root:not(.dark-mode) .header,:root:not(.dark-mode) .main,:root:not(.dark-mode) .bottom-nav,:root:not(.dark-mode) .fab{position:relative;z-index:1}
+:root:not(.dark-mode) .header{
+  min-height:82px;margin:0;padding:22px 20px 12px;border:0;border-radius:0;background:transparent;
+  box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none;justify-content:center;
+}
+:root:not(.dark-mode) .header h1{position:absolute;left:50%;transform:translateX(-50%);direction:rtl;white-space:nowrap;font-size:20px;font-weight:900;color:var(--text)}
+:root:not(.dark-mode) .header h1 .title-icon{
+  width:38px;height:38px;padding:9px;margin-left:10px;border:1px solid rgba(128,88,216,.20);border-radius:14px;color:#8058D8;
+  background:linear-gradient(145deg,rgba(255,255,255,.92),rgba(225,214,247,.75));box-shadow:0 12px 28px rgba(90,56,158,.13),inset 0 1px 0 #fff;
+}
+:root:not(.dark-mode) .header-pills{position:absolute;left:16px;direction:ltr;z-index:2}
+:root:not(.dark-mode) .header .pill{min-width:34px;min-height:34px;padding:6px 9px;border:1px solid rgba(91,66,143,.09);background:rgba(255,255,255,.58);color:var(--text2);box-shadow:inset 0 1px 0 #fff}
+:root:not(.dark-mode) .main{padding:10px 16px 128px}
+:root:not(.dark-mode) .panel.act{animation:midnightRise .28s ease-out both}
+:root:not(.dark-mode) .vocab-overview{background:linear-gradient(135deg,rgba(255,255,255,.86),rgba(244,239,252,.76));border-color:rgba(101,73,158,.11)}
+:root:not(.dark-mode) .vocab-overview::after{background:rgba(139,96,224,.10)}
+:root:not(.dark-mode) .vocab-count-card{background:transparent;box-shadow:none}
+:root:not(.dark-mode) .vocab-count-icon{background:linear-gradient(145deg,#F1E9FF,#E3D5FA);border:1px solid rgba(128,88,216,.13);box-shadow:0 8px 20px rgba(95,61,160,.10)}
+:root:not(.dark-mode) .vocab-count-card.learned .vocab-count-icon{background:linear-gradient(145deg,#E2D3FA,#CAB4F2);color:#724AC8}
+:root:not(.dark-mode) .card{
+  background:linear-gradient(145deg,rgba(255,255,255,.78),rgba(248,245,252,.70));border:1px solid var(--hairline);
+  border-radius:27px;padding:17px;box-shadow:var(--shadow-1);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
+}
+:root:not(.dark-mode) .mode-row{padding:0 1px 3px;gap:8px;margin-bottom:12px}
+:root:not(.dark-mode) .mode-btn,:root:not(.dark-mode) .mode-row select,:root:not(.dark-mode) .segmented{
+  min-height:43px;border:1px solid var(--hairline)!important;border-radius:16px!important;background:rgba(255,255,255,.66);color:var(--text2);box-shadow:inset 0 1px 0 #fff;
+}
+:root:not(.dark-mode) .mode-btn.act,:root:not(.dark-mode) .segmented button.act{
+  background:linear-gradient(135deg,#A67AEE,#7B51D1);color:#fff;border-color:rgba(126,82,210,.24)!important;box-shadow:0 10px 24px rgba(96,56,173,.20);
+}
+:root:not(.dark-mode) .flash-controls{gap:8px;margin-bottom:13px}
+:root:not(.dark-mode) .flash-controls .btn{min-height:48px;border-radius:16px;border:1px solid var(--hairline);background:rgba(255,255,255,.62);color:var(--text2);box-shadow:inset 0 1px 0 #fff}
+:root:not(.dark-mode) .flash-controls .btn-primary,:root:not(.dark-mode) #fl-auto-btn{color:#754AC9;border-color:var(--accent-border);background:linear-gradient(145deg,rgba(242,234,255,.95),rgba(226,213,249,.74))}
+:root:not(.dark-mode) .prog-wrap{margin:0 4px 14px}:root:not(.dark-mode) .prog-row{color:var(--text2);padding-inline:2px}
+:root:not(.dark-mode) .prog-bar{height:5px;background:rgba(85,59,139,.09)}
+:root:not(.dark-mode) .prog-fill{background:linear-gradient(90deg,#7D53D2,#B58AF5);box-shadow:0 0 12px rgba(128,88,216,.28)}
+:root:not(.dark-mode) .flashcard{
+  min-height:375px;margin:0 0 14px;padding:42px 24px 36px;border:1px solid rgba(118,83,188,.14);border-radius:34px;
+  background:radial-gradient(ellipse 90% 32% at 72% 11%,rgba(154,113,235,.18),transparent 68%),radial-gradient(ellipse 75% 20% at 8% 38%,rgba(176,145,236,.13),transparent 72%),linear-gradient(155deg,rgba(255,255,255,.92),rgba(240,235,249,.90));
+  box-shadow:0 26px 66px rgba(69,43,116,.13),inset 0 1px 0 #fff,0 0 0 1px rgba(119,87,191,.025);overflow:hidden;
+}
+:root:not(.dark-mode) .flashcard::before{content:"";position:absolute;width:135%;height:112px;left:-20%;top:54px;border-radius:50%;background:radial-gradient(ellipse at center,rgba(159,116,238,.15),rgba(119,82,190,.02) 62%,transparent 70%);transform:rotate(-8deg);filter:blur(5px);pointer-events:none}
+:root:not(.dark-mode) .flashcard::after{content:"";display:block;position:absolute;inset:auto -10% -44px;height:105px;border-radius:50% 50% 0 0;background:rgba(123,83,210,.055);filter:blur(8px);pointer-events:none}
+:root:not(.dark-mode) .flashcard>*{position:relative;z-index:1}
+:root:not(.dark-mode) .fc-word{display:flex;flex-direction:column;align-items:center;font-size:38px;font-weight:900;letter-spacing:.2px;color:#241F31;margin-bottom:10px}
+:root:not(.dark-mode) .fc-word .speak-btn{order:-1;width:70px;height:70px;margin:0 0 30px;border:1px solid rgba(128,88,216,.16);border-radius:50%;background:radial-gradient(circle at 38% 30%,#F8F3FF,#DCCBF7);color:#8055D5;box-shadow:0 14px 34px rgba(87,52,153,.16),inset 0 1px 0 #fff}
+:root:not(.dark-mode) .fc-word .speak-btn .ui-icon{width:30px;height:30px}
+:root:not(.dark-mode) .fc-pron{font-size:15px;color:#8E879A;direction:ltr}:root:not(.dark-mode) .fc-hint{margin-top:28px;font-size:12px;color:#9891A5}
+:root:not(.dark-mode) .fc-back{border-top-color:rgba(85,59,139,.10);padding-top:20px;margin-top:20px}
+:root:not(.dark-mode) .fc-meaning{color:#754BCB}
+:root:not(.dark-mode) .btn{min-height:50px;border:1px solid var(--hairline);border-radius:17px;background:rgba(255,255,255,.70);color:var(--text2);box-shadow:inset 0 1px 0 #fff}
+:root:not(.dark-mode) .btn-primary{border-color:rgba(126,82,210,.22);background:linear-gradient(135deg,#9D70E8 0%,#7349C7 100%);color:#fff;box-shadow:0 16px 34px rgba(83,47,154,.20),inset 0 1px 0 rgba(255,255,255,.22)}
+:root:not(.dark-mode) .btn-outline{border-color:var(--accent-border);background:var(--accent-bg);color:#754BCB}
+:root:not(.dark-mode) input[type=text],:root:not(.dark-mode) input[type=search],:root:not(.dark-mode) input[type=password],:root:not(.dark-mode) select,:root:not(.dark-mode) textarea,:root:not(.dark-mode) .note-editor{border:1px solid var(--hairline);border-radius:18px;background:rgba(255,255,255,.68);color:var(--text);box-shadow:inset 0 1px 0 #fff}
+:root:not(.dark-mode) input:focus,:root:not(.dark-mode) select:focus,:root:not(.dark-mode) textarea:focus,:root:not(.dark-mode) .note-editor:focus{border-color:var(--accent-border);box-shadow:0 0 0 4px rgba(128,88,216,.09)}
+:root:not(.dark-mode) button:focus-visible,:root:not(.dark-mode) input:focus-visible,:root:not(.dark-mode) select:focus-visible,:root:not(.dark-mode) textarea:focus-visible{outline:2px solid #8D62DE;outline-offset:2px}
+:root:not(.dark-mode) .stat,:root:not(.dark-mode) .word-item,:root:not(.dark-mode) .stats-word,:root:not(.dark-mode) .note-item,:root:not(.dark-mode) .quiz-q,:root:not(.dark-mode) .type-q,:root:not(.dark-mode) .hm-box,:root:not(.dark-mode) .choice-btn,:root:not(.dark-mode) .more-toggle,:root:not(.dark-mode) .chat-hero,:root:not(.dark-mode) .chat-feed,:root:not(.dark-mode) .chat-input-row{border-color:var(--hairline);background:rgba(255,255,255,.62);box-shadow:inset 0 1px 0 #fff}
+:root:not(.dark-mode) .stat .n{color:#7A50CF}:root:not(.dark-mode) .empty{border-color:rgba(107,77,166,.13);background:rgba(255,255,255,.32);color:var(--text3)}
+:root:not(.dark-mode) .sheet,:root:not(.dark-mode) .detail-sheet{border-color:rgba(102,72,160,.13);background:rgba(248,246,252,.97);box-shadow:0 -24px 70px rgba(52,34,83,.18)}
+:root:not(.dark-mode) .sheet-backdrop{display:none;backdrop-filter:none;-webkit-backdrop-filter:none}:root:not(.dark-mode) body.sheet-open .sheet-backdrop{display:block;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+:root:not(.dark-mode) .bottom-nav{position:fixed;z-index:10;bottom:10px;width:calc(100% - 24px);max-width:406px;min-height:76px;padding:7px 7px calc(7px + var(--safe-bottom));border:1px solid rgba(91,64,146,.11);border-radius:28px;background:rgba(255,255,255,.78);box-shadow:0 20px 52px rgba(56,37,91,.16),inset 0 1px 0 #fff;backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur)}
+:root:not(.dark-mode) .nav-btn{min-height:60px;border-radius:21px;color:#8B8498;font-size:9.5px;gap:4px}:root:not(.dark-mode) .nav-btn svg{width:23px;height:23px}
+:root:not(.dark-mode) .nav-btn.act{color:#fff;background:linear-gradient(145deg,#A575EC,#754BC9);box-shadow:0 10px 23px rgba(86,49,157,.24),inset 0 1px 0 rgba(255,255,255,.20)}
+:root:not(.dark-mode) .nav-btn.act svg{background:none}:root:not(.dark-mode) .nav-btn .dot{display:none}
+:root:not(.dark-mode) .fab{position:fixed;z-index:12;width:56px;height:56px;bottom:96px;border:1px solid rgba(119,79,196,.20);background:linear-gradient(145deg,#A979F2,#7047C6);box-shadow:0 16px 36px rgba(78,43,147,.26),inset 0 1px 0 rgba(255,255,255,.25)}
+:root.dark-mode .note-tag-btn.active,:root:not(.dark-mode) .note-tag-btn.active{color:#fff;border-color:transparent;background:linear-gradient(145deg,#A575EC,#754BC9);box-shadow:0 8px 18px rgba(86,49,157,.24)}
+:root.dark-mode .note-tag-btn.active .badge,:root:not(.dark-mode) .note-tag-btn.active .badge{color:#fff;border-color:rgba(255,255,255,.28);background:rgba(255,255,255,.16)}
+.header-mini-stats{position:absolute;right:16px;display:flex;align-items:center;gap:5px;direction:rtl;padding:5px 7px;border:1px solid var(--hairline);border-radius:12px;background:var(--surface);color:var(--text2);z-index:2}
+.header-mini-stat{display:inline-flex;align-items:center;gap:3px;min-width:22px;justify-content:center}
+.header-mini-stat .ui-icon{width:12px;height:12px;color:var(--accent)}
+.header-mini-stat strong{display:inline;font-size:10.5px;line-height:1;font-weight:900;color:var(--text2)}
+.header-mini-sep{width:1px;height:13px;background:var(--hairline)}
+:root.dark-mode .header-mini-stats{background:rgba(255,255,255,.045);border-color:rgba(255,255,255,.07)}
+:root:not(.dark-mode) .header-mini-stats{background:rgba(255,255,255,.58);border-color:rgba(91,66,143,.09);box-shadow:inset 0 1px 0 #fff}
+:root .note-list,:root .tag-note-list{gap:7px}
+:root .note-list .note-item,:root .tag-note-list .note-item{display:flex;align-items:center;gap:10px;margin:0;padding:11px 12px;border-radius:16px;box-shadow:none}
+.note-item-copy{min-width:0;flex:1}
+.note-item-title{margin:0 0 3px;font-size:14px;line-height:1.5}
+.note-item-meta{display:-webkit-box;overflow:hidden;-webkit-box-orient:vertical;-webkit-line-clamp:1;line-height:1.7;font-size:10.5px}
+.note-item-actions{display:flex;align-items:center;gap:5px;flex:0 0 auto}
+.note-item-action{width:34px!important;height:34px!important;min-width:34px;min-height:34px;padding:0!important;border-radius:12px;background:transparent;color:var(--text3);box-shadow:none}
+.note-item-action .ui-icon{width:16px;height:16px;margin:0}
+.note-item-action.edit{color:var(--accent);background:var(--accent-bg)}
+.note-item-action.danger{color:var(--red)}
+.note-item-tags-compact{display:flex;gap:4px;overflow:hidden;margin-top:6px}
+.note-item-tags-compact .note-tag{min-height:20px;padding:2px 7px;font-size:9px;white-space:nowrap}
+:root .note-editor-card{padding:11px;border-radius:18px;background:var(--surface2);box-shadow:none}
+:root .note-editor-card .more-toggle{min-height:0;padding:0;border:0;border-radius:0;background:transparent;box-shadow:none}
+.note-editor-card .more-toggle-main{gap:6px;color:var(--text2);font-size:12px;font-weight:900}
+.note-editor-card .more-toggle-main .title-icon{width:16px;height:16px;margin-left:5px;color:var(--accent)}
+.note-editor-card .more-toggle-sub{font-size:10px;line-height:1.6;margin-top:1px}
+.note-editor-card .more-chevron{width:16px;height:16px}
+.note-editor-card .more-collapse{margin-top:12px;padding-top:12px;border-top:1px solid var(--hairline)}
+.note-editor-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.note-editor-actions .btn{min-height:46px;margin:0}
+.note-content-tools{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:4px 1px 7px}
+.note-content-label{font-size:11px;font-weight:800;color:var(--text2)}
+.note-audio-tools{display:flex;align-items:center;gap:7px;direction:ltr}
+.note-read-btn{width:36px!important;height:36px!important;min-width:36px;min-height:36px;padding:0!important;border-radius:12px;color:var(--accent);background:var(--accent-bg)}
+.note-read-btn .ui-icon{width:18px;height:18px;margin:0}
+.note-rate-wrap{display:flex;align-items:center;gap:5px;padding:4px 7px;border:1px solid var(--hairline);border-radius:11px;background:var(--surface)}
+.note-rate-wrap input{width:78px;accent-color:var(--accent)}
+.note-rate-value{min-width:34px;color:var(--text3);font-size:9.5px;font-weight:900;text-align:center;direction:ltr}
+.note-item-action.audio{color:var(--accent);background:var(--accent-bg)}
+:root .card.more-direct-card,:root.dark-mode .card.more-direct-card,:root:not(.dark-mode) .card.more-direct-card{padding:0;border:0;border-radius:0;background:transparent;box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none}
+:root .more-direct-card>.more-toggle{margin:0}
+:root .more-direct-card>.more-collapse.open{margin-top:8px;padding:12px;border:1px solid var(--hairline);border-radius:18px;background:var(--surface);box-shadow:none}
+:root.dark-mode .more-direct-card>.more-collapse.open{background:rgba(255,255,255,.035)}
+:root:not(.dark-mode) .more-direct-card>.more-collapse.open{background:rgba(255,255,255,.56);box-shadow:inset 0 1px 0 #fff}
+@media(max-width:370px){
+  .vocab-overview{padding:7px 8px}.vocab-count-card{padding:4px 6px;gap:7px}.vocab-count-icon{width:31px;height:31px}.vocab-count-card strong{font-size:18px}
+  :root.dark-mode .flash-controls{grid-template-columns:1fr 1fr}:root.dark-mode #fl-sound-toggle{grid-column:1/-1}
+  :root:not(.dark-mode) .flash-controls{grid-template-columns:1fr 1fr}:root:not(.dark-mode) #fl-sound-toggle{grid-column:1/-1}
+}
 </style>
 </head>
-<body>
+<body data-panel="flash">
 
 <!-- Install Banner -->
 <div class="install-banner" id="install-banner" style="display:none">
@@ -947,10 +1337,13 @@ body.sheet-open .sheet-backdrop{backdrop-filter:blur(8px);-webkit-backdrop-filte
 <!-- Header -->
 <div class="header">
   <h1><span class="ui-icon title-icon" data-icon="book"></span>دفترچه لغت</h1>
+  <div class="header-mini-stats" aria-label="آمار واژگان">
+    <span class="header-mini-stat" title="کل کلمات" aria-label="کل کلمات"><span class="ui-icon" data-icon="book"></span><strong id="hdr-total">۰</strong></span>
+    <span class="header-mini-sep" aria-hidden="true"></span>
+    <span class="header-mini-stat" title="کلمات یادگرفته‌شده" aria-label="کلمات یادگرفته‌شده"><span class="ui-icon" data-icon="check-circle"></span><strong id="hdr-known">۰</strong></span>
+  </div>
   <div class="header-pills">
-    <button class="pill icon-only" style="border:none;cursor:pointer;background:none" onclick="toggleDarkMode()" title="تاریک‌نما"><span class="ui-icon" data-icon="moon"></span></button>
-    <span class="pill" id="hdr-total">۰</span>
-    <span class="pill pill-green" id="hdr-known">۰</span>
+    <button class="pill icon-only" id="theme-toggle" type="button" style="border:none;cursor:pointer;background:none" onclick="toggleDarkMode()" title="تغییر تم" aria-label="تغییر تم"><span class="ui-icon" data-icon="moon"></span></button>
   </div>
 </div>
 
@@ -964,6 +1357,7 @@ body.sheet-open .sheet-backdrop{backdrop-filter:blur(8px);-webkit-backdrop-filte
       <button class="mode-btn" id="fl-fa" onclick="setFlMode('fa',this)">FA→EN</button>
       <select id="fl-cat" onchange="startFlash()" style="border-radius:20px;padding:6px 10px;font-size:12px;border:1px solid var(--border)"><option value="">همه</option></select>
     </div>
+    <div id="flash-area"><div class="empty"><span class="ui-icon" data-icon="book"></span><span>ابتدا کلمه اضافه کن</span><small>با دکمه پایین صفحه اولین کارتت را بساز.</small></div></div>
     <div class="flash-controls">
       <button class="btn btn-primary btn-sm" id="fl-auto-btn" onclick="toggleAutoFlash()">مرور خودکار</button>
       <button class="btn btn-sm btn-outline" id="fl-sentence-btn" onclick="toggleFlashSentence()">با جمله: خاموش</button>
@@ -991,7 +1385,7 @@ body.sheet-open .sheet-backdrop{backdrop-filter:blur(8px);-webkit-backdrop-filte
       </div>
       <div class="settings-item">
         <span class="settings-label">سرعت انگلیسی</span>
-        <input type="range" id="fl-en-rate" min="0.45" max="0.9" step="0.05" onchange="saveFlashSettingsFromUI()" style="width:130px">
+        <input type="range" id="fl-en-rate" min="0.45" max="0.9" step="0.01" onchange="saveFlashSettingsFromUI()" style="width:130px">
       </div>
       <div class="settings-item">
         <span class="settings-label">سرعت فارسی</span>
@@ -1010,7 +1404,6 @@ body.sheet-open .sheet-backdrop{backdrop-filter:blur(8px);-webkit-backdrop-filte
         </select>
       </div>
     </div>
-    <div id="flash-area"><div class="empty"><span class="ui-icon" data-icon="book"></span><span>ابتدا کلمه اضافه کن</span><small>با دکمه پایین صفحه اولین کارتت را بساز.</small></div></div>
   </div>
 
   <!-- PRACTICE -->
@@ -1049,7 +1442,7 @@ body.sheet-open .sheet-backdrop{backdrop-filter:blur(8px);-webkit-backdrop-filte
       <div class="card-title"><span class="ui-icon title-icon" data-icon="bar-chart"></span>آمارهای کلی</div>
       <div class="stats-row">
         <div class="stat"><div class="n" id="st-total">۰</div><div class="l">کل کلمات</div></div>
-        <div class="stat"><div class="n" id="st-known">۰</div><div class="l">بلد شده</div></div>
+        <button type="button" class="stat stat-action" onclick="openLearnedWordsModal()" aria-label="نمایش کلمات یادگرفته‌شده"><div class="n" id="st-known">۰</div><div class="l">بلد شده</div></button>
         <div class="stat"><div class="n" id="st-today">۰</div><div class="l">امروز</div></div>
         <div class="stat"><div class="n" id="st-streak">۰</div><div class="l">روز متوالی</div></div>
       </div>
@@ -1059,8 +1452,12 @@ body.sheet-open .sheet-backdrop{backdrop-filter:blur(8px);-webkit-backdrop-filte
       <div id="streak-chart" class="streak-chart"></div>
     </div>
     <div class="card">
-      <div class="card-title">تقویم مطالعه</div>
-      <div class="cal-head"><span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span></div>
+      <div class="persian-cal-toolbar">
+        <button type="button" class="persian-cal-nav" onclick="shiftPersianCalendar(-1)" aria-label="ماه قبل" title="ماه قبل"><span class="ui-icon" data-icon="chevron-right"></span></button>
+        <div class="persian-cal-title-wrap"><div class="persian-cal-title" id="persian-cal-title">تقویم مطالعه</div><div class="persian-cal-progress" id="persian-cal-progress">حضور روزانه حداقل ۱۰ دقیقه</div></div>
+        <button type="button" class="persian-cal-nav" onclick="shiftPersianCalendar(1)" aria-label="ماه بعد" title="ماه بعد"><span class="ui-icon" data-icon="chevron-left"></span></button>
+      </div>
+      <div class="cal-head"><span>ش</span><span>ی</span><span>د</span><span>س</span><span>چ</span><span>پ</span><span>ج</span></div>
       <div id="study-calendar" class="study-calendar"></div>
     </div>
     <div class="card">
@@ -1085,11 +1482,6 @@ body.sheet-open .sheet-backdrop{backdrop-filter:blur(8px);-webkit-backdrop-filte
       </div>
     </div>
     <div class="card">
-      <div class="card-title"><span class="ui-icon title-icon" data-icon="check-circle"></span>کلمات یاد گرفته</div>
-      <select id="st-learned-cat" onchange="renderStatsWordBoxes()" style="border-radius:20px;padding:6px 10px;font-size:12px;border:1px solid var(--border);margin-bottom:10px"><option value="">همه دسته‌ها</option></select>
-      <div id="st-learned-list" class="stats-list"><div class="empty">هنوز کلمه‌ای یاد گرفته نشده</div></div>
-    </div>
-    <div class="card">
       <div class="card-title"><span class="ui-icon title-icon" data-icon="rotate"></span>کلمات سخت</div>
       <select id="st-hard-cat" onchange="renderStatsWordBoxes()" style="border-radius:20px;padding:6px 10px;font-size:12px;border:1px solid var(--border);margin-bottom:10px"><option value="">همه دسته‌ها</option></select>
       <div id="st-hard-list" class="stats-list"><div class="empty">هنوز کلمه سختی ثبت نشده</div></div>
@@ -1098,75 +1490,86 @@ body.sheet-open .sheet-backdrop{backdrop-filter:blur(8px);-webkit-backdrop-filte
 
   <!-- NOTEBOOK -->
   <div id="p-notes" class="panel">
-    <div class="card">
+    <div class="card note-editor-card">
       <button class="more-toggle" id="note-editor-toggle" onclick="toggleMoreSection('note-editor-panel', this)">
         <span class="more-toggle-main">
-          <span class="ui-icon title-icon" data-icon="book"></span>
+          <span class="ui-icon title-icon" data-icon="notebook-pen"></span>
           <span>نوت‌بوک درس‌ها<span class="more-toggle-sub">نوشتن درس، جدول، لینک، رنگ و عکس</span></span>
         </span>
-        <span class="ui-icon more-chevron" data-icon="rotate"></span>
+        <span class="ui-icon more-chevron" data-icon="chevron-down"></span>
       </button>
       <div class="more-collapse" id="note-editor-panel">
         <input type="hidden" id="note-id">
         <div class="field mt-12"><label>عنوان درس</label><input type="text" id="note-title" placeholder="مثلاً: زمان حال ساده"></div>
         <div class="field"><label>تگ‌ها</label><input type="text" id="note-tags" placeholder="grammar, lesson 1, tense"></div>
+        <div class="note-content-tools">
+          <span class="note-content-label">متن درس</span>
+          <div class="note-audio-tools">
+            <button type="button" class="btn note-read-btn" onclick="speakEditorNoteEnglish(event)" title="خواندن کامل متن انگلیسی" aria-label="خواندن کامل متن انگلیسی درس"><span class="ui-icon" data-icon="volume"></span></button>
+            <label class="note-rate-wrap" title="سرعت خواندن متن انگلیسی">
+              <input type="range" id="note-en-rate" min="0.45" max="0.9" step="0.01" oninput="previewNoteEnglishRate(this.value)" onchange="setNoteEnglishRate(this.value)" aria-label="سرعت خواندن متن انگلیسی">
+              <output class="note-rate-value" id="note-en-rate-value">0.62×</output>
+            </label>
+          </div>
+        </div>
         <textarea id="note-content" class="note-editor" data-placeholder="قواعد، نکته‌ها، مثال‌ها و توضیحات درس را اینجا بنویس..."></textarea>
-        <button class="btn btn-outline mt-8" onclick="clearNoteForm()">درس جدید</button>
-        <button class="btn btn-primary mt-8" onclick="saveNote()">ذخیره درس</button>
+        <div class="note-editor-actions">
+          <button class="btn btn-outline" onclick="clearNoteForm()">درس جدید</button>
+          <button class="btn btn-primary" onclick="saveNote()">ذخیره درس</button>
+        </div>
         <div id="note-msg" style="font-size:13px;text-align:center;min-height:20px;margin-top:8px"></div>
       </div>
     </div>
-    <div class="card note-review" id="note-review-box">
-      <div class="note-review-head">
-        <div class="card-title" style="margin:0">مرور درس به درس</div>
-        <span class="note-review-count" id="note-review-count">۰ / ۰</span>
+    <div class="card note-tag-filter" aria-label="فهرست تگ‌های نوت">
+      <div class="note-tag-filter-head">
+        <span><span class="ui-icon" data-icon="tag"></span> تگ‌های نوت</span>
+        <span class="note-tag-filter-count" id="notes-tag-count">۰ تگ</span>
       </div>
-      <div id="note-review-content"></div>
-      <div class="detail-actions">
-        <button class="btn" onclick="prevNoteReview()">قبلی</button>
-        <button class="btn btn-primary" onclick="nextNoteReview()">بعدی</button>
-      </div>
+      <div id="notes-tag-cloud" class="note-tag-cloud"></div>
     </div>
     <div class="card">
       <div class="card-title">درس‌های ذخیره‌شده</div>
       <div class="search-wrap">
-        <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <i class="search-icon" data-lucide="search" aria-hidden="true"></i>
         <input type="search" id="note-search" placeholder="جستجو در عنوان، متن یا تگ..." oninput="renderNotes()">
       </div>
-      <button class="btn btn-outline mt-8" onclick="startNoteReview()">شروع مرور درس‌ها</button>
       <div id="note-list" class="note-list mt-12"></div>
     </div>
   </div>
 
   <!-- CHAT -->
   <div id="p-chat" class="panel">
-    <div class="card">
+    <div class="card chat-main-card">
       <div class="chat-shell">
         <div class="chat-hero">
-          <div>
-            <div class="chat-title">چت زبان</div>
-            <div class="chat-sub">مربی انگلیسی فارسی‌زبان، هماهنگ با کلمات و نوت‌های خودت.</div>
+          <div class="chat-hero-copy">
+            <span class="chat-hero-icon"><span class="ui-icon" data-icon="sparkles"></span></span>
+            <div>
+              <div class="chat-title">مربی هوشمند زبان</div>
+              <div class="chat-sub">متصل به تمام واژه‌ها و دسته‌بندی‌های تو</div>
+            </div>
           </div>
-          <button class="btn btn-sm btn-outline" onclick="clearChatHistory()">پاک کردن</button>
+          <button class="btn btn-outline chat-clear-btn" onclick="clearChatHistory()" title="پاک‌کردن گفتگو" aria-label="پاک‌کردن گفتگو"><span class="ui-icon" data-icon="trash"></span></button>
         </div>
         <div class="chat-mode-grid" id="chat-modes">
-          <button class="btn chat-mode active" data-mode="free" onclick="setChatMode('free', this)">چت آزاد<br><span class="chat-sub">سوال، تمرین، توضیح</span></button>
-          <button class="btn chat-mode" data-mode="correct" onclick="setChatMode('correct', this)">تصحیح جمله<br><span class="chat-sub">اشتباهات را با دلیل بگو</span></button>
-          <button class="btn chat-mode" data-mode="word" onclick="setChatMode('word', this)">توضیح کلمه<br><span class="chat-sub">معنی، مثال، کاربرد</span></button>
-          <button class="btn chat-mode" data-mode="lesson" onclick="setChatMode('lesson', this)">ساخت درس<br><span class="chat-sub">با کلمات و نوت‌ها</span></button>
-          <button class="btn chat-mode" data-mode="conversation" onclick="setChatMode('conversation', this)">مکالمه<br><span class="chat-sub">نقش‌آفرینی و اصلاح</span></button>
-          <button class="btn chat-mode" data-mode="quiz" onclick="setChatMode('quiz', this)">تمرین با کلمات من<br><span class="chat-sub">کوییز و مرور</span></button>
+          <button class="btn chat-mode active" data-mode="free" onclick="setChatMode('free', this)"><span class="ui-icon" data-icon="message-circle"></span><span class="chat-mode-label">چت آزاد</span></button>
+          <button class="btn chat-mode" data-mode="word" onclick="setChatMode('word', this)"><span class="ui-icon" data-icon="book-open-check"></span><span class="chat-mode-label">توضیح کلمه</span></button>
+          <button class="btn chat-mode" data-mode="conversation" onclick="setChatMode('conversation', this)"><span class="ui-icon" data-icon="messages-square"></span><span class="chat-mode-label">مکالمه</span></button>
+          <button class="btn chat-mode" data-mode="correct" onclick="setChatMode('correct', this)"><span class="ui-icon" data-icon="spell-check-2"></span><span class="chat-mode-label">تصحیح جمله</span></button>
+          <button class="btn chat-mode" data-mode="lesson" onclick="setChatMode('lesson', this)"><span class="ui-icon" data-icon="notebook-tabs"></span><span class="chat-mode-label">ساخت درس</span></button>
+          <button class="btn chat-mode" data-mode="quiz" onclick="setChatMode('quiz', this)"><span class="ui-icon" data-icon="brain"></span><span class="chat-mode-label">تمرین واژگان</span></button>
         </div>
+        <div id="chat-flow" class="chat-flow"></div>
         <div id="chat-feed" class="chat-feed"></div>
         <div class="chat-input-card">
           <div class="chat-quick-row">
-            <button class="btn btn-outline chat-chip" onclick="fillChatPrompt('یک مکالمه کوتاه برای تمرین شروع کن و اشتباهاتم را اصلاح کن.')">شروع مکالمه</button>
-            <button class="btn btn-outline chat-chip" onclick="fillChatPrompt('با کلمات سخت من یک کوییز ۵ سوالی بساز.')">کوییز سریع</button>
-            <button class="btn btn-outline chat-chip" onclick="fillChatPrompt('این جمله را اصلاح کن و دلیلش را فارسی بگو: ')">تصحیح جمله</button>
+            <button class="btn btn-outline chat-chip" onclick="setChatMode('conversation')"><span class="ui-icon" data-icon="messages-square"></span>شروع مکالمه</button>
+            <button class="btn btn-outline chat-chip" onclick="setChatMode('word')"><span class="ui-icon" data-icon="book-open-check"></span>توضیح کلمه</button>
+            <button class="btn btn-outline chat-chip" onclick="fillChatPrompt('این جمله را اصلاح کن و دلیلش را فارسی بگو: ')"><span class="ui-icon" data-icon="spell-check-2"></span>تصحیح جمله</button>
           </div>
           <div class="chat-input-row">
             <textarea id="chat-input" placeholder="پیامت را بنویس..." oninput="autoResizeChatInput()" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendChatMessage()}"></textarea>
-            <button class="btn btn-primary chat-send" onclick="sendChatMessage()" title="ارسال"><span class="ui-icon" data-icon="play"></span></button>
+            <button class="btn btn-primary chat-send" id="chat-send-btn" onclick="sendChatMessage()" title="ارسال" aria-label="ارسال پیام"><span class="ui-icon" data-icon="send"></span></button>
           </div>
         </div>
         <div id="chat-status" class="chat-status"></div>
@@ -1198,7 +1601,19 @@ body.sheet-open .sheet-backdrop{backdrop-filter:blur(8px);-webkit-backdrop-filte
 
   <!-- MORE -->
   <div id="p-more" class="panel">
-    <div class="card">
+    <section class="vocab-overview" aria-label="خلاصه کتابخانه لغات">
+      <div class="vocab-count-grid">
+        <div class="vocab-count-card">
+          <span class="vocab-count-icon"><span class="ui-icon" data-icon="book"></span></span>
+          <div><strong id="ref-total">۰</strong><small>کل کلمات</small></div>
+        </div>
+        <div class="vocab-count-card learned">
+          <span class="vocab-count-icon"><span class="ui-icon" data-icon="check-circle"></span></span>
+          <div><strong id="ref-learned">۰</strong><small>یاد گرفته‌شده</small></div>
+        </div>
+      </div>
+    </section>
+    <div class="card more-direct-card">
       <button class="more-toggle" id="more-list-toggle" onclick="toggleMoreSection('more-list-panel', this)">
         <span class="more-toggle-main">
           <span class="ui-icon title-icon" data-icon="book"></span>
@@ -1214,7 +1629,7 @@ body.sheet-open .sheet-backdrop{backdrop-filter:blur(8px);-webkit-backdrop-filte
           <div class="stat"><div class="n" id="s-cats">۰</div><div class="l">دسته</div></div>
         </div>
         <div class="search-wrap">
-          <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <i class="search-icon" data-lucide="search" aria-hidden="true"></i>
           <input type="search" id="ls-search" placeholder="جستجو..." oninput="renderList()">
         </div>
         <div class="mode-row">
@@ -1224,7 +1639,7 @@ body.sheet-open .sheet-backdrop{backdrop-filter:blur(8px);-webkit-backdrop-filte
       </div>
     </div>
 
-    <div class="card">
+    <div class="card more-direct-card">
       <button class="more-toggle" id="more-cats-toggle" onclick="toggleMoreSection('more-cats-panel', this)">
         <span class="more-toggle-main">
           <span class="ui-icon title-icon" data-icon="folder"></span>
@@ -1243,7 +1658,7 @@ body.sheet-open .sheet-backdrop{backdrop-filter:blur(8px);-webkit-backdrop-filte
       </div>
     </div>
 
-    <div class="card">
+    <div class="card more-direct-card">
       <button class="more-toggle" id="more-note-tags-toggle" onclick="toggleMoreSection('more-note-tags-panel', this)">
         <span class="more-toggle-main">
           <span class="ui-icon title-icon" data-icon="book"></span>
@@ -1355,6 +1770,17 @@ body.sheet-open .sheet-backdrop{backdrop-filter:blur(8px);-webkit-backdrop-filte
   <div id="add-msg" style="font-size:13px;text-align:center;min-height:20px;margin-top:8px"></div>
 </div>
 
+<div class="detail-backdrop learned-modal" id="learned-words-modal" onclick="closeLearnedWordsModal(event)">
+  <div class="detail-sheet learned-modal-sheet" onclick="event.stopPropagation()">
+    <div class="learned-modal-head">
+      <div><div class="learned-modal-title"><span class="ui-icon" data-icon="check-circle"></span><span>کلمات یادگرفته‌شده</span></div><div class="learned-modal-count" id="learned-modal-count">۰ کلمه</div></div>
+      <button type="button" class="icon-btn" onclick="closeLearnedWordsModal()" aria-label="بستن" title="بستن"><span class="ui-icon" data-icon="x"></span></button>
+    </div>
+    <select id="st-learned-cat" onchange="renderStatsWordBoxes()" style="border-radius:16px;padding:9px 11px;font-size:12px;border:1px solid var(--hairline);margin-bottom:10px"><option value="">همه دسته‌ها</option></select>
+    <div id="st-learned-list" class="stats-list"><div class="empty">هنوز کلمه‌ای یاد گرفته نشده</div></div>
+  </div>
+</div>
+
 <div class="detail-backdrop" id="word-detail" onclick="closeWordDetail(event)">
   <div class="detail-sheet" onclick="event.stopPropagation()">
     <div id="word-detail-content"></div>
@@ -1363,35 +1789,36 @@ body.sheet-open .sheet-backdrop{backdrop-filter:blur(8px);-webkit-backdrop-filte
 
 <!-- Bottom Nav -->
 <button class="fab" id="fab-add" onclick="openAddSheet()" title="افزودن کلمه">
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+  <i data-lucide="plus" aria-hidden="true"></i>
 </button>
 <nav class="bottom-nav">
   <button class="nav-btn act" onclick="showPanel('flash',this)">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="14" height="16" rx="2" transform="rotate(-8 10 13)"/><rect x="7" y="3" width="14" height="16" rx="2"/></svg>
+    <i data-lucide="layers-3" aria-hidden="true"></i>
     فلش<div class="dot"></div>
   </button>
   <button class="nav-btn" onclick="showPanel('practice',this)">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r=".6" fill="currentColor"/></svg>
+    <i data-lucide="target" aria-hidden="true"></i>
     تمرین<div class="dot"></div>
   </button>
   <button class="nav-btn" onclick="showPanel('notes',this)">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5V5a2 2 0 0 1 2-2h11l3 3v13.5a1.5 1.5 0 0 1-1.5 1.5H6A2 2 0 0 1 4 19.5z"/><path d="M16 3v4h4"/><line x1="8" y1="11" x2="16" y2="11"/><line x1="8" y1="15" x2="14" y2="15"/></svg>
+    <i data-lucide="notebook-pen" aria-hidden="true"></i>
     نوت<div class="dot"></div>
   </button>
   <button class="nav-btn" onclick="showPanel('chat',this)">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-8 8H6l-3 2 1.2-4A8 8 0 1 1 21 12Z"/><path d="M8 11h8M8 15h5"/></svg>
+    <i data-lucide="messages-square" aria-hidden="true"></i>
     چت<div class="dot"></div>
   </button>
   <button class="nav-btn" onclick="showPanel('stats',this)">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20h18"/><rect x="5" y="12" width="3.5" height="8" rx="1"/><rect x="10.3" y="7" width="3.5" height="13" rx="1"/><rect x="15.6" y="3" width="3.5" height="17" rx="1"/></svg>
+    <i data-lucide="chart-no-axes-column-increasing" aria-hidden="true"></i>
     آمار<div class="dot"></div>
   </button>
   <button class="nav-btn" onclick="showPanel('more',this)">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="12" r="1.6" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.6" fill="currentColor" stroke="none"/><circle cx="19" cy="12" r="1.6" fill="currentColor" stroke="none"/></svg>
+    <i data-lucide="ellipsis" aria-hidden="true"></i>
     بیشتر<div class="dot"></div>
   </button>
 </nav>
 
+<script src="lucide.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script>
 const KEY = 'vocab_pwa_v1';
@@ -1415,12 +1842,16 @@ let qzIdx = 0, qzOrder = [];
 let tpIdx = 0, tpOrder = [];
 let hmWord = null, hmGuessed = [], hmMisses = 0;
 let detailWordId = null;
-let noteReviewIdx = 0;
 let noteSavedRange = null;
 let noteEditorInstance = null;
+let noteSpeechRunId = 0;
+let activeNoteTag = '';
 let chatMode = 'free';
+let chatFlow = { step: '', categoryKey: '' };
+let chatSending = false;
 let chatHistory = [];
 let chatSettings = { provider: 'openai', model: 'gpt-4o-mini', baseUrl: 'https://api.openai.com/v1', apiKey: '' };
+let statsCalendarAnchor = new Date();
 const HM_MAX = 6;
 const ALPHA = 'abcdefghijklmnopqrstuvwxyz'.split('');
 const HM_ST = ['۰/۶','۱/۶','۲/۶','۳/۶','۴/۶','۵/۶','باختی'];
@@ -1430,43 +1861,44 @@ function toFa(n) { return String(n).replace(/\d/g, d => '۰۱۲۳۴۵۶۷۸۹'[d
 function h(v) { return String(v ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 function attr(v) { return h(v); }
 function jsq(v) { return String(v ?? '').replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/"/g,'&quot;').replace(/\r/g,'\\r').replace(/\n/g,'\\n').replace(/</g,'\\x3C'); }
+const LUCIDE_ICON_MAP = {
+  book:'book-open',smartphone:'smartphone',moon:'moon',sun:'sun',check:'check',x:'x',trash:'trash-2',
+  volume:'volume-2',mic:'mic',play:'play',stop:'square',settings:'settings-2',quote:'quote',
+  checkCircle:'circle-check',alert:'triangle-alert',trophy:'trophy',skull:'skull',barChart:'chart-no-axes-column-increasing',
+  activity:'activity',clock:'clock-3',rotate:'rotate-ccw',folder:'folder',fileSpreadsheet:'file-spreadsheet',
+  download:'download',refresh:'refresh-cw'
+};
+function lucideName(name) {
+  const key = String(name || 'book').replace(/-([a-z])/g, (_, c) => c.toUpperCase());
+  return LUCIDE_ICON_MAP[key] || String(name || 'book-open');
+}
 function icon(name, cls = '') {
-  const paths = {
-    book: '<path d="M4 19.5V5a2 2 0 0 1 2-2h12v18H6a2 2 0 0 1-2-1.5Z"/><path d="M8 7h6M8 11h6"/>',
-    smartphone: '<rect x="7" y="2" width="10" height="20" rx="2.5"/><path d="M11 18h2"/>',
-    moon: '<path d="M20.5 14.5A8 8 0 0 1 9.5 3.5 7 7 0 1 0 20.5 14.5Z"/>',
-    sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>',
-    check: '<path d="M20 6 9 17l-5-5"/>',
-    x: '<path d="M18 6 6 18M6 6l12 12"/>',
-    trash: '<path d="M3 6h18"/><path d="M8 6V4h8v2"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v5M14 11v5"/>',
-    volume: '<path d="M11 5 6 9H3v6h3l5 4V5Z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/>',
-    mic: '<path d="M12 14a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v5a3 3 0 0 0 3 3Z"/><path d="M19 11a7 7 0 0 1-14 0"/><path d="M12 18v4M8 22h8"/>',
-    play: '<path d="M8 5v14l11-7Z"/>',
-    stop: '<rect x="6" y="6" width="12" height="12" rx="2"/>',
-    settings: '<path d="M12 15.5A3.5 3.5 0 1 0 12 8a3.5 3.5 0 0 0 0 7.5Z"/><path d="M19.4 15a1.8 1.8 0 0 0 .36 1.98l.04.04-2.12 2.12-.04-.04a1.8 1.8 0 0 0-1.98-.36 1.8 1.8 0 0 0-1.1 1.66V20h-3v-.06a1.8 1.8 0 0 0-1.1-1.66 1.8 1.8 0 0 0-1.98.36l-.04.04-2.12-2.12.04-.04A1.8 1.8 0 0 0 4.6 15a1.8 1.8 0 0 0-1.66-1.1H3v-3h.06A1.8 1.8 0 0 0 4.72 9.8a1.8 1.8 0 0 0-.36-1.98l-.04-.04 2.12-2.12.04.04a1.8 1.8 0 0 0 1.98.36A1.8 1.8 0 0 0 9.56 4.4V4h3v.06a1.8 1.8 0 0 0 1.1 1.66 1.8 1.8 0 0 0 1.98-.36l.04-.04 2.12 2.12-.04.04a1.8 1.8 0 0 0-.36 1.98 1.8 1.8 0 0 0 1.66 1.1H21v3h-.06A1.8 1.8 0 0 0 19.4 15Z"/>',
-    quote: '<path d="M10 11H6a4 4 0 0 1 4-4v2a2 2 0 0 0-2 2h2v6H4v-6a6 6 0 0 1 6-6v2"/><path d="M20 11h-4a4 4 0 0 1 4-4v2a2 2 0 0 0-2 2h2v6h-6v-6a6 6 0 0 1 6-6v2"/>',
-    checkCircle: '<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4 12 14.01l-3-3"/>',
-    alert: '<path d="M10.3 3.6 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.6a2 2 0 0 0-3.4 0Z"/><path d="M12 9v4M12 17h.01"/>',
-    trophy: '<path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0V4Z"/><path d="M7 6H4a3 3 0 0 0 3 3M17 6h3a3 3 0 0 1-3 3"/>',
-    skull: '<path d="M12 2a8 8 0 0 0-8 8c0 3 1.5 4.8 3 6v4h10v-4c1.5-1.2 3-3 3-6a8 8 0 0 0-8-8Z"/><path d="M9 11h.01M15 11h.01M10 16h4"/>',
-    barChart: '<path d="M3 20h18"/><rect x="5" y="12" width="3.5" height="8" rx="1"/><rect x="10.3" y="7" width="3.5" height="13" rx="1"/><rect x="15.6" y="3" width="3.5" height="17" rx="1"/>',
-    activity: '<path d="M3 12h4l3-8 4 16 3-8h4"/>',
-    clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
-    rotate: '<path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/><path d="M3 21v-5h5"/>',
-    folder: '<path d="M3 7a2 2 0 0 1 2-2h5l2 2h7a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/>',
-    fileSpreadsheet: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6"/><path d="M8 13h8M8 17h8M8 9h2M12 9h4"/>',
-    download: '<path d="M12 3v11"/><path d="m7 9 5 5 5-5"/><path d="M5 20h14"/>',
-    refresh: '<path d="M21 12a9 9 0 0 1-15.5 6.2L3 16"/><path d="M3 21v-5h5"/><path d="M3 12A9 9 0 0 1 18.5 5.8L21 8"/><path d="M21 3v5h-5"/>'
-  };
-  const key = String(name || '').replace(/-([a-z])/g, (_, c) => c.toUpperCase());
-  return `<span class="ui-icon ${cls}" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">${paths[key] || paths.book}</svg></span>`;
+  return `<i class="ui-icon ${cls}" data-lucide="${attr(lucideName(name))}" aria-hidden="true"></i>`;
+}
+let lucideRefreshQueued = false;
+function refreshLucideIcons(root = document) {
+  if (!window.lucide?.createIcons) return;
+  window.lucide.createIcons({ root, attrs: { 'stroke-width': 1.9 } });
+}
+function queueLucideRefresh() {
+  if (lucideRefreshQueued) return;
+  lucideRefreshQueued = true;
+  requestAnimationFrame(() => {
+    lucideRefreshQueued = false;
+    refreshLucideIcons();
+  });
 }
 function hydrateIcons(root = document) {
   root.querySelectorAll('[data-icon]').forEach(el => {
-    if (el.dataset.iconReady) return;
-    el.innerHTML = icon(el.dataset.icon);
-    el.dataset.iconReady = '1';
+    el.setAttribute('data-lucide', lucideName(el.dataset.icon));
+    el.removeAttribute('data-icon');
+    el.classList.add('ui-icon');
   });
+  refreshLucideIcons(root);
+  if (!window.__lucideObserver) {
+    window.__lucideObserver = new MutationObserver(queueLucideRefresh);
+    window.__lucideObserver.observe(document.body, { childList:true, subtree:true });
+  }
 }
 function speakIcon() { return icon('volume'); }
 function emptyState(title, subtitle = 'برای شروع، یک مورد جدید اضافه کن.', name = 'book') {
@@ -1475,6 +1907,7 @@ function emptyState(title, subtitle = 'برای شروع، یک مورد جدی�
 function load() {
   try {
     words = JSON.parse(localStorage.getItem(KEY) || '[]');
+    words = Array.isArray(words) ? words.filter(w => w && !w.relationSourceId) : [];
     stats = JSON.parse(localStorage.getItem(STATS_KEY) || '{}');
     customCats = JSON.parse(localStorage.getItem(CATS_KEY) || '[]');
     notes = JSON.parse(localStorage.getItem(NOTES_KEY) || '[]');
@@ -1488,6 +1921,8 @@ function load() {
     flReadSentence = !!flSettings.readSentence;
     words.forEach(w => {
       if (!w.id) w.id = Date.now() + Math.random();
+      w.pr = String(w.pr || w.pronunciation || w.pron || '').trim();
+      w.ex = String(w.ex || w.sentence || w.example || w.exampleSentence || '').trim();
       w.known = !!w.known;
       w.hard = !!w.hard && !w.known;
       w.syn = Array.isArray(w.syn) ? w.syn : [];
@@ -1505,12 +1940,13 @@ function load() {
       n.tags = Array.isArray(n.tags) ? n.tags : splitTerms(n.tags);
       n.date = n.date || TODAY;
     });
-    syncAllRelatedWords();
+    words.forEach(normalizeWordRelations);
   } catch(e) {
     words = []; stats = {}; customCats = []; notes = []; chatHistory = [];
   }
 }
 function save() { localStorage.setItem(KEY, JSON.stringify(words)); localStorage.setItem(STATS_KEY, JSON.stringify(stats)); localStorage.setItem(CATS_KEY, JSON.stringify(customCats)); localStorage.setItem(FLASH_SETTINGS_KEY, JSON.stringify(flSettings)); localStorage.setItem(NOTES_KEY, JSON.stringify(notes)); localStorage.setItem(CHAT_HISTORY_KEY, JSON.stringify(chatHistory)); localStorage.setItem(CHAT_SETTINGS_KEY, JSON.stringify(chatSettings)); }
+function saveStatsOnly() { localStorage.setItem(STATS_KEY, JSON.stringify(stats)); }
 function activeWords() { return words.filter(w => !w.known); }
 function learnedWords() { return words.filter(w => w.known); }
 function hardWords() { return words.filter(w => w.hard && !w.known); }
@@ -1540,69 +1976,10 @@ function splitTerms(v) {
   return String(v || '').split(',').map(s => s.trim()).filter(Boolean);
 }
 
-function findWordByEn(en) {
-  const key = String(en || '').trim().toLowerCase();
-  return words.find(w => String(w.en || '').trim().toLowerCase() === key);
-}
-
-function relationMeaning(source, type) {
-  return source.fa || source.en || '';
-}
-
-function syncRelatedWords(source) {
-  if (!source || source.relationSourceId) return;
+function normalizeWordRelations(source) {
+  if (!source) return;
   source.syn = splitTerms(source.syn);
   source.ant = splitTerms(source.ant);
-  const relations = [
-    ...source.syn.map(en => ({ en, type: 'syn' })),
-    ...source.ant.map(en => ({ en, type: 'ant' }))
-  ];
-  relations.forEach(rel => {
-    if (!rel.en || rel.en.toLowerCase() === String(source.en || '').toLowerCase()) return;
-    let linked = findWordByEn(rel.en);
-    if (!linked) {
-      linked = {
-        en: rel.en,
-        fa: relationMeaning(source, rel.type),
-        pr: '',
-        ex: '',
-        syn: rel.type === 'syn' ? [source.en] : [],
-        ant: rel.type === 'ant' ? [source.en] : [],
-        cat: source.cat || '',
-        date: TODAY,
-        known: false,
-        hard: false,
-        reviewCount: 0,
-        relationSourceId: source.id,
-        relationType: rel.type,
-        id: Date.now() + Math.random()
-      };
-      words.unshift(linked);
-    } else if (String(linked.id) !== String(source.id)) {
-      if (!linked.relationSourceId) {
-        linked.relationSourceId = source.id;
-        linked.relationType = rel.type;
-      }
-      if (String(linked.relationSourceId) === String(source.id)) {
-        linked.cat = source.cat || linked.cat || '';
-        linked.relationType = rel.type;
-        if (/^(مترادفِ|متضادِ)\s*/.test(linked.fa || '')) linked.fa = relationMeaning(source, rel.type);
-      }
-      const backKey = rel.type === 'syn' ? 'syn' : 'ant';
-      linked[backKey] = splitTerms(linked[backKey]);
-      if (source.en && !linked[backKey].some(x => x.toLowerCase() === source.en.toLowerCase())) linked[backKey].push(source.en);
-    }
-  });
-  words.forEach(w => {
-    if (String(w.relationSourceId || '') === String(source.id)) {
-      w.cat = source.cat || '';
-      if (/^(مترادفِ|متضادِ)\s*/.test(w.fa || '')) w.fa = relationMeaning(source, w.relationType);
-    }
-  });
-}
-
-function syncAllRelatedWords() {
-  [...words].forEach(w => syncRelatedWords(w));
 }
 
 function addCategory() {
@@ -1663,17 +2040,26 @@ function softHaptic(ms = 8) {
 function setThemeChrome() {
   const dark = document.documentElement.classList.contains('dark-mode');
   document.querySelector('meta[name="theme-color"]')?.setAttribute('content', dark ? '#0F0D14' : '#F6F3EE');
-  const btn = document.querySelector('[onclick="toggleDarkMode()"]');
-  if (btn) btn.innerHTML = icon(dark ? 'sun' : 'moon');
+  const btn = document.getElementById('theme-toggle');
+  if (btn) {
+    const label = dark ? 'فعال‌کردن حالت روشن' : 'فعال‌کردن حالت تیره';
+    btn.innerHTML = icon(dark ? 'sun' : 'moon');
+    btn.title = label;
+    btn.setAttribute('aria-label', label);
+    btn.setAttribute('aria-pressed', String(dark));
+  }
 }
 function toggleDarkMode() {
   softHaptic();
-  document.documentElement.classList.toggle('dark-mode');
-  localStorage.setItem('dark-mode', document.documentElement.classList.contains('dark-mode'));
+  const root = document.documentElement;
+  const nextDark = !root.classList.contains('dark-mode');
+  root.classList.toggle('dark-mode', nextDark);
+  localStorage.setItem('dark-mode', String(nextDark));
   setThemeChrome();
 }
 function loadDarkMode() {
-  if (localStorage.getItem('dark-mode') === 'true') document.documentElement.classList.add('dark-mode');
+  const savedTheme = localStorage.getItem('dark-mode');
+  if (savedTheme !== 'false') document.documentElement.classList.add('dark-mode');
   setThemeChrome();
 }
 
@@ -1696,12 +2082,20 @@ function updateStats() {
   document.getElementById('s-today').textContent = toFa(tod);
   document.getElementById('s-known').textContent = toFa(kn);
   document.getElementById('hdr-total').textContent = toFa(t);
-  document.getElementById('hdr-known').innerHTML = `${toFa(kn)} ${icon('check')}`;
+  document.getElementById('hdr-known').textContent = toFa(kn);
   if (!stats[TODAY]) stats[TODAY] = { words: 0, time: 0 };
   stats[TODAY].words = tod;
   save();
   updateCats();
   updateStatsPanel();
+  updateLibraryOverview();
+}
+
+function updateLibraryOverview() {
+  const totalEl = document.getElementById('ref-total');
+  const learnedEl = document.getElementById('ref-learned');
+  if (totalEl) totalEl.textContent = toFa(words.length);
+  if (learnedEl) learnedEl.textContent = toFa(learnedWords().length);
 }
 
 function updateStatsPanel() {
@@ -1715,7 +2109,7 @@ function updateStatsPanel() {
   const d = new Date();
   for (let i = 0; i < 365; i++) {
     const dateStr = new Date(d.getTime() - i * 86400000).toDateString();
-    if (getStudyCount(dateStr) > 0) streak++;
+    if (getAttendanceMinutes(dateStr) >= 10) streak++;
     else break;
   }
   document.getElementById('st-streak').textContent = toFa(streak);
@@ -1744,6 +2138,25 @@ function renderStatsWordBoxes() {
   const hard = hardWords().filter(w => !hardCat || w.cat === hardCat);
   renderStatsWordList('st-learned-list', learned, learnedCat ? 'در این دسته کلمه یاد گرفته‌ای نیست' : 'هنوز کلمه‌ای یاد گرفته نشده');
   renderStatsWordList('st-hard-list', hard, hardCat ? 'در این دسته کلمه سختی نیست' : 'هنوز کلمه سختی ثبت نشده');
+  const modalCount = document.getElementById('learned-modal-count');
+  if (modalCount) modalCount.textContent = `${toFa(learned.length)} کلمه`;
+}
+
+function openLearnedWordsModal() {
+  softHaptic(6);
+  renderStatsWordBoxes();
+  const modal = document.getElementById('learned-words-modal');
+  if (!modal) return;
+  modal.classList.add('open');
+  document.body.classList.add('learned-modal-open');
+  modal.querySelector('.detail-sheet')?.scrollTo(0, 0);
+  queueLucideRefresh();
+}
+
+function closeLearnedWordsModal(event) {
+  if (event && event.target !== event.currentTarget) return;
+  document.getElementById('learned-words-modal')?.classList.remove('open');
+  document.body.classList.remove('learned-modal-open');
 }
 
 function updateStatsCategoryFilters() {
@@ -1763,7 +2176,7 @@ function renderStatsWordList(id, list, emptyText) {
   if (!el) return;
   if (!list.length) { el.innerHTML = emptyState(emptyText, 'بعد از چند مرور، این بخش خودش پر می‌شود.', 'bar-chart'); return; }
   el.innerHTML = list.map(w => `<div class="stats-word" onclick="openWordDetail('${jsq(w.id)}')">
-    <div class="word-en">${h(w.en)} <button class="speak-btn" onclick="speak('${jsq(w.en)}');event.stopPropagation()" title="پخش تلفظ">${speakIcon()}</button></div>
+    <div class="word-en">${h(w.en)} <button type="button" class="speak-btn" onclick="speakWord(event,'${jsq(w.en)}')" title="خواندن واژه انگلیسی" aria-label="خواندن ${attr(w.en)}">${speakIcon()}</button></div>
     <div class="word-fa">${h(w.fa)}</div>
     <div class="stats-word-meta">
       ${w.cat ? `<span class="badge badge-blue">${h(w.cat)}</span>` : ''}
@@ -1803,21 +2216,67 @@ function renderDetailedStats() {
   }).join('');
 }
 
+function persianDateParts(date) {
+  const parts = new Intl.DateTimeFormat('en-US-u-ca-persian', { year:'numeric', month:'numeric', day:'numeric' }).formatToParts(date);
+  const get = type => Number(parts.find(part => part.type === type)?.value || 0);
+  return { year:get('year'), month:get('month'), day:get('day') };
+}
+
+function persianMonthStart(anchor) {
+  const target = persianDateParts(anchor);
+  const cursor = new Date(anchor.getFullYear(), anchor.getMonth(), anchor.getDate());
+  for (let i = 0; i < 35; i++) {
+    const previous = new Date(cursor.getTime() - 86400000);
+    const parts = persianDateParts(previous);
+    if (parts.year !== target.year || parts.month !== target.month) break;
+    cursor.setTime(previous.getTime());
+  }
+  return cursor;
+}
+
+function shiftPersianCalendar(direction) {
+  const start = persianMonthStart(statsCalendarAnchor);
+  statsCalendarAnchor = new Date(start.getTime() + (direction > 0 ? 32 : -1) * 86400000);
+  renderStudyCalendar();
+}
+
+function getAttendanceMinutes(dateStr) {
+  const day = stats[dateStr] || {};
+  if (Number.isFinite(Number(day.activeSeconds))) return Number(day.activeSeconds) / 60;
+  return Number(day.time || 0);
+}
+
 function renderStudyCalendar() {
   const el = document.getElementById('study-calendar');
   if (!el) return;
-  const today = new Date();
-  const end = new Date(today.getFullYear(), today.getMonth(), today.getDate());
-  const start = new Date(end.getTime() - (end.getDay() + 35) * 86400000);
-  const maxCount = Math.max(1, ...Array.from({ length: 42 }, (_, i) => getStudyCount(new Date(start.getTime() + i * 86400000).toDateString())));
-  el.innerHTML = Array.from({ length: 42 }, (_, i) => {
-    const d = new Date(start.getTime() + i * 86400000);
-    const key = d.toDateString();
-    const count = getStudyCount(key);
-    const hot = count >= Math.max(3, Math.ceil(maxCount * 0.66));
-    const cls = [count ? 'on' : '', hot ? 'hot' : '', key === TODAY ? 'today' : ''].filter(Boolean).join(' ');
-    return `<div class="cal-day ${cls}" title="${key}: ${toFa(count)}">${toFa(d.getDate())}</div>`;
+  const start = persianMonthStart(statsCalendarAnchor);
+  const monthParts = persianDateParts(start);
+  const days = [];
+  for (let i = 0; i < 32; i++) {
+    const date = new Date(start.getTime() + i * 86400000);
+    const parts = persianDateParts(date);
+    if (parts.year !== monthParts.year || parts.month !== monthParts.month) break;
+    days.push({ date, parts });
+  }
+  const title = new Intl.DateTimeFormat('fa-IR-u-ca-persian', { year:'numeric', month:'long' }).format(start);
+  const titleEl = document.getElementById('persian-cal-title');
+  if (titleEl) titleEl.textContent = title;
+  const leadingBlanks = (start.getDay() + 1) % 7;
+  const todayKey = new Date().toDateString();
+  const todayTime = new Date().setHours(0, 0, 0, 0);
+  const qualified = days.filter(item => getAttendanceMinutes(item.date.toDateString()) >= 10).length;
+  const progress = document.getElementById('persian-cal-progress');
+  if (progress) progress.textContent = `${toFa(qualified)} روز با حضور حداقل ۱۰ دقیقه`;
+  const blanks = Array.from({ length: leadingBlanks }, () => '<div class="cal-day blank" aria-hidden="true"></div>').join('');
+  el.innerHTML = blanks + days.map(({ date, parts }) => {
+    const key = date.toDateString();
+    const minutes = getAttendanceMinutes(key);
+    const isFuture = date.getTime() > todayTime;
+    const cls = [minutes >= 10 ? 'on' : '', minutes > 0 && minutes < 10 ? 'partial' : '', key === todayKey ? 'today' : '', isFuture ? 'future' : ''].filter(Boolean).join(' ');
+    const label = `${toFa(parts.day)} ${title}، ${toFa(Math.floor(minutes))} دقیقه حضور`;
+    return `<div class="cal-day ${cls}" title="${attr(label)}" aria-label="${attr(label)}"><span class="cal-num">${toFa(parts.day)}</span>${icon('check','cal-check')}</div>`;
   }).join('');
+  queueLucideRefresh();
 }
 
 function renderStreakChart() {
@@ -1840,27 +2299,43 @@ function renderStreakChart() {
 
 function updateTimeStats() {
   let totalTime = 0;
-  Object.values(stats).forEach(s => { totalTime += s.time || 0; });
-  const todayTime = (stats[TODAY] && stats[TODAY].time) || 0;
+  Object.entries(stats).forEach(([key]) => { totalTime += getAttendanceMinutes(key); });
+  const todayTime = getAttendanceMinutes(new Date().toDateString());
   document.getElementById('st-time-total').textContent = formatTime(totalTime);
   document.getElementById('st-time-today').textContent = formatTime(todayTime);
 }
 
 function formatTime(minutes) {
-  if (minutes < 60) return toFa(Math.round(minutes)) + ' دقیقه';
+  if (minutes < 60) return toFa(Math.floor(minutes)) + ' دقیقه';
   const h = Math.floor(minutes / 60);
-  const m = Math.round(minutes % 60);
+  const m = Math.floor(minutes % 60);
   return toFa(h) + ' ساعت و ' + toFa(m) + ' دقیقه';
 }
 
 function trackSessionTime() {
-  const elapsed = Math.floor((Date.now() - sessionStartTime) / 60000);
-  if (elapsed > 0) {
-    if (!stats[TODAY]) stats[TODAY] = { words: 0, time: 0 };
-    stats[TODAY].time = (stats[TODAY].time || 0) + elapsed;
-    save();
-    updateTimeStats();
-    sessionStartTime = Date.now();
+  if (!sessionStartTime) return;
+  const now = Date.now();
+  const elapsedSeconds = Math.floor((now - sessionStartTime) / 1000);
+  if (elapsedSeconds < 1) return;
+  const dayKey = new Date(now).toDateString();
+  if (!stats[dayKey]) stats[dayKey] = { words: 0, time: 0, activeSeconds: 0 };
+  const previousSeconds = Number.isFinite(Number(stats[dayKey].activeSeconds)) ? Number(stats[dayKey].activeSeconds) : Math.round(Number(stats[dayKey].time || 0) * 60);
+  stats[dayKey].activeSeconds = previousSeconds + elapsedSeconds;
+  stats[dayKey].time = stats[dayKey].activeSeconds / 60;
+  saveStatsOnly();
+  sessionStartTime = now;
+  updateTimeStats();
+  if (document.getElementById('p-stats')?.classList.contains('act')) {
+    renderStudyCalendar();
+    const streakEl = document.getElementById('st-streak');
+    if (streakEl) {
+      let streak = 0;
+      for (let i = 0; i < 365; i++) {
+        const key = new Date(now - i * 86400000).toDateString();
+        if (getAttendanceMinutes(key) >= 10) streak++; else break;
+      }
+      streakEl.textContent = toFa(streak);
+    }
   }
 }
 
@@ -1877,7 +2352,7 @@ function addWord() {
   if (words.find(w => w.en.toLowerCase() === en.toLowerCase())) { msg('add-msg', 'قبلاً اضافه شده', 'var(--yellow)'); return; }
   const word = { en, fa, pr, ex, syn, ant, cat, date: TODAY, known: false, hard: false, reviewCount: 0, id: Date.now() };
   words.unshift(word);
-  syncRelatedWords(word);
+  normalizeWordRelations(word);
   save(); updateStats();
   if (document.getElementById('add-list-panel')?.classList.contains('open')) renderList();
   ['in-en','in-fa','in-pr','in-ex','in-syn','in-ant','in-newcat'].forEach(id => document.getElementById(id).value = '');
@@ -1896,7 +2371,17 @@ function msg(id, text, color) {
 }
 
 function speak(text) {
+  cancelNoteLessonSpeech();
   speakEnglish(text);
+}
+
+function speakWord(event, text) {
+  event?.preventDefault();
+  event?.stopPropagation();
+  const word = String(text || '').trim();
+  if (!word) return;
+  cancelNoteLessonSpeech();
+  return speakEnglish(word);
 }
 
 function getVoice(langPrefix) {
@@ -2014,6 +2499,7 @@ function loadFlashSettingsUI() {
   if (exRate) exRate.value = String(flSettings.exRate);
   if (pause) pause.value = String(flSettings.pause);
   flReadSentence = !!flSettings.readSentence;
+  syncNoteEnglishRateUI();
   updateAutoFlashButtons();
 }
 
@@ -2034,7 +2520,33 @@ function saveFlashSettingsFromUI() {
   flSettings.pause = pause ? parseInt(pause.value, 10) : flSettings.pause;
   flReadSentence = !!flSettings.readSentence;
   save();
+  syncNoteEnglishRateUI();
   updateAutoFlashButtons();
+}
+
+function formatReadingRate(rate) {
+  return `${Number(rate || .62).toFixed(2).replace(/0$/, '')}×`;
+}
+
+function syncNoteEnglishRateUI() {
+  const slider = document.getElementById('note-en-rate');
+  const output = document.getElementById('note-en-rate-value');
+  if (slider) slider.value = String(flSettings.enRate);
+  if (output) output.textContent = formatReadingRate(flSettings.enRate);
+}
+
+function previewNoteEnglishRate(value) {
+  const output = document.getElementById('note-en-rate-value');
+  if (output) output.textContent = formatReadingRate(value);
+}
+
+function setNoteEnglishRate(value) {
+  const rate = Math.max(.45, Math.min(.9, Number(value) || .62));
+  flSettings.enRate = rate;
+  const flashSlider = document.getElementById('fl-en-rate');
+  if (flashSlider) flashSlider.value = String(rate);
+  syncNoteEnglishRateUI();
+  save();
 }
 
 function setAutoFlashNote(text) {
@@ -2067,6 +2579,12 @@ function fw(cat) {
   return cat ? pool.filter(w => w.cat === cat) : pool;
 }
 function shuf(a) { const b=[...a]; for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];} return b; }
+function shuffledWordIndexes(pool) {
+  const selected = new Set(pool);
+  const indexes = [];
+  for (let i = 0; i < words.length; i++) if (selected.has(words[i])) indexes.push(i);
+  return shuf(indexes);
+}
 
 function progHTML(cur, total) {
   const p = total ? Math.round(cur/total*100) : 0;
@@ -2105,31 +2623,46 @@ function setFlMode(m, btn) {
 
 function startFlash(keepAuto = false) {
   if (!keepAuto) stopAutoFlash();
+  document.body.classList.remove('flash-answer-open');
   const cat = document.getElementById('fl-cat').value;
   const pool = fw(cat);
   if (!pool.length) { document.getElementById('flash-area').innerHTML = emptyState('کلمه‌ای نیست', 'با دکمه افزودن، اولین فلش‌کارت را بساز.', 'book'); return; }
-  flOrder = shuf(pool.map(w => words.indexOf(w)));
+  flOrder = shuffledWordIndexes(pool);
   flIdx = 0; flShown = false; renderFlash();
 }
 
 function renderFlash() {
   const area = document.getElementById('flash-area');
   updateAutoFlashButtons();
+  document.body.classList.toggle('flash-answer-open', flShown);
   if (flIdx >= flOrder.length) { stopAutoFlash(); area.innerHTML = finishCard('startFlash()'); return; }
   const w = words[flOrder[flIdx]];
   const isEn = flMode === 'en';
+  const pronunciation = String(w.pr || w.pronunciation || w.pron || '').trim();
+  const exampleText = String(w.ex || w.sentence || w.example || w.exampleSentence || '').trim();
+  const pron = pronunciation ? `<div class="fc-pron-row"><span class="fc-pron-label">تلفظ فارسی</span><span class="fc-pron">${h(pronunciation)}</span></div>` : '';
   const front = isEn
-    ? `<div class="fc-word">${h(w.en)} <button class="speak-btn" onclick="speak('${jsq(w.en)}');event.stopPropagation()" title="پخش تلفظ">${speakIcon()}</button></div>${w.pr ? `<div class="fc-pron">${h(w.pr)}</div>` : ''}<div class="fc-hint">برای دیدن ترجمه لمس کن</div>`
+    ? `<div class="fc-word">${h(w.en)} <button type="button" class="speak-btn" onclick="speakWord(event,'${jsq(w.en)}')" title="خواندن واژه انگلیسی" aria-label="خواندن ${attr(w.en)}">${speakIcon()}</button></div>${pron}<div class="fc-hint">برای دیدن معنی و مثال لمس کن</div>`
     : `<div class="fc-word" style="font-size:22px">${h(w.fa)}</div><div class="fc-hint">کلمه انگلیسی؟</div>`;
   const rel = relationFlashHTML(w);
+  const example = exampleText
+    ? `<div class="fc-example">${icon('quote')}<div class="fc-example-copy"><span class="fc-example-label">جمله مثال</span><div class="fc-example-text">${h(exampleText)}</div></div></div>`
+    : `<div class="fc-example fc-example-empty">${icon('quote')}<div class="fc-example-copy"><span class="fc-example-label">جمله مثال</span><div class="fc-example-text">برای این واژه جمله‌ای ثبت نشده است.</div></div></div>`;
   const back = isEn
-    ? `<div class="fc-back"><div style="font-size:20px;font-weight:700">${h(w.fa)}</div>${w.ex?`<div style="font-size:12px;color:var(--text3);margin-top:6px;font-style:italic;direction:ltr;text-align:left">${h(w.ex)}</div>`:''}</div>`
-    : `<div class="fc-back"><div style="font-size:22px;font-weight:700">${h(w.en)} <button class="speak-btn" onclick="speak('${jsq(w.en)}');event.stopPropagation()" title="پخش تلفظ">${speakIcon()}</button></div>${w.pr?`<div class="fc-pron">${h(w.pr)}</div>`:''}</div>`;
+    ? `<div class="fc-back"><div class="fc-answer-label">معنی فارسی</div><div class="fc-meaning">${h(w.fa)}</div>${example}</div>`
+    : `<div class="fc-back"><div class="fc-answer-label">واژه انگلیسی</div><div class="fc-meaning" style="direction:ltr">${h(w.en)} <button type="button" class="speak-btn" onclick="speakWord(event,'${jsq(w.en)}')" title="خواندن واژه انگلیسی" aria-label="خواندن ${attr(w.en)}">${speakIcon()}</button></div>${pron}${example}</div>`;
   area.innerHTML = `${progHTML(flIdx, flOrder.length)}
-    <div class="flashcard" onclick="flShown=true;renderFlash()">${front}${flShown ? back : ''}</div>
+    <div class="flashcard" onclick="revealFlashCard('${jsq(w.en)}')">${front}${flShown ? back : ''}</div>
     ${flShown
-      ? `<div class="card-btns"><button class="btn" style="color:var(--green);border-color:var(--green-border);background:var(--green-bg)" onclick="nextFl(true)">${icon('check')} بلدم</button><button class="btn" onclick="nextFl(false)">${icon('rotate')} مرور</button></div><button class="btn btn-danger mt-8" onclick="deleteCurrentFlashWord()">${icon('trash')} حذف کامل این کلمه</button>${rel}`
-      : `<button class="btn" onclick="flShown=true;renderFlash()">نمایش جواب</button>`}`;
+      ? `<div class="card-btns"><button type="button" class="btn" style="color:var(--green);border-color:var(--green-border);background:var(--green-bg)" onclick="nextFl(true)">${icon('check')} بلدم</button><button type="button" class="btn" onclick="nextFl(false)">${icon('rotate')} مرور</button><button type="button" class="btn flash-delete-btn" onclick="deleteCurrentFlashWord()" title="حذف کامل این کلمه" aria-label="حذف کامل این کلمه">${icon('trash')}</button></div>${rel}`
+      : `<button class="btn" onclick="revealFlashCard('${jsq(w.en)}')">نمایش جواب</button>`}`;
+}
+
+function revealFlashCard(word) {
+  if (!flShown) speak(word);
+  flShown = true;
+  renderFlash();
+  document.getElementById('main').scrollTop = 0;
 }
 
 function nextFl(k) {
@@ -2212,7 +2745,7 @@ async function runAutoFlash(runId) {
 function startQuiz() {
   const pool = fw(document.getElementById('qz-cat').value);
   if (pool.length < 4) { document.getElementById('quiz-area').innerHTML = emptyState('حداقل ۴ کلمه لازم است', 'برای ساخت گزینه‌های هوشمند، چند کلمه دیگر اضافه کن.', 'bar-chart'); return; }
-  qzOrder = shuf(pool.map(w => words.indexOf(w))); qzIdx = 0; renderQuiz();
+  qzOrder = shuffledWordIndexes(pool); qzIdx = 0; renderQuiz();
 }
 
 function renderQuiz() {
@@ -2224,15 +2757,15 @@ function renderQuiz() {
   area.innerHTML = `${progHTML(qzIdx, qzOrder.length)}
     <div class="quiz-q">
       <div style="font-size:12px;color:var(--text3);margin-bottom:8px">ترجمه فارسی چیست؟</div>
-      <div style="font-size:26px;font-weight:700">${h(w.en)} <button class="speak-btn" onclick="speak('${jsq(w.en)}')" title="پخش تلفظ">${speakIcon()}</button></div>
+      <div style="font-size:26px;font-weight:700">${h(w.en)} <button type="button" class="speak-btn" onclick="speakWord(event,'${jsq(w.en)}')" title="خواندن واژه انگلیسی" aria-label="خواندن ${attr(w.en)}">${speakIcon()}</button></div>
       ${w.pr ? `<div style="font-size:13px;color:var(--text3);font-style:italic;margin-top:4px">${h(w.pr)}</div>` : ''}
     </div>
-    <div id="choices">${choices.map(c => `<button class="choice-btn" onclick="pickQ('${jsq(c)}','${jsq(w.fa)}','${jsq(w.id)}')">${h(c)}</button>`).join('')}</div>
+    <div id="choices">${choices.map(c => `<button class="choice-btn" onclick="pickQ('${jsq(c)}','${jsq(w.fa)}')">${h(c)}</button>`).join('')}</div>
     <div id="qz-res"></div>
     <div id="qz-nx" style="display:none"><button class="btn btn-primary mt-8" onclick="qzIdx++;renderQuiz()">بعدی ←</button></div>`;
 }
 
-function pickQ(chosen, correct, wid) {
+function pickQ(chosen, correct) {
   document.querySelectorAll('.choice-btn').forEach(b => {
     b.disabled = true;
     if (b.textContent === correct) b.classList.add('choice-ok');
@@ -2240,7 +2773,6 @@ function pickQ(chosen, correct, wid) {
   });
   if (chosen === correct) {
     document.getElementById('qz-res').innerHTML = `<div class="result-ok">${icon('checkCircle')} درست!</div>`;
-    markKnown(words.find(x => x.id == wid));
     setTimeout(() => { qzIdx++; renderQuiz(); }, 1000);
   } else {
     document.getElementById('qz-res').innerHTML = `<div class="result-bad">${icon('alert')} جواب: «${h(correct)}»</div>`;
@@ -2252,7 +2784,7 @@ function pickQ(chosen, correct, wid) {
 function startType() {
   const pool = fw(document.getElementById('tp-cat').value);
   if (!pool.length) { document.getElementById('type-area').innerHTML = emptyState('کلمه‌ای نیست', 'تمرین تایپ با کلمه‌های فعال ساخته می‌شود.', 'book'); return; }
-  tpOrder = shuf(pool.map(w => words.indexOf(w))); tpIdx = 0; renderType();
+  tpOrder = shuffledWordIndexes(pool); tpIdx = 0; renderType();
 }
 
 function renderType() {
@@ -2268,25 +2800,24 @@ function renderType() {
       ${w.ex ? `<div style="font-size:11px;color:var(--text3);margin-top:8px;border-top:1px solid var(--border);padding-top:8px;direction:ltr;text-align:left;font-style:italic">${h(w.ex)}</div>` : ''}
     </div>
     <div class="flex gap-8">
-      <input type="text" id="tp-in" placeholder="type here..." autocomplete="off" autocorrect="off" autocapitalize="off" style="flex:1;direction:ltr;text-align:left" onkeydown="if(event.key==='Enter')checkType('${jsq(w.en)}','${jsq(w.id)}')">
-      <button class="btn btn-primary btn-sm" onclick="checkType('${jsq(w.en)}','${jsq(w.id)}')" title="بررسی">${icon('check')}</button>
+      <input type="text" id="tp-in" placeholder="type here..." autocomplete="off" autocorrect="off" autocapitalize="off" style="flex:1;direction:ltr;text-align:left" onkeydown="if(event.key==='Enter')checkType('${jsq(w.en)}')">
+      <button class="btn btn-primary btn-sm" onclick="checkType('${jsq(w.en)}')" title="بررسی">${icon('check')}</button>
     </div>
     <div id="tp-res"></div>
     <div id="tp-nx" style="display:none"><button class="btn btn-primary mt-8" onclick="tpIdx++;renderType()">بعدی ←</button></div>`;
   document.getElementById('tp-in').focus();
 }
 
-function checkType(correct, wid) {
+function checkType(correct) {
   const inp = document.getElementById('tp-in');
   const ans = inp.value.trim().toLowerCase();
   if (!ans) return;
   inp.disabled = true;
   if (ans === correct.toLowerCase()) {
-    document.getElementById('tp-res').innerHTML = `<div class="result-ok">${icon('checkCircle')} درست! ${h(correct)} <button class="speak-btn" onclick="speak('${jsq(correct)}')" title="پخش تلفظ">${speakIcon()}</button></div>`;
-    markKnown(words.find(x => x.id == wid));
+    document.getElementById('tp-res').innerHTML = `<div class="result-ok">${icon('checkCircle')} درست! ${h(correct)} <button type="button" class="speak-btn" onclick="speakWord(event,'${jsq(correct)}')" title="خواندن واژه انگلیسی" aria-label="خواندن ${attr(correct)}">${speakIcon()}</button></div>`;
     setTimeout(() => { tpIdx++; renderType(); }, 1200);
   } else {
-    document.getElementById('tp-res').innerHTML = `<div class="result-bad">${icon('alert')} جواب: «${h(correct)}» <button class="speak-btn" onclick="speak('${jsq(correct)}')" title="پخش تلفظ">${speakIcon()}</button></div>`;
+    document.getElementById('tp-res').innerHTML = `<div class="result-bad">${icon('alert')} جواب: «${h(correct)}» <button type="button" class="speak-btn" onclick="speakWord(event,'${jsq(correct)}')" title="خواندن واژه انگلیسی" aria-label="خواندن ${attr(correct)}">${speakIcon()}</button></div>`;
     document.getElementById('tp-nx').style.display = 'block';
   }
 }
@@ -2317,7 +2848,7 @@ function renderHangman() {
     return `<button class="hm-key ${hit?'hit':''} ${miss?'miss':''}" ${(hmGuessed.includes(c)||won||lost)?'disabled':''} onclick="guessLetter('${c}')">${c}</button>`;
   }).join('');
   let footer = '';
-  if (won) footer = `<div class="result-ok">${icon('trophy')} آفرین! «${h(hmWord.en)}» — ${h(hmWord.fa)} <button class="speak-btn" onclick="speak('${jsq(hmWord.en)}')" title="پخش تلفظ">${speakIcon()}</button></div>`;
+  if (won) footer = `<div class="result-ok">${icon('trophy')} آفرین! «${h(hmWord.en)}» — ${h(hmWord.fa)} <button type="button" class="speak-btn" onclick="speakWord(event,'${jsq(hmWord.en)}')" title="خواندن واژه انگلیسی" aria-label="خواندن ${attr(hmWord.en)}">${speakIcon()}</button></div>`;
   else if (lost) footer = `<div class="result-bad">${icon('skull')} باختی! کلمه «${h(hmWord.en)}» بود — ${h(hmWord.fa)}</div>`;
   area.innerHTML = `<div class="hm-box">
     <div style="display:flex;justify-content:space-between;align-items:center">
@@ -2359,7 +2890,7 @@ function renderList() {
   if (!pool.length) { wrap.innerHTML = emptyState('کلمه‌ای یافت نشد', 'عبارت جستجو یا فیلتر دسته‌بندی را تغییر بده.', 'alert'); return; }
   wrap.innerHTML = pool.map(w => `
     <div class="word-item" onclick="openWordDetail('${jsq(w.id)}')">
-      <div class="word-en">${h(w.en)} <button class="speak-btn" onclick="speak('${jsq(w.en)}');event.stopPropagation()" title="پخش تلفظ">${speakIcon()}</button></div>
+      <div class="word-en">${h(w.en)} <button type="button" class="speak-btn" onclick="speakWord(event,'${jsq(w.en)}')" title="خواندن واژه انگلیسی" aria-label="خواندن ${attr(w.en)}">${speakIcon()}</button></div>
       <div class="word-fa">${h(w.fa)}</div>
       ${w.pr ? `<div class="word-pr">${h(w.pr)}</div>` : ''}
       ${w.ex ? `<div class="word-ex">${h(w.ex)}</div>` : ''}
@@ -2415,7 +2946,6 @@ function renderWordDetail() {
       <div class="insight"><div class="k">دسته</div><div class="v" style="font-size:14px">${h(w.cat || '-')}</div></div>
     </div>
     <div class="detail-actions">
-      <button class="btn btn-outline" onclick="markKnownFromDetail()">بلدم</button>
       <button class="btn btn-outline" onclick="markHardFromDetail()">مرور</button>
     </div>
     <div class="card" style="box-shadow:none;background:var(--surface2);margin:12px 0 0">
@@ -2431,7 +2961,7 @@ function renderWordDetail() {
       <div class="field"><label>متضادها</label><input type="text" id="dt-ant" value="${attr((w.ant || []).join(', '))}" dir="ltr"></div>
       <div class="detail-actions">
         <button class="btn btn-primary" onclick="saveWordDetail()">ذخیره</button>
-        <button class="btn" onclick="speak('${jsq(w.en)}')">پخش تلفظ</button>
+        <button type="button" class="btn" onclick="speakWord(event,'${jsq(w.en)}')">پخش تلفظ</button>
       </div>
       <button class="btn btn-danger mt-8" onclick="deleteWordFromDetail()">حذف کلمه</button>
     </div>`;
@@ -2453,18 +2983,12 @@ function saveWordDetail() {
   w.ant = document.getElementById('dt-ant').value.split(',').map(s => s.trim()).filter(Boolean);
   w.updatedAt = TODAY;
   if (newCat && !customCats.includes(newCat)) customCats.push(newCat);
-  syncRelatedWords(w);
+  normalizeWordRelations(w);
   save();
   updateStats();
   updateCats();
   renderList();
   renderCategories();
-  renderWordDetail();
-}
-
-function markKnownFromDetail() {
-  markKnown(getWordById(detailWordId));
-  renderList();
   renderWordDetail();
 }
 
@@ -2586,6 +3110,80 @@ function getNoteContentHTML() {
   return noteEditorInstance ? noteEditorInstance.getData() : (el.value ?? el.innerHTML);
 }
 
+function getEnglishLessonText(title, html) {
+  const holder = document.createElement('div');
+  holder.innerHTML = String(html || '');
+  holder.querySelectorAll('br,p,div,li,h1,h2,h3,tr').forEach(el => el.append(' '));
+  const raw = `${String(title || '')}. ${holder.textContent || ''}`;
+  return raw
+    .replace(/[^A-Za-z0-9\s.,!?;:'"()\-–—]/g, ' ')
+    .split(/\s+/)
+    .filter(part => /[A-Za-z]/.test(part))
+    .join(' ')
+    .trim();
+}
+
+function splitNoteSpeech(text, maxLength = 240) {
+  const sentences = String(text || '').match(/[^.!?]+[.!?]+|[^.!?]+$/g) || [];
+  const chunks = [];
+  let current = '';
+  sentences.forEach(sentence => {
+    const clean = sentence.trim();
+    if (!clean) return;
+    if ((current + ' ' + clean).trim().length <= maxLength) {
+      current = (current + ' ' + clean).trim();
+      return;
+    }
+    if (current) chunks.push(current);
+    if (clean.length <= maxLength) {
+      current = clean;
+      return;
+    }
+    const wordsInSentence = clean.split(/\s+/);
+    current = '';
+    wordsInSentence.forEach(word => {
+      if ((current + ' ' + word).trim().length > maxLength && current) {
+        chunks.push(current);
+        current = word;
+      } else current = (current + ' ' + word).trim();
+    });
+  });
+  if (current) chunks.push(current);
+  return chunks;
+}
+
+async function speakFullEnglishLesson(text, event) {
+  event?.preventDefault();
+  event?.stopPropagation();
+  const clean = String(text || '').trim();
+  const runId = cancelNoteLessonSpeech();
+  if (!clean) {
+    alert('متن انگلیسی برای خواندن پیدا نشد.');
+    return;
+  }
+  for (const chunk of splitNoteSpeech(clean)) {
+    if (runId !== noteSpeechRunId) return;
+    await speakEnglish(chunk);
+  }
+}
+
+function cancelNoteLessonSpeech() {
+  noteSpeechRunId++;
+  if (window.speechSynthesis) window.speechSynthesis.cancel();
+  return noteSpeechRunId;
+}
+
+function speakEditorNoteEnglish(event) {
+  const title = document.getElementById('note-title')?.value || '';
+  return speakFullEnglishLesson(getEnglishLessonText(title, getNoteContentHTML()), event);
+}
+
+function speakSavedNoteEnglish(id, event) {
+  const note = notes.find(n => String(n.id) === String(id));
+  if (!note) return;
+  return speakFullEnglishLesson(getEnglishLessonText(note.title, note.content), event);
+}
+
 function setNoteContentHTML(html) {
   if (noteEditorInstance) noteEditorInstance.setData(html || '');
   else {
@@ -2671,31 +3269,37 @@ function deleteNote(id, e) {
   notes = notes.filter(n => String(n.id) !== String(id));
   save();
   renderNotes();
-  renderNoteReview(false);
 }
 
 function renderNotes() {
   const list = document.getElementById('note-list');
   if (!list) return;
+  if (activeNoteTag && !notes.some(n => (n.tags || []).some(t => String(t).trim() === activeNoteTag))) activeNoteTag = '';
   const q = (document.getElementById('note-search')?.value || '').toLowerCase();
   const filtered = notes.filter(n => {
     const hay = [n.title, notePlainText(n.content), ...(n.tags || [])].join(' ').toLowerCase();
-    return !q || hay.includes(q);
+    const hasTag = !activeNoteTag || (n.tags || []).some(t => String(t).trim() === activeNoteTag);
+    return hasTag && (!q || hay.includes(q));
   });
   if (!filtered.length) {
-    list.innerHTML = emptyState('هنوز درسی ذخیره نشده', 'در نوت‌بوک، قواعد و درس‌هایت را مرتب ذخیره کن.', 'book');
+    const title = activeNoteTag ? `نوتی با تگ «${activeNoteTag}» نیست` : (q ? 'نتیجه‌ای پیدا نشد' : 'هنوز درسی ذخیره نشده');
+    const subtitle = activeNoteTag || q ? 'تگ یا عبارت دیگری را انتخاب کن.' : 'در نوت‌بوک، قواعد و درس‌هایت را مرتب ذخیره کن.';
+    list.innerHTML = emptyState(title, subtitle, 'book');
     renderNoteTags();
     return;
   }
   list.innerHTML = filtered.map(n => {
-    const preview = notePlainText(n.content).trim().slice(0, 110);
+    const preview = notePlainText(n.content).trim().slice(0, 85);
     return `<div class="note-item" onclick="editNote('${jsq(n.id)}')">
-      <div class="note-item-title">${h(n.title)}</div>
-      <div class="note-item-meta">${h(preview)}${preview.length >= 110 ? '...' : ''}</div>
-      <div class="detail-actions">
-        <button class="btn btn-sm btn-outline" onclick="editNote('${jsq(n.id)}');event.stopPropagation()">ویرایش</button>
-        <button class="btn btn-sm btn-outline note-export-btn" title="خروجی نوت" aria-label="خروجی نوت" onclick="backupSingleNoteJSON('${jsq(n.id)}',event)">${icon('download')}</button>
-        <button class="btn btn-sm btn-danger" onclick="deleteNote('${jsq(n.id)}',event)">حذف</button>
+      <div class="note-item-copy">
+        <div class="note-item-title">${h(n.title)}</div>
+        <div class="note-item-meta">${h(preview)}${preview.length >= 85 ? '...' : ''}</div>
+      </div>
+      <div class="note-item-actions">
+        <button type="button" class="btn note-item-action audio" title="خواندن متن انگلیسی" aria-label="خواندن متن انگلیسی ${attr(n.title)}" onclick="speakSavedNoteEnglish('${jsq(n.id)}',event)">${icon('volume')}</button>
+        <button type="button" class="btn note-item-action edit" title="ویرایش" aria-label="ویرایش ${attr(n.title)}" onclick="editNote('${jsq(n.id)}');event.stopPropagation()">${icon('pencil')}</button>
+        <button type="button" class="btn note-item-action" title="خروجی نوت" aria-label="خروجی ${attr(n.title)}" onclick="backupSingleNoteJSON('${jsq(n.id)}',event)">${icon('download')}</button>
+        <button type="button" class="btn note-item-action danger" title="حذف" aria-label="حذف ${attr(n.title)}" onclick="deleteNote('${jsq(n.id)}',event)">${icon('trash')}</button>
       </div>
     </div>`;
   }).join('');
@@ -2713,17 +3317,33 @@ function getNoteTags() {
 
 function renderNoteTags() {
   const cloud = document.getElementById('note-tag-cloud');
+  const notesCloud = document.getElementById('notes-tag-cloud');
+  const notesCount = document.getElementById('notes-tag-count');
   const list = document.getElementById('tag-note-list');
-  if (!cloud) return;
+  if (!cloud && !notesCloud) return;
   const tags = getNoteTags();
+  if (notesCount) notesCount.textContent = `${toFa(tags.length)} تگ`;
   if (!tags.length) {
-    cloud.innerHTML = emptyState('هنوز تگی نداری', 'برای هر درس چند تگ بنویس تا اینجا دسته‌بندی شود.', 'book');
+    if (cloud) cloud.innerHTML = emptyState('هنوز تگی نداری', 'برای هر درس چند تگ بنویس تا اینجا دسته‌بندی شود.', 'book');
+    if (notesCloud) notesCloud.innerHTML = '<span class="note-tag-empty">هنوز تگی برای نوت‌ها ثبت نشده است.</span>';
     if (list) list.innerHTML = '';
     return;
   }
-  cloud.innerHTML = tags.map(([tag, count]) =>
-    `<button class="btn btn-outline note-tag-btn" onclick="showNotesByTag('${jsq(tag)}')">${h(tag)} <span class="badge badge-blue">${toFa(count)}</span></button>`
+  if (cloud) cloud.innerHTML = tags.map(([tag, count]) =>
+    `<button type="button" class="btn btn-outline note-tag-btn" onclick="showNotesByTag('${jsq(tag)}')">${h(tag)} <span class="badge badge-blue">${toFa(count)}</span></button>`
   ).join('');
+  if (notesCloud) {
+    const allActive = !activeNoteTag;
+    notesCloud.innerHTML = `<button type="button" class="btn btn-outline note-tag-btn ${allActive ? 'active' : ''}" aria-pressed="${allActive}" onclick="filterNotesByTag('')">همه <span class="badge badge-blue">${toFa(notes.length)}</span></button>` + tags.map(([tag, count]) => {
+      const active = activeNoteTag === tag;
+      return `<button type="button" class="btn btn-outline note-tag-btn ${active ? 'active' : ''}" aria-pressed="${active}" onclick="filterNotesByTag('${jsq(tag)}')">${h(tag)} <span class="badge badge-blue">${toFa(count)}</span></button>`;
+    }).join('');
+  }
+}
+
+function filterNotesByTag(tag) {
+  activeNoteTag = String(tag || '').trim();
+  renderNotes();
 }
 
 function showNotesByTag(tag) {
@@ -2735,57 +3355,21 @@ function showNotesByTag(tag) {
     return;
   }
   list.innerHTML = filtered.map(n => {
-    const preview = notePlainText(n.content).trim().slice(0, 90);
+    const preview = notePlainText(n.content).trim().slice(0, 75);
+    const compactTags = (n.tags || []).slice(0, 3);
     return `<div class="note-item" onclick="editNote('${jsq(n.id)}')">
-      <div class="note-item-title">${h(n.title)}</div>
-      <div class="note-item-meta">${h(preview)}${preview.length >= 90 ? '...' : ''}</div>
-      <div class="note-tags">${(n.tags || []).map(t => `<span class="note-tag">${h(t)}</span>`).join('')}</div>
-      <div class="detail-actions">
-        <button class="btn btn-sm btn-outline" onclick="editNote('${jsq(n.id)}');event.stopPropagation()">ویرایش</button>
-        <button class="btn btn-sm btn-outline note-export-btn" title="خروجی نوت" aria-label="خروجی نوت" onclick="backupSingleNoteJSON('${jsq(n.id)}',event)">${icon('download')}</button>
+      <div class="note-item-copy">
+        <div class="note-item-title">${h(n.title)}</div>
+        <div class="note-item-meta">${h(preview)}${preview.length >= 75 ? '...' : ''}</div>
+        ${compactTags.length ? `<div class="note-item-tags-compact">${compactTags.map(t => `<span class="note-tag">${h(t)}</span>`).join('')}</div>` : ''}
+      </div>
+      <div class="note-item-actions">
+        <button type="button" class="btn note-item-action audio" title="خواندن متن انگلیسی" aria-label="خواندن متن انگلیسی ${attr(n.title)}" onclick="speakSavedNoteEnglish('${jsq(n.id)}',event)">${icon('volume')}</button>
+        <button type="button" class="btn note-item-action edit" title="ویرایش" aria-label="ویرایش ${attr(n.title)}" onclick="editNote('${jsq(n.id)}');event.stopPropagation()">${icon('pencil')}</button>
+        <button type="button" class="btn note-item-action" title="خروجی نوت" aria-label="خروجی ${attr(n.title)}" onclick="backupSingleNoteJSON('${jsq(n.id)}',event)">${icon('download')}</button>
       </div>
     </div>`;
   }).join('');
-}
-
-function startNoteReview() {
-  if (!notes.length) { msg('note-msg', 'درسی برای مرور وجود ندارد', 'var(--yellow)'); return; }
-  noteReviewIdx = 0;
-  document.getElementById('note-review-box').classList.add('open');
-  renderNoteReview(true);
-  document.getElementById('note-review-box').scrollIntoView({ behavior: 'smooth', block: 'start' });
-}
-
-function renderNoteReview(track = true) {
-  const box = document.getElementById('note-review-content');
-  const count = document.getElementById('note-review-count');
-  if (!box || !count) return;
-  if (!notes.length) {
-    document.getElementById('note-review-box').classList.remove('open');
-    return;
-  }
-  noteReviewIdx = Math.max(0, Math.min(noteReviewIdx, notes.length - 1));
-  const n = notes[noteReviewIdx];
-  if (track) {
-    n.reviewCount = Number(n.reviewCount || 0) + 1;
-    n.lastReviewedAt = TODAY;
-    save();
-  }
-  count.textContent = `${toFa(noteReviewIdx + 1)} / ${toFa(notes.length)}`;
-  box.innerHTML = `<div class="note-item-title">${h(n.title)}</div>
-    <div class="note-body">${cleanNoteHTML(n.content)}</div>`;
-}
-
-function nextNoteReview() {
-  if (!notes.length) return;
-  noteReviewIdx = (noteReviewIdx + 1) % notes.length;
-  renderNoteReview();
-}
-
-function prevNoteReview() {
-  if (!notes.length) return;
-  noteReviewIdx = (noteReviewIdx - 1 + notes.length) % notes.length;
-  renderNoteReview();
 }
 
 // CHAT
@@ -2837,6 +3421,132 @@ function setChatMode(mode, btn) {
     quiz: 'بگو از کدام دسته یا کلمات برایت تمرین بسازم...'
   };
   if (input) input.placeholder = placeholders[mode] || placeholders.free;
+  chatFlow = { step: (mode === 'word' || mode === 'conversation') ? 'category' : '', categoryKey: '' };
+  renderChatFlow();
+}
+
+function chatCategoryOptions() {
+  const counts = new Map();
+  let uncategorized = 0;
+  words.forEach(w => {
+    const cat = String(w.cat || '').trim();
+    if (cat) counts.set(cat, (counts.get(cat) || 0) + 1);
+    else uncategorized++;
+  });
+  const items = [{ key: '__all__', label: 'همه کلمات', count: words.length }];
+  [...counts.entries()].sort((a, b) => a[0].localeCompare(b[0], 'fa')).forEach(([label, count]) => items.push({ key: `cat:${label}`, label, count }));
+  if (uncategorized) items.push({ key: '__uncategorized__', label: 'بدون دسته', count: uncategorized });
+  return items.filter(item => item.count > 0);
+}
+
+function chatWordsForCategory(key) {
+  if (key === '__all__') return [...words];
+  if (key === '__uncategorized__') return words.filter(w => !String(w.cat || '').trim());
+  const category = String(key || '').replace(/^cat:/, '');
+  return words.filter(w => String(w.cat || '').trim() === category);
+}
+
+function chatCategoryLabel(key) {
+  if (key === '__all__') return 'همه کلمات';
+  if (key === '__uncategorized__') return 'بدون دسته';
+  return String(key || '').replace(/^cat:/, '') || 'همه کلمات';
+}
+
+function renderChatFlow() {
+  const host = document.getElementById('chat-flow');
+  if (!host) return;
+  if (!chatFlow.step || !['word', 'conversation'].includes(chatMode)) {
+    host.className = 'chat-flow';
+    host.innerHTML = '';
+    return;
+  }
+  host.className = 'chat-flow open';
+  if (!words.length) {
+    host.innerHTML = `<div class="chat-flow-card">${emptyState('هنوز کلمه‌ای نداری', 'اول یک کلمه به اپ اضافه کن.', 'book')}</div>`;
+    return;
+  }
+  if (chatFlow.step === 'category') {
+    const question = chatMode === 'word' ? 'کلمه از کدام دسته‌بندی باشد؟' : 'مکالمه با کدام دسته‌بندی باشد؟';
+    host.innerHTML = `<div class="chat-flow-card">
+      <div class="chat-flow-head"><div class="chat-flow-question">${icon('folder')}<span>${h(question)}</span></div></div>
+      <div class="chat-choice-grid">${chatCategoryOptions().map(item => `<button type="button" class="chat-choice" onclick="selectChatCategory('${jsq(item.key)}')"><span>${h(item.label)}</span><span class="badge">${toFa(item.count)}</span></button>`).join('')}</div>
+    </div>`;
+    queueLucideRefresh();
+    return;
+  }
+  if (chatMode === 'word' && chatFlow.step === 'word') {
+    host.innerHTML = `<div class="chat-flow-card">
+      <div class="chat-flow-head">
+        <div class="chat-flow-question">${icon('book')}<span>کدام کلمه را توضیح بدهم؟</span></div>
+        <button type="button" class="btn btn-outline chat-flow-back" onclick="resetChatFlowCategory()" aria-label="بازگشت به دسته‌بندی" title="بازگشت">${icon('arrow-right')}</button>
+      </div>
+      <input type="search" class="chat-word-search" placeholder="جستجو در ${attr(chatCategoryLabel(chatFlow.categoryKey))}..." oninput="renderChatWordChoices(this.value)">
+      <div id="chat-word-choices" class="chat-choice-grid"></div>
+    </div>`;
+    renderChatWordChoices('');
+    queueLucideRefresh();
+    return;
+  }
+  const label = chatCategoryLabel(chatFlow.categoryKey);
+  host.innerHTML = `<div class="chat-flow-card"><div class="chat-flow-head" style="margin:0">
+    <div class="chat-flow-question">${icon(chatMode === 'word' ? 'book' : 'messages-square')}<span>${chatMode === 'word' ? 'کلمه انتخاب شد' : `مکالمه با دسته «${h(label)}»`}</span></div>
+    <button type="button" class="btn btn-outline chat-flow-back" onclick="resetChatFlowCategory()" aria-label="تغییر دسته‌بندی" title="تغییر دسته‌بندی">${icon('rotate')}</button>
+  </div></div>`;
+  queueLucideRefresh();
+}
+
+function resetChatFlowCategory() {
+  chatFlow = { step: 'category', categoryKey: '' };
+  renderChatFlow();
+}
+
+function selectChatCategory(key) {
+  softHaptic(6);
+  chatFlow.categoryKey = key;
+  if (chatMode === 'word') {
+    chatFlow.step = 'word';
+    renderChatFlow();
+    return;
+  }
+  chatFlow.step = 'selected';
+  renderChatFlow();
+  const scopedWords = chatWordsForCategory(key);
+  const label = chatCategoryLabel(key);
+  const vocabulary = scopedWords.map(w => w.en).filter(Boolean).join('، ');
+  startGuidedChat(`یک مکالمه واقعی و مرحله‌ای با موضوع مناسب دسته «${label}» شروع کن. از واژه‌های این دسته استفاده کن: ${vocabulary}. هر بار فقط یک پیام یا سؤال کوتاه انگلیسی بفرست، منتظر پاسخ من بمان و اشتباهاتم را کوتاه و مرتب به فارسی اصلاح کن.`);
+}
+
+function renderChatWordChoices(query = '') {
+  const host = document.getElementById('chat-word-choices');
+  if (!host) return;
+  const q = String(query || '').trim().toLowerCase();
+  const filtered = chatWordsForCategory(chatFlow.categoryKey).filter(w => !q || `${w.en} ${w.fa}`.toLowerCase().includes(q));
+  host.innerHTML = filtered.length ? filtered.map(w => `<button type="button" class="chat-choice chat-word-choice" onclick="selectChatWord('${jsq(w.id)}')"><strong dir="ltr">${h(w.en)}</strong><small>${h(w.fa)}</small></button>`).join('') : `<div class="note-tag-empty">کلمه‌ای پیدا نشد.</div>`;
+}
+
+function selectChatWord(wordId) {
+  const word = words.find(w => String(w.id) === String(wordId));
+  if (!word) return;
+  softHaptic(6);
+  chatFlow.step = 'selected';
+  renderChatFlow();
+  const details = [
+    `کلمه: ${word.en}`,
+    `معنی ثبت‌شده: ${word.fa || 'ندارد'}`,
+    word.pr ? `تلفظ ثبت‌شده: ${word.pr}` : '',
+    word.ex ? `جمله ثبت‌شده: ${word.ex}` : '',
+    word.syn?.length ? `مترادف‌ها: ${word.syn.join('، ')}` : '',
+    word.ant?.length ? `متضادها: ${word.ant.join('، ')}` : ''
+  ].filter(Boolean).join('\n');
+  startGuidedChat(`این واژه ذخیره‌شده در اپ من را دقیق و مرتب توضیح بده. معنی، تلفظ، کاربرد، دو مثال طبیعی، مترادف، متضاد و اشتباه رایج را با تیترهای واضح بنویس.\n${details}`);
+}
+
+function startGuidedChat(text) {
+  const input = document.getElementById('chat-input');
+  if (!input) return;
+  input.value = text;
+  autoResizeChatInput();
+  sendChatMessage();
 }
 
 function autoResizeChatInput() {
@@ -2859,8 +3569,68 @@ function renderChatStatus(text = '') {
   if (el) el.textContent = text;
 }
 
+function chatInlineMarkdown(value) {
+  let safe = h(String(value || '').replace(/\s*\/{3,}\s*/g, ' — '));
+  safe = safe.replace(/`([^`\n]+)`/g, '<code>$1</code>');
+  safe = safe.replace(/\*\*\*([^*\n]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+  safe = safe.replace(/\*\*([^*\n]+)\*\*/g, '<strong>$1</strong>');
+  safe = safe.replace(/__([^_\n]+)__/g, '<strong>$1</strong>');
+  safe = safe.replace(/(^|[\s(])\*([^*\n]+)\*(?=$|[\s)،.!?])/g, '$1<em>$2</em>');
+  safe = safe.replace(/\*{2,}/g, ' ');
+  return safe;
+}
+
+function renderChatMarkdown(content) {
+  const lines = String(content || '').replace(/\r/g, '').split('\n');
+  let out = '';
+  let listType = '';
+  let inCode = false;
+  let codeLines = [];
+  const closeList = () => {
+    if (listType) out += `</${listType}>`;
+    listType = '';
+  };
+  lines.forEach(line => {
+    const trimmed = line.trim();
+    if (trimmed.startsWith('```')) {
+      closeList();
+      if (inCode) {
+        out += `<pre><code>${h(codeLines.join('\n'))}</code></pre>`;
+        codeLines = [];
+        inCode = false;
+      } else inCode = true;
+      return;
+    }
+    if (inCode) { codeLines.push(line); return; }
+    if (!trimmed) { closeList(); return; }
+    if (/^(\*{3,}|-{3,}|_{3,})$/.test(trimmed)) { closeList(); out += '<hr>'; return; }
+    const heading = trimmed.match(/^(#{1,4})\s+(.+)$/);
+    if (heading) { closeList(); const level = heading[1].length <= 2 ? 3 : 4; out += `<h${level}>${chatInlineMarkdown(heading[2])}</h${level}>`; return; }
+    const bullet = trimmed.match(/^[-*•]\s+(.+)$/);
+    if (bullet) {
+      if (listType !== 'ul') { closeList(); listType = 'ul'; out += '<ul>'; }
+      out += `<li>${chatInlineMarkdown(bullet[1])}</li>`;
+      return;
+    }
+    const numbered = trimmed.match(/^\d+[.)]\s+(.+)$/);
+    if (numbered) {
+      if (listType !== 'ol') { closeList(); listType = 'ol'; out += '<ol>'; }
+      out += `<li>${chatInlineMarkdown(numbered[1])}</li>`;
+      return;
+    }
+    const quote = trimmed.match(/^>\s*(.+)$/);
+    if (quote) { closeList(); out += `<blockquote>${chatInlineMarkdown(quote[1])}</blockquote>`; return; }
+    closeList();
+    out += `<p>${chatInlineMarkdown(trimmed)}</p>`;
+  });
+  closeList();
+  if (inCode && codeLines.length) out += `<pre><code>${h(codeLines.join('\n'))}</code></pre>`;
+  return out || '<p>پاسخی دریافت نشد.</p>';
+}
+
 function renderChat() {
   loadChatSettingsUI();
+  renderChatFlow();
   const feed = document.getElementById('chat-feed');
   if (!feed) return;
   if (!chatHistory.length) {
@@ -2868,19 +3638,26 @@ function renderChat() {
     return;
   }
   feed.innerHTML = chatHistory.map((m, i) => `<div class="chat-msg ${m.role === 'user' ? 'user' : 'assistant'}">
-    <div class="chat-meta">${m.role === 'user' ? 'تو' : 'مربی زبان'}</div>${h(m.content)}
+    <div class="chat-meta">${icon(m.role === 'user' ? 'user' : 'sparkles')}<span>${m.role === 'user' ? 'تو' : 'مربی هوشمند'}</span></div><div class="chat-content">${renderChatMarkdown(m.content)}</div>
   </div>`).join('');
   feed.scrollTop = feed.scrollHeight;
+  queueLucideRefresh();
 }
 
 function getLearningContext() {
-  const active = activeWords().slice(0, 24).map(w => `${w.en}: ${w.fa}${w.pr ? ` (${w.pr})` : ''}${w.cat ? ` [${w.cat}]` : ''}`).join('\n');
-  const hard = hardWords().slice(0, 12).map(w => `${w.en}: ${w.fa}`).join('\n');
-  const recentNotes = notes.slice(0, 8).map(n => `- ${n.title}${(n.tags || []).length ? ` | tags: ${(n.tags || []).join(', ')}` : ''}`).join('\n');
+  const allVocabulary = words.map((w, index) => [
+    `${index + 1}. ${w.en || ''} | fa=${w.fa || ''}`,
+    `category=${w.cat || 'uncategorized'}`,
+    w.pr ? `pronunciation=${w.pr}` : '',
+    w.ex ? `example=${w.ex}` : '',
+    w.syn?.length ? `synonyms=${w.syn.join(', ')}` : '',
+    w.ant?.length ? `antonyms=${w.ant.join(', ')}` : '',
+    `status=${w.known ? 'learned' : (w.hard ? 'review' : 'learning')}`
+  ].filter(Boolean).join(' | ')).join('\n');
+  const allNotes = notes.map(n => `- ${n.title}${(n.tags || []).length ? ` | tags: ${(n.tags || []).join(', ')}` : ''}`).join('\n');
   return [
-    active ? `Saved vocabulary:\n${active}` : '',
-    hard ? `Hard words:\n${hard}` : '',
-    recentNotes ? `Notebook lessons:\n${recentNotes}` : ''
+    allVocabulary ? `COMPLETE SAVED VOCABULARY (${words.length} entries; this is the full current list):\n${allVocabulary}` : 'COMPLETE SAVED VOCABULARY: empty',
+    allNotes ? `Notebook lessons (${notes.length}):\n${allNotes}` : ''
   ].filter(Boolean).join('\n\n');
 }
 
@@ -2896,13 +3673,18 @@ function chatSystemPrompt() {
   return `You are a bilingual English learning coach for Persian speakers.
 Explain mainly in Persian, include English examples, be practical and concise.
 Be encouraging but not childish. Keep answers structured and easy to scan.
+Return clean, valid Markdown with short headings, normal paragraphs, and bullet or numbered lists when useful.
+Never output broken Markdown markers, decorative star separators, repeated asterisks, or sequences such as *** and ///.
+Do not glue emphasis markers to Persian text. Accuracy and readable structure are more important than decoration.
 Current mode: ${chatMode}. ${modes[chatMode] || modes.free}
-Use the user's saved vocabulary and notes when relevant. If there is not enough app data, still help normally.`;
+You have access to the user's complete saved vocabulary catalog in the next system message. Treat it as authoritative and use the selected category or word exactly when the user chooses one.
+If there is not enough app data, still help normally.`;
 }
 
 function buildChatMessages(userText) {
   const context = getLearningContext();
-  const recent = chatHistory.slice(-8).map(m => ({ role: m.role, content: m.content }));
+  const historyWithoutCurrent = chatHistory.length && chatHistory[chatHistory.length - 1]?.role === 'user' && chatHistory[chatHistory.length - 1]?.content === userText ? chatHistory.slice(0, -1) : chatHistory;
+  const recent = historyWithoutCurrent.slice(-10).map(m => ({ role: m.role, content: m.content }));
   return [
     { role: 'system', content: chatSystemPrompt() },
     ...(context ? [{ role: 'system', content: `App context:\n${context}` }] : []),
@@ -2912,6 +3694,7 @@ function buildChatMessages(userText) {
 }
 
 async function sendChatMessage() {
+  if (chatSending) return;
   const input = document.getElementById('chat-input');
   const text = (input?.value || '').trim();
   if (!text) return;
@@ -2923,8 +3706,12 @@ async function sendChatMessage() {
   }
   chatHistory.push({ role: 'user', content: text, ts: Date.now(), mode: chatMode });
   input.value = '';
+  input.style.height = 'auto';
   renderChat();
-  renderChatStatus('در حال فکر کردن...');
+  chatSending = true;
+  const sendBtn = document.getElementById('chat-send-btn');
+  if (sendBtn) sendBtn.disabled = true;
+  renderChatStatus('مربی هوشمند در حال نوشتن است...');
   try {
     const endpoint = `${chatSettings.baseUrl.replace(/\/+$/, '')}/chat/completions`;
     const payload = {
@@ -2963,6 +3750,9 @@ async function sendChatMessage() {
     renderChatStatus('');
   } catch (e) {
     renderChatStatus('خطا: ' + e.message);
+  } finally {
+    chatSending = false;
+    if (sendBtn) sendBtn.disabled = false;
   }
 }
 
@@ -3012,7 +3802,7 @@ function confirmImport() {
   const cat = document.getElementById('import-cat-input').value.trim();
   const imported = pendingImportRows.map(r => ({ ...r, cat, date: TODAY, known: false, hard: false, reviewCount: 0, id: Date.now() + Math.random() }));
   imported.forEach(w => words.unshift(w));
-  imported.forEach(w => syncRelatedWords(w));
+  imported.forEach(normalizeWordRelations);
   save(); updateStats();
   document.getElementById('xl-result').innerHTML = `<div class="result-ok">${icon('checkCircle')} ${toFa(pendingImportRows.length)} کلمه وارد شد!</div>`;
   document.getElementById('import-category-dialog').style.display = 'none';
@@ -3214,26 +4004,35 @@ function clearAll() {
 }
 
 // NAV
+let panelWorkToken = 0;
 function showPanel(name, btn) {
   softHaptic();
-  if (name !== 'flash') stopAutoFlash();
-  trackSessionTime();
-  document.querySelectorAll('.panel').forEach(p => p.classList.remove('act'));
-  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('act'));
-  document.getElementById('p-' + name).classList.add('act');
+  if (name !== 'notes' && document.body.dataset.panel === 'notes') cancelNoteLessonSpeech();
+  if (name !== 'flash') {
+    stopAutoFlash();
+    document.body.classList.remove('flash-answer-open');
+  }
+  document.querySelector('.panel.act')?.classList.remove('act');
+  document.querySelector('.nav-btn.act')?.classList.remove('act');
+  document.getElementById('p-' + name)?.classList.add('act');
   btn.classList.add('act');
   document.body.dataset.panel = name;
   document.getElementById('main').scrollTop = 0;
-  if (name === 'flash') { loadFlashSettingsUI(); startFlash(); }
-  if (name === 'quiz') startQuiz();
-  if (name === 'type') startType();
-  if (name === 'hangman') startHangman();
-  if (name === 'practice') showPractice(practiceMode);
-  if (name === 'add' && document.getElementById('add-list-panel')?.classList.contains('open')) renderList();
-  if (name === 'stats') updateStatsPanel();
-  if (name === 'notes') renderNotes();
-  if (name === 'chat') renderChat();
-  if (name === 'more') { renderCategories(); renderNoteTags(); }
+  const workToken = ++panelWorkToken;
+  setTimeout(() => {
+    if (workToken !== panelWorkToken || document.body.dataset.panel !== name) return;
+    trackSessionTime();
+    if (name === 'flash') { loadFlashSettingsUI(); startFlash(); }
+    if (name === 'quiz') startQuiz();
+    if (name === 'type') startType();
+    if (name === 'hangman') startHangman();
+    if (name === 'practice') showPractice(practiceMode);
+    if (name === 'add' && document.getElementById('add-list-panel')?.classList.contains('open')) renderList();
+    if (name === 'stats') updateStatsPanel();
+    if (name === 'notes') renderNotes();
+    if (name === 'chat') renderChat();
+    if (name === 'more') { renderCategories(); renderNoteTags(); }
+  }, 0);
 }
 
 function toggleMoreSection(id, btn) {
@@ -3318,9 +4117,17 @@ if ('serviceWorker' in navigator) {
 }
 
 document.addEventListener('visibilitychange', () => {
-  if (document.visibilityState === 'visible' && flAuto && !flWakeLock) {
-    requestFlashWakeLock();
+  if (document.visibilityState === 'hidden') {
+    trackSessionTime();
+    sessionStartTime = null;
+  } else {
+    sessionStartTime = Date.now();
+    if (flAuto && !flWakeLock) requestFlashWakeLock();
   }
+});
+window.addEventListener('pagehide', trackSessionTime);
+document.addEventListener('keydown', event => {
+  if (event.key === 'Escape' && document.getElementById('learned-words-modal')?.classList.contains('open')) closeLearnedWordsModal();
 });
 
 if (window.speechSynthesis) {
