@@ -1,15 +1,20 @@
-const CACHE = 'vocab-v39';
-const FILES = [
+const CACHE = 'vocab-v41';
+const CORE_FILES = [
   './',
   './index.html',
-  './lucide.min.js',
   './manifest.json',
   './icon-192.png',
   './icon-512.png'
 ];
+const OPTIONAL_FILES = ['./lucide.min.js'];
 
 self.addEventListener('install', e => {
-  e.waitUntil(caches.open(CACHE).then(c => c.addAll(FILES)));
+  e.waitUntil(
+    caches.open(CACHE).then(async c => {
+      await c.addAll(CORE_FILES);
+      await Promise.all(OPTIONAL_FILES.map(file => c.add(file).catch(() => null)));
+    })
+  );
   self.skipWaiting();
 });
 
@@ -44,7 +49,9 @@ self.addEventListener('fetch', e => {
     caches.match(e.request).then(cached => {
       if (cached) return cached;
       return fetch(e.request).then(r => {
-        if (r.ok && new URL(e.request.url).origin === self.location.origin) {
+        const requestUrl = new URL(e.request.url);
+        const cacheableOrigin = requestUrl.origin === self.location.origin || requestUrl.hostname === 'cdn.jsdelivr.net';
+        if (r.ok && cacheableOrigin) {
           const copy = r.clone();
           caches.open(CACHE).then(c => c.put(e.request, copy));
         }
