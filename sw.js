@@ -1,4 +1,4 @@
-const CACHE = 'vocab-v41';
+const CACHE = 'vocab-v52';
 const CORE_FILES = [
   './',
   './index.html',
