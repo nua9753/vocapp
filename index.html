@@ -3063,7 +3063,7 @@ function renderFlash() {
   area.innerHTML = `${progHTML(flIdx, flOrder.length)}
     <div class="flashcard" onclick="revealFlashCard('${jsq(w.en)}')">${front}${flShown ? back : ''}</div>
     ${flShown
-      ? `${flAuto ? '' : flashAIHTML(w)}<div class="card-btns"><button type="button" class="btn" style="color:var(--green);border-color:var(--green-border);background:var(--green-bg)" onclick="nextFl(true)">${icon('check')} بلدم</button><button type="button" class="btn" onclick="nextFl(false)">${icon('rotate')} مرور</button><button type="button" class="btn flash-delete-btn" onclick="deleteCurrentFlashWord()" title="حذف کامل این کلمه" aria-label="حذف کامل این کلمه">${icon('trash')}</button></div>${rel}`
+      ? `<div class="card-btns"><button type="button" class="btn" style="color:var(--green);border-color:var(--green-border);background:var(--green-bg)" onclick="nextFl(true)">${icon('check')} بلدم</button><button type="button" class="btn" onclick="nextFl(false)">${icon('rotate')} مرور</button><button type="button" class="btn flash-delete-btn" onclick="deleteCurrentFlashWord()" title="حذف کامل این کلمه" aria-label="حذف کامل این کلمه">${icon('trash')}</button></div>${rel}${flAuto ? '' : flashAIHTML(w)}`
       : `<button class="btn" onclick="revealFlashCard('${jsq(w.en)}')">نمایش جواب</button>`}`;
   queueLucideRefresh();
 }
