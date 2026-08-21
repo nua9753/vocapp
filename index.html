@@ -252,6 +252,17 @@ body.flash-answer-open .flashcard>.fc-hint{display:none}
 
 /* Mode select */
 .mode-row{display:flex;gap:8px;margin-bottom:12px;overflow-x:auto;padding-bottom:4px}
+.flash-mode-row{align-items:center;flex-wrap:wrap}
+.practice-hint{margin:-2px 0 10px;font-size:11.5px;line-height:1.75;color:var(--text3)}
+.flash-switch,.practice-switch{
+  display:inline-flex;align-items:center;gap:7px;
+  min-height:36px;padding:6px 11px;border:1px solid var(--border);
+  border-radius:20px;background:var(--surface);color:var(--text2);
+  font-size:12px;font-weight:800;white-space:nowrap;flex-shrink:0;
+}
+.flash-switch input,.practice-switch input{width:16px;height:16px;margin:0}
+.flash-toggle-btn,.practice-toggle-btn{min-height:38px;padding:8px 12px;border-radius:18px;font-size:12px;font-weight:850}
+.flash-toggle-btn.active,.practice-toggle-btn.active{background:var(--accent);color:#fff;border-color:transparent}
 .mode-btn{padding:8px 15px;border:1px solid transparent;border-radius:999px;font-size:12px;font-weight:800;cursor:pointer;background:var(--surface);box-shadow:var(--shadow-1);color:var(--text2);white-space:nowrap;font-family:inherit;flex-shrink:0;-webkit-appearance:none;transition:background .15s,color .15s,transform .12s}
 .mode-btn.act{background:var(--accent);border-color:transparent;color:#fff}
 .mode-btn:active{transform:scale(.96)}
@@ -1019,10 +1030,28 @@ body.sheet-open .sheet-backdrop{backdrop-filter:blur(8px);-webkit-backdrop-filte
 .chat-send{width:46px;height:46px;padding:0;border-radius:15px;align-self:end}
 .chat-send .ui-icon{width:19px;height:19px;margin:0}
 .chat-status{min-height:17px;font-size:10.5px;color:var(--text3);text-align:center;font-weight:750}
-.chat-quick-row{display:flex;gap:6px;overflow:auto;padding:1px 0 4px;scrollbar-width:none}
-.chat-quick-row::-webkit-scrollbar{display:none}
-.chat-chip{display:inline-flex;align-items:center;gap:5px;width:auto;white-space:nowrap;min-height:31px;padding:6px 9px;border-radius:999px;font-size:10.5px}
-.chat-chip .ui-icon{width:14px;height:14px;margin:0}
+.chat-note-mode.picker-open,.chat-note-mode.has-notes{border-color:var(--accent-border);background:var(--accent-bg);color:var(--accent)}
+.chat-note-mode.picker-open .ui-icon,.chat-note-mode.has-notes .ui-icon{color:var(--accent)}
+.chat-mode-count{display:inline-grid;place-items:center;min-width:18px;height:18px;padding:0 5px;border-radius:999px;background:var(--surface2);color:var(--accent);font-size:9px;font-weight:950}
+.chat-note-picker{display:none;padding:10px;border:1px solid var(--accent-border);border-radius:17px;background:var(--accent-bg)}
+.chat-note-picker.open{display:block}
+.chat-note-picker-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px}
+.chat-note-picker-title{display:flex;align-items:center;gap:6px;color:var(--text);font-size:12px;font-weight:950}
+.chat-note-picker-title .ui-icon{width:16px;height:16px;color:var(--accent)}
+.chat-note-picker-actions{display:flex;align-items:center;gap:5px}
+.chat-note-picker-actions .btn{width:auto;min-height:29px;padding:5px 8px;border-radius:9px;font-size:9.5px}
+.chat-note-search{height:38px!important;min-height:38px!important;margin-bottom:8px!important;border-radius:12px!important;font-size:11px!important}
+.chat-note-list{display:grid;gap:6px;max-height:180px;overflow:auto;scrollbar-width:thin}
+.chat-note-option{display:grid;grid-template-columns:auto 1fr;align-items:center;gap:9px;padding:8px 9px;border:1px solid var(--hairline);border-radius:12px;background:var(--surface);cursor:pointer}
+.chat-note-option:has(input:checked){border-color:var(--accent-border);background:var(--accent-bg)}
+.chat-note-option input{width:17px;height:17px;margin:0;accent-color:var(--accent)}
+.chat-note-option-copy{min-width:0;line-height:1.45}
+.chat-note-option-copy strong{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--text);font-size:11px}
+.chat-note-option-copy small{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--text3);font-size:9.5px}
+.chat-attached-notes{display:flex;flex-wrap:wrap;gap:6px}
+.chat-attached-note{display:inline-flex;align-items:center;gap:5px;width:auto;max-width:100%;min-height:29px;padding:5px 8px;border:1px solid var(--accent-border);border-radius:999px;background:var(--accent-bg);color:var(--accent);font-size:10px;font-weight:850}
+.chat-attached-note span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:190px}
+.chat-attached-note .ui-icon{width:12px;height:12px;margin:0}
 .chat-settings-grid{display:grid;gap:10px}
 .chat-api-warning{font-size:12px;color:var(--text3);line-height:1.8;background:var(--surface2);border-radius:16px;padding:10px 12px}
 @media (max-width:360px){.chat-msg{max-width:95%}.chat-feed{height:clamp(310px,43dvh,430px)}}
@@ -1223,6 +1252,7 @@ body.sheet-open .sheet-backdrop{backdrop-filter:blur(8px);-webkit-backdrop-filte
 }
 :root.dark-mode .card-title{font-size:14px;color:var(--text);padding:0 2px}
 :root.dark-mode .mode-row{padding:0 1px 3px;gap:8px;margin-bottom:12px}
+:root.dark-mode .flash-switch,:root.dark-mode .practice-switch{background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.08)}
 :root.dark-mode .mode-btn,:root.dark-mode .mode-row select,:root.dark-mode .segmented{
   min-height:43px;border:1px solid var(--hairline)!important;border-radius:16px!important;
   background:rgba(255,255,255,.045);color:var(--text2);box-shadow:inset 0 1px 0 rgba(255,255,255,.035);
@@ -1347,6 +1377,7 @@ body.sheet-open .sheet-backdrop{backdrop-filter:blur(8px);-webkit-backdrop-filte
   border-radius:27px;padding:17px;box-shadow:var(--shadow-1);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
 }
 :root:not(.dark-mode) .mode-row{padding:0 1px 3px;gap:8px;margin-bottom:12px}
+:root:not(.dark-mode) .flash-switch,:root:not(.dark-mode) .practice-switch{background:rgba(255,255,255,.66);border-color:var(--hairline);box-shadow:inset 0 1px 0 #fff}
 :root:not(.dark-mode) .mode-btn,:root:not(.dark-mode) .mode-row select,:root:not(.dark-mode) .segmented{
   min-height:43px;border:1px solid var(--hairline)!important;border-radius:16px!important;background:rgba(255,255,255,.66);color:var(--text2);box-shadow:inset 0 1px 0 #fff;
 }
@@ -1388,6 +1419,37 @@ body.sheet-open .sheet-backdrop{backdrop-filter:blur(8px);-webkit-backdrop-filte
 :root:not(.dark-mode) .nav-btn.act{color:#fff;background:linear-gradient(145deg,#A575EC,#754BC9);box-shadow:0 10px 23px rgba(86,49,157,.24),inset 0 1px 0 rgba(255,255,255,.20)}
 :root:not(.dark-mode) .nav-btn.act svg{background:none}:root:not(.dark-mode) .nav-btn .dot{display:none}
 :root:not(.dark-mode) .fab{position:fixed;z-index:12;width:56px;height:56px;bottom:96px;border:1px solid rgba(119,79,196,.20);background:linear-gradient(145deg,#A979F2,#7047C6);box-shadow:0 16px 36px rgba(78,43,147,.26),inset 0 1px 0 rgba(255,255,255,.25)}
+/* Refined flash card */
+:root .flashcard{min-height:350px;padding:30px 24px 26px;border-radius:30px;justify-content:center}
+:root .flashcard::before{content:"";position:absolute;width:210px;height:210px;top:-108px;right:-72px;border-radius:50%;background:radial-gradient(circle,rgba(167,120,241,.24),rgba(128,88,216,.05) 58%,transparent 72%);filter:blur(2px);transform:none;pointer-events:none}
+:root .flashcard::after{content:"";display:block;position:absolute;inset:0 34px auto;height:3px;border-radius:0 0 999px 999px;background:linear-gradient(90deg,transparent,var(--accent2),transparent);filter:none;opacity:.72;pointer-events:none}
+:root .flashcard>*{position:relative;z-index:1}
+.fc-front{display:flex;flex:1;flex-direction:column;align-items:center;justify-content:center;width:100%}
+.fc-card-kicker{display:inline-flex;align-items:center;gap:6px;margin-bottom:20px;padding:6px 11px;border:1px solid var(--accent-border);border-radius:999px;background:var(--accent-bg);color:var(--accent);font-size:10px;font-weight:900;line-height:1}
+.fc-card-kicker .ui-icon{width:14px;height:14px;margin:0}
+:root.dark-mode .fc-word,:root:not(.dark-mode) .fc-word{display:flex;flex-direction:row;align-items:center;justify-content:center;gap:11px;width:100%;margin:0;color:var(--text);font-size:clamp(30px,9vw,42px);font-weight:950;line-height:1.25;letter-spacing:-.4px}
+.fc-word-text{min-width:0;overflow-wrap:anywhere}
+.fc-word.fa .fc-word-text{font-size:clamp(25px,7.5vw,34px);line-height:1.7}
+:root.dark-mode .fc-word .speak-btn,:root:not(.dark-mode) .fc-word .speak-btn{order:0;display:grid;place-items:center;width:46px;height:46px;min-width:46px;margin:0;border:1px solid var(--accent-border);border-radius:15px;background:var(--accent-bg);color:var(--accent);box-shadow:none}
+:root.dark-mode .fc-word .speak-btn .ui-icon,:root:not(.dark-mode) .fc-word .speak-btn .ui-icon{width:22px;height:22px;margin:0}
+:root .fc-pron-row{gap:7px;margin:14px 0 0;padding:7px 11px;border:1px solid var(--hairline);background:var(--surface)}
+:root .fc-pron-label{color:var(--text3);font-size:9px}
+:root.dark-mode .fc-pron-row .fc-pron,:root:not(.dark-mode) .fc-pron-row .fc-pron{color:var(--text2);font-size:13px;font-weight:800;font-style:normal;direction:rtl}
+:root.dark-mode .fc-hint,:root:not(.dark-mode) .fc-hint{display:inline-flex;align-items:center;gap:6px;margin-top:27px;padding:8px 12px;border-radius:12px;background:rgba(128,88,216,.07);color:var(--text3);font-size:10.5px;font-weight:750}
+.fc-hint .ui-icon{width:15px;height:15px;margin:0;color:var(--accent)}
+:root.dark-mode .fc-back,:root:not(.dark-mode) .fc-back{width:100%;margin-top:24px;padding-top:22px;border-top:1px solid var(--hairline)}
+.fc-answer-label{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:7px;color:var(--text3);font-size:9.5px;font-weight:900}
+.fc-answer-label::before,.fc-answer-label::after{content:"";width:20px;height:1px;background:var(--hairline)}
+:root.dark-mode .fc-meaning,:root:not(.dark-mode) .fc-meaning{color:var(--accent);font-size:clamp(22px,6.5vw,29px);font-weight:950;line-height:1.65}
+.fc-meaning.english-answer{display:flex;align-items:center;justify-content:center;gap:10px;direction:ltr}
+.fc-meaning.english-answer .speak-btn{display:grid;place-items:center;width:38px;height:38px;min-width:38px;padding:0;border:1px solid var(--accent-border);border-radius:12px;background:var(--accent-bg);color:var(--accent);box-shadow:none}
+.fc-meaning.english-answer .speak-btn .ui-icon{width:19px;height:19px;margin:0}
+:root .fc-example{gap:11px;margin-top:18px;padding:14px 15px;border-color:var(--hairline);border-radius:18px;background:var(--surface);box-shadow:inset 0 1px 0 rgba(255,255,255,.05)}
+:root .fc-example>.ui-icon{width:30px;height:30px;min-width:30px;margin:0;padding:7px;border-radius:10px;background:var(--accent-bg);color:var(--accent)}
+:root .fc-example-label{margin-bottom:5px;color:var(--text3);font-size:9px}
+:root .fc-example-text{color:var(--text);font-size:14px;font-weight:750;line-height:1.85}
+body.flash-answer-open #flash-area>.flashcard{min-height:470px;padding-top:27px;padding-bottom:25px}
+body.flash-answer-open .flashcard .fc-hint{display:none}
 :root.dark-mode .note-tag-btn.active,:root:not(.dark-mode) .note-tag-btn.active{color:#fff;border-color:transparent;background:linear-gradient(145deg,#A575EC,#754BC9);box-shadow:0 8px 18px rgba(86,49,157,.24)}
 :root.dark-mode .note-tag-btn.active .badge,:root:not(.dark-mode) .note-tag-btn.active .badge{color:#fff;border-color:rgba(255,255,255,.28);background:rgba(255,255,255,.16)}
 .header-mini-stats{position:absolute;right:16px;display:flex;align-items:center;gap:5px;direction:rtl;padding:5px 7px;border:1px solid var(--hairline);border-radius:12px;background:var(--surface);color:var(--text2);z-index:2}
@@ -1397,16 +1459,30 @@ body.sheet-open .sheet-backdrop{backdrop-filter:blur(8px);-webkit-backdrop-filte
 .header-mini-sep{width:1px;height:13px;background:var(--hairline)}
 :root.dark-mode .header-mini-stats{background:rgba(255,255,255,.045);border-color:rgba(255,255,255,.07)}
 :root:not(.dark-mode) .header-mini-stats{background:rgba(255,255,255,.58);border-color:rgba(91,66,143,.09);box-shadow:inset 0 1px 0 #fff}
-:root .note-list,:root .tag-note-list{gap:7px}
-:root .note-list .note-item,:root .tag-note-list .note-item{display:flex;align-items:center;gap:10px;margin:0;padding:11px 12px;border-radius:16px;box-shadow:none}
+:root .note-list,:root .tag-note-list{gap:9px}
+:root .note-list .note-item,:root .tag-note-list .note-item{display:block;margin:0;padding:13px;border:1px solid var(--hairline);border-radius:19px;box-shadow:none;overflow:hidden;transition:border-color .2s ease,background .2s ease,box-shadow .2s ease,transform .2s ease}
+.note-item-head{display:flex;align-items:center;gap:11px;min-width:0}
+.note-item-symbol{display:grid;place-items:center;width:42px;height:42px;min-width:42px;border:1px solid var(--accent-border);border-radius:14px;color:var(--accent);background:linear-gradient(145deg,var(--accent-bg),transparent)}
+.note-item-symbol .ui-icon{width:20px;height:20px;margin:0}
 .note-item-copy{min-width:0;flex:1}
-.note-item-title{margin:0 0 3px;font-size:14px;line-height:1.5}
-.note-item-meta{display:-webkit-box;overflow:hidden;-webkit-box-orient:vertical;-webkit-line-clamp:1;line-height:1.7;font-size:10.5px}
-.note-item-actions{display:flex;align-items:center;gap:5px;flex:0 0 auto}
-.note-item-action{width:34px!important;height:34px!important;min-width:34px;min-height:34px;padding:0!important;border-radius:12px;background:transparent;color:var(--text3);box-shadow:none}
-.note-item-action .ui-icon{width:16px;height:16px;margin:0}
-.note-item-action.edit{color:var(--accent);background:var(--accent-bg)}
-.note-item-action.danger{color:var(--red)}
+.note-item-eyebrow{margin-bottom:1px;color:var(--accent);font-size:9px;font-weight:900;letter-spacing:.02em}
+.note-item-title{overflow:hidden;margin:0 0 2px;color:var(--text);font-size:14.5px;font-weight:950;line-height:1.55;text-overflow:ellipsis;white-space:nowrap}
+.note-item-meta{display:-webkit-box;overflow:hidden;-webkit-box-orient:vertical;-webkit-line-clamp:1;color:var(--text3);line-height:1.7;font-size:10.5px}
+.note-item-reveal{display:grid;place-items:center;width:28px;height:28px;min-width:28px;border-radius:10px;color:var(--text3);background:var(--surface2);transition:transform .2s ease,color .2s ease,background .2s ease}
+.note-item-reveal .ui-icon{width:15px;height:15px;margin:0}
+.note-item-actions{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;max-height:0;margin:0;padding:0;border-top:1px solid transparent;opacity:0;overflow:hidden;transform:translateY(-6px);transition:max-height .25s ease,margin .25s ease,padding .25s ease,opacity .18s ease,transform .25s ease,border-color .25s ease}
+.note-item-action{width:100%!important;height:40px!important;min-width:0;min-height:40px;padding:0!important;border:1px solid var(--hairline);border-radius:12px;background:var(--surface);color:var(--text3);box-shadow:none}
+.note-item-action .ui-icon{width:17px;height:17px;margin:0}
+.note-item-action.audio{color:#3d8b70;background:var(--green-bg);border-color:var(--green-border)}
+.note-item-action.edit{color:var(--accent);background:var(--accent-bg);border-color:var(--accent-border)}
+.note-item-action.download{color:#3978b8;background:rgba(68,139,206,.09);border-color:rgba(68,139,206,.18)}
+.note-item-action.danger{color:var(--red);background:var(--red-bg);border-color:var(--red-border)}
+.note-item.selected{border-color:var(--accent-border)!important;background:linear-gradient(145deg,var(--surface),var(--accent-bg))!important;box-shadow:0 12px 30px rgba(91,58,151,.11)!important}
+.note-item.selected .note-item-reveal{color:#fff;background:var(--accent);transform:rotate(180deg)}
+.note-item.selected .note-item-actions{max-height:64px;margin-top:11px;padding-top:10px;border-top-color:var(--hairline);opacity:1;transform:translateY(0)}
+.note-item:focus-visible{outline:3px solid var(--accent-border);outline-offset:2px}
+.notes-saved-section{margin:2px 0 14px}
+.notes-saved-section>.card-title{margin:0 2px 10px}
 .note-item-tags-compact{display:flex;gap:4px;overflow:hidden;margin-top:6px}
 .note-item-tags-compact .note-tag{min-height:20px;padding:2px 7px;font-size:9px;white-space:nowrap}
 :root .note-editor-card{padding:11px;border-radius:18px;background:var(--surface2);box-shadow:none}
@@ -1418,6 +1494,33 @@ body.sheet-open .sheet-backdrop{backdrop-filter:blur(8px);-webkit-backdrop-filte
 .note-editor-card .more-collapse{margin-top:12px;padding-top:12px;border-top:1px solid var(--hairline)}
 .note-editor-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
 .note-editor-actions .btn{min-height:46px;margin:0}
+.cke_chrome{border-color:var(--hairline)!important;border-radius:18px!important;background:var(--surface)!important;box-shadow:none!important;overflow:hidden}
+.cke_inner{background:transparent!important}
+.cke_top{padding:9px 8px 5px!important}
+.cke_bottom{padding:7px 10px!important}
+.cke_toolgroup,.cke_combo_button{border-color:var(--hairline)!important;border-radius:10px!important;background:var(--surface)!important;background-image:none!important;box-shadow:none!important}
+.cke_toolgroup{overflow:hidden}
+.cke_button,.cke_combo_button{transition:background .15s ease,color .15s ease}
+.cke_button:hover,.cke_button:focus,.cke_button_on,.cke_combo_button:hover,.cke_combo_button:focus{background:var(--accent-bg)!important;background-image:none!important;box-shadow:none!important}
+.cke_combo_text,.cke_button_label,.cke_path_item,.cke_path_empty{color:var(--text2)!important;text-shadow:none!important}
+.cke_combo_arrow{border-top-color:var(--text3)!important}
+.cke_contents,.cke_wysiwyg_div.cke_editable,.cke_source{background:var(--surface)!important;color:var(--text)!important}
+.cke_wysiwyg_div.cke_editable{caret-color:var(--accent);font-family:'Vazirmatn','Segoe UI',Tahoma,system-ui,sans-serif!important;font-size:14px!important;line-height:2!important}
+.cke_wysiwyg_div.cke_editable a{color:var(--accent)!important}
+.cke_wysiwyg_div.cke_editable blockquote{margin:12px 0;padding:8px 13px;border-right:3px solid var(--accent);background:var(--accent-bg);color:var(--text2)}
+.cke_wysiwyg_div.cke_editable table{border-color:var(--hairline);background:var(--surface2)}
+.cke_wysiwyg_div.cke_editable td,.cke_wysiwyg_div.cke_editable th{border-color:var(--hairline);color:var(--text)}
+:root.dark-mode .cke_chrome{border-color:rgba(194,168,255,.13)!important;background:#1D1C2D!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.035)!important}
+:root.dark-mode .cke_top,:root.dark-mode .cke_bottom{border-color:rgba(194,168,255,.10)!important;background:#232136!important;background-image:none!important}
+:root.dark-mode .cke_toolgroup,:root.dark-mode .cke_combo_button{border-color:rgba(194,168,255,.11)!important;background:rgba(255,255,255,.045)!important}
+:root.dark-mode .cke_button_icon{filter:invert(88%) sepia(8%) saturate(635%) hue-rotate(210deg) brightness(106%)}
+:root.dark-mode .cke_button:hover,:root.dark-mode .cke_button:focus,:root.dark-mode .cke_button_on,:root.dark-mode .cke_combo_button:hover,:root.dark-mode .cke_combo_button:focus{background:rgba(174,139,255,.16)!important}
+:root.dark-mode .cke_combo_text,:root.dark-mode .cke_button_label,:root.dark-mode .cke_path_item,:root.dark-mode .cke_path_empty{color:#C9C3D7!important}
+:root.dark-mode .cke_combo_arrow{border-top-color:#A9A2BA!important}
+:root.dark-mode .cke_contents,:root.dark-mode .cke_wysiwyg_div.cke_editable,:root.dark-mode .cke_source{background:#191826!important;color:#F2EEF8!important}
+:root.dark-mode .cke_wysiwyg_div.cke_editable::selection,:root.dark-mode .cke_wysiwyg_div.cke_editable *::selection{background:rgba(174,139,255,.30);color:#fff}
+:root.dark-mode .cke_resizer{border-right-color:transparent!important;border-top-color:#9F8CC7!important}
+:root.dark-mode .cke_panel,:root.dark-mode .cke_dialog_body{border-color:rgba(194,168,255,.14)!important;background:#232136!important;box-shadow:0 18px 48px rgba(0,0,0,.42)!important}
 .note-content-tools{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:4px 1px 7px}
 .note-content-label{font-size:11px;font-weight:800;color:var(--text2)}
 .note-audio-tools{display:flex;align-items:center;gap:7px;direction:ltr}
@@ -1453,6 +1556,7 @@ body[data-panel="notes"] .note-speech-player:not([hidden]){display:block}
 :root .more-direct-card>.more-collapse.open{margin-top:8px;padding:12px;border:1px solid var(--hairline);border-radius:18px;background:var(--surface);box-shadow:none}
 :root.dark-mode .more-direct-card>.more-collapse.open{background:rgba(255,255,255,.035)}
 :root:not(.dark-mode) .more-direct-card>.more-collapse.open{background:rgba(255,255,255,.56);box-shadow:inset 0 1px 0 #fff}
+.more-stats-panel #p-stats>.card:last-child{margin-bottom:0}
 @media(max-width:370px){
   .vocab-overview{padding:7px 8px}.vocab-count-card{padding:4px 6px;gap:7px}.vocab-count-icon{width:31px;height:31px}.vocab-count-card strong{font-size:18px}
   :root.dark-mode .flash-controls{grid-template-columns:1fr 1fr}:root.dark-mode #fl-sound-toggle{grid-column:1/-1}
@@ -1487,10 +1591,13 @@ body[data-panel="notes"] .note-speech-player:not([hidden]){display:block}
 
   <!-- FLASH -->
   <div id="p-flash" class="panel act">
-    <div class="mode-row">
+    <div class="mode-row flash-mode-row">
       <button class="mode-btn act" id="fl-en" onclick="setFlMode('en',this)">EN→FA</button>
       <button class="mode-btn" id="fl-fa" onclick="setFlMode('fa',this)">FA→EN</button>
       <select id="fl-cat" onchange="startFlash()" style="border-radius:20px;padding:6px 10px;font-size:12px;border:1px solid var(--border)"><option value="">همه</option></select>
+    </div>
+    <div class="mode-row practice-tools" style="margin-top:-4px">
+      <button type="button" class="mode-btn flash-toggle-btn" id="fl-include-known-btn" onclick="toggleFlashIncludeKnown()" aria-pressed="true">همه واژه‌ها</button>
     </div>
     <div id="flash-area"><div class="empty"><span class="ui-icon" data-icon="book"></span><span>ابتدا کلمه اضافه کن</span><small>با دکمه پایین صفحه اولین کارتت را بساز.</small></div></div>
     <div class="flash-controls">
@@ -1548,75 +1655,29 @@ body[data-panel="notes"] .note-speech-player:not([hidden]){display:block}
       <button data-mode="type" onclick="showPractice('type')">تایپ</button>
       <button data-mode="exam" onclick="showPractice('exam')">آزمون هوشمند</button>
     </div>
+    <div class="practice-hint">بین سه تمرین جابه‌جا شو؛ هر کدام روی یک مهارت متفاوت تمرکز دارد و تنظیمات مخصوص خودش را دارد.</div>
 
     <div id="p-quiz" class="practice-sub act">
-      <div class="mode-row">
+      <div class="mode-row practice-tools">
         <select id="qz-cat" onchange="startQuiz()" style="border-radius:20px;padding:6px 10px;font-size:12px;border:1px solid var(--border)"><option value="">همه</option></select>
+        <button type="button" class="mode-btn practice-toggle-btn" id="qz-include-known-btn" onclick="toggleQuizIncludeKnown()" aria-pressed="false">فقط یادنگرفته‌ها</button>
       </div>
       <div id="quiz-area"><div class="empty"><span class="ui-icon" data-icon="book"></span><span>ابتدا کلمه اضافه کن</span><small>برای شروع تمرین حداقل چند کلمه لازم است.</small></div></div>
     </div>
 
     <div id="p-type" class="practice-sub">
-      <div class="mode-row">
+      <div class="mode-row practice-tools">
         <select id="tp-cat" onchange="startType()" style="border-radius:20px;padding:6px 10px;font-size:12px;border:1px solid var(--border)"><option value="">همه</option></select>
+        <label class="practice-switch">
+          <input type="checkbox" id="tp-include-known" onchange="startType()" style="width:16px;height:16px">
+          <span>یادگرفته‌ها</span>
+        </label>
       </div>
       <div id="type-area"><div class="empty"><span class="ui-icon" data-icon="book"></span><span>ابتدا کلمه اضافه کن</span><small>بعد از افزودن کلمه، تمرین تایپ فعال می‌شود.</small></div></div>
     </div>
 
     <div id="p-exam" class="practice-sub">
       <div id="ai-exam-area" class="ai-exam-shell"></div>
-    </div>
-  </div>
-
-  <!-- STATS -->
-  <div id="p-stats" class="panel">
-    <div class="card">
-      <div class="card-title"><span class="ui-icon title-icon" data-icon="bar-chart"></span>آمارهای کلی</div>
-      <div class="stats-row">
-        <div class="stat"><div class="n" id="st-total">۰</div><div class="l">کل کلمات</div></div>
-        <button type="button" class="stat stat-action" onclick="openLearnedWordsModal()" aria-label="نمایش کلمات یادگرفته‌شده"><div class="n" id="st-known">۰</div><div class="l">بلد شده</div></button>
-        <div class="stat"><div class="n" id="st-today">۰</div><div class="l">امروز</div></div>
-        <div class="stat"><div class="n" id="st-streak">۰</div><div class="l">روز متوالی</div></div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-title"><span class="ui-icon title-icon" data-icon="activity"></span>تمرین روزانه (۳۰ روز اخیر)</div>
-      <div id="streak-chart" class="streak-chart"></div>
-    </div>
-    <div class="card">
-      <div class="persian-cal-toolbar">
-        <button type="button" class="persian-cal-nav" onclick="shiftPersianCalendar(-1)" aria-label="ماه قبل" title="ماه قبل"><span class="ui-icon" data-icon="chevron-right"></span></button>
-        <div class="persian-cal-title-wrap"><div class="persian-cal-title" id="persian-cal-title">تقویم مطالعه</div><div class="persian-cal-progress" id="persian-cal-progress">حضور روزانه حداقل ۱۰ دقیقه</div></div>
-        <button type="button" class="persian-cal-nav" onclick="shiftPersianCalendar(1)" aria-label="ماه بعد" title="ماه بعد"><span class="ui-icon" data-icon="chevron-left"></span></button>
-      </div>
-      <div class="cal-head"><span>ش</span><span>ی</span><span>د</span><span>س</span><span>چ</span><span>پ</span><span>ج</span></div>
-      <div id="study-calendar" class="study-calendar"></div>
-    </div>
-    <div class="card">
-      <div class="card-title">آمار دقیق‌تر</div>
-      <div class="insight-grid">
-        <div class="insight"><div class="k">درصد یادگیری</div><div class="v" id="st-learn-rate">۰٪</div></div>
-        <div class="insight"><div class="k">نیازمند مرور</div><div class="v" id="st-active">۰</div></div>
-        <div class="insight"><div class="k">کلمات سخت</div><div class="v" id="st-hard-count">۰</div></div>
-        <div class="insight"><div class="k">میانگین روزانه</div><div class="v" id="st-daily-avg">۰</div></div>
-      </div>
-      <div id="category-stats" class="category-stats"></div>
-    </div>
-    <div class="card">
-      <div class="card-title"><span class="ui-icon title-icon" data-icon="clock"></span>زمان صرف شده</div>
-      <div class="settings-item">
-        <span class="settings-label">کل زمان</span>
-        <span class="settings-val" id="st-time-total">۰ دقیقه</span>
-      </div>
-      <div class="settings-item">
-        <span class="settings-label">امروز</span>
-        <span class="settings-val" id="st-time-today">۰ دقیقه</span>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-title"><span class="ui-icon title-icon" data-icon="rotate"></span>کلمات سخت</div>
-      <select id="st-hard-cat" onchange="renderStatsWordBoxes()" style="border-radius:20px;padding:6px 10px;font-size:12px;border:1px solid var(--border);margin-bottom:10px"><option value="">همه دسته‌ها</option></select>
-      <div id="st-hard-list" class="stats-list"><div class="empty">هنوز کلمه سختی ثبت نشده</div></div>
     </div>
   </div>
 
@@ -1659,7 +1720,7 @@ body[data-panel="notes"] .note-speech-player:not([hidden]){display:block}
       </div>
       <div id="notes-tag-cloud" class="note-tag-cloud"></div>
     </div>
-    <div class="card">
+    <div class="notes-saved-section">
       <div class="card-title">درس‌های ذخیره‌شده</div>
       <div class="search-wrap">
         <i class="search-icon" data-lucide="search" aria-hidden="true"></i>
@@ -1689,16 +1750,15 @@ body[data-panel="notes"] .note-speech-player:not([hidden]){display:block}
           <button class="btn chat-mode" data-mode="conversation" onclick="setChatMode('conversation', this)"><span class="ui-icon" data-icon="messages-square"></span><span class="chat-mode-label">مکالمه</span></button>
           <button class="btn chat-mode" data-mode="correct" onclick="setChatMode('correct', this)"><span class="ui-icon" data-icon="spell-check-2"></span><span class="chat-mode-label">تصحیح جمله</span></button>
           <button class="btn chat-mode" data-mode="lesson" onclick="setChatMode('lesson', this)"><span class="ui-icon" data-icon="notebook-tabs"></span><span class="chat-mode-label">ساخت درس</span></button>
+          <button class="btn chat-mode" data-mode="random" onclick="startRandomEnglishLesson(this)"><span class="ui-icon" data-icon="shuffle"></span><span class="chat-mode-label">درس تصادفی</span></button>
+          <button class="btn chat-mode chat-note-mode" id="chat-notes-mode" onclick="toggleChatNotePicker()"><span class="ui-icon" data-icon="paperclip"></span><span class="chat-mode-label">پیوست نوت</span><span class="chat-mode-count" id="chat-note-count">۰</span></button>
           <button class="btn chat-mode" data-mode="quiz" onclick="setChatMode('quiz', this)"><span class="ui-icon" data-icon="brain"></span><span class="chat-mode-label">تمرین واژگان</span></button>
         </div>
+        <div id="chat-note-picker" class="chat-note-picker"></div>
+        <div id="chat-attached-notes" class="chat-attached-notes"></div>
         <div id="chat-flow" class="chat-flow"></div>
         <div id="chat-feed" class="chat-feed"></div>
         <div class="chat-input-card">
-          <div class="chat-quick-row">
-            <button class="btn btn-outline chat-chip" onclick="setChatMode('conversation')"><span class="ui-icon" data-icon="messages-square"></span>شروع مکالمه</button>
-            <button class="btn btn-outline chat-chip" onclick="setChatMode('word')"><span class="ui-icon" data-icon="book-open-check"></span>توضیح کلمه</button>
-            <button class="btn btn-outline chat-chip" onclick="fillChatPrompt('این جمله را اصلاح کن و دلیلش را فارسی بگو: ')"><span class="ui-icon" data-icon="spell-check-2"></span>تصحیح جمله</button>
-          </div>
           <div class="chat-input-row">
             <textarea id="chat-input" placeholder="پیامت را بنویس..." oninput="autoResizeChatInput()" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendChatMessage()}"></textarea>
             <button class="btn btn-primary chat-send" id="chat-send-btn" onclick="sendChatMessage()" title="ارسال" aria-label="ارسال پیام"><span class="ui-icon" data-icon="send"></span></button>
@@ -1746,6 +1806,67 @@ body[data-panel="notes"] .note-speech-player:not([hidden]){display:block}
         </div>
       </div>
     </section>
+    <div class="card more-direct-card">
+      <button class="more-toggle" id="more-stats-toggle" onclick="toggleMoreSection('more-stats-panel', this)">
+        <span class="more-toggle-main">
+          <span class="ui-icon title-icon" data-icon="bar-chart"></span>
+          <span>آمار<span class="more-toggle-sub">روند مطالعه، یادگیری و کلمات سخت</span></span>
+        </span>
+        <span class="ui-icon more-chevron" data-icon="rotate"></span>
+      </button>
+      <div class="more-collapse more-stats-panel" id="more-stats-panel">
+        <div id="p-stats">
+          <div class="card">
+            <div class="card-title"><span class="ui-icon title-icon" data-icon="bar-chart"></span>آمارهای کلی</div>
+            <div class="stats-row">
+              <div class="stat"><div class="n" id="st-total">۰</div><div class="l">کل کلمات</div></div>
+              <button type="button" class="stat stat-action" onclick="openLearnedWordsModal()" aria-label="نمایش کلمات یادگرفته‌شده"><div class="n" id="st-known">۰</div><div class="l">بلد شده</div></button>
+              <div class="stat"><div class="n" id="st-today">۰</div><div class="l">امروز</div></div>
+              <div class="stat"><div class="n" id="st-streak">۰</div><div class="l">روز متوالی</div></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-title"><span class="ui-icon title-icon" data-icon="activity"></span>تمرین روزانه (۳۰ روز اخیر)</div>
+            <div id="streak-chart" class="streak-chart"></div>
+          </div>
+          <div class="card">
+            <div class="persian-cal-toolbar">
+              <button type="button" class="persian-cal-nav" onclick="shiftPersianCalendar(-1)" aria-label="ماه قبل" title="ماه قبل"><span class="ui-icon" data-icon="chevron-right"></span></button>
+              <div class="persian-cal-title-wrap"><div class="persian-cal-title" id="persian-cal-title">تقویم مطالعه</div><div class="persian-cal-progress" id="persian-cal-progress">حضور روزانه حداقل ۱۰ دقیقه</div></div>
+              <button type="button" class="persian-cal-nav" onclick="shiftPersianCalendar(1)" aria-label="ماه بعد" title="ماه بعد"><span class="ui-icon" data-icon="chevron-left"></span></button>
+            </div>
+            <div class="cal-head"><span>ش</span><span>ی</span><span>د</span><span>س</span><span>چ</span><span>پ</span><span>ج</span></div>
+            <div id="study-calendar" class="study-calendar"></div>
+          </div>
+          <div class="card">
+            <div class="card-title">آمار دقیق‌تر</div>
+            <div class="insight-grid">
+              <div class="insight"><div class="k">درصد یادگیری</div><div class="v" id="st-learn-rate">۰٪</div></div>
+              <div class="insight"><div class="k">نیازمند مرور</div><div class="v" id="st-active">۰</div></div>
+              <div class="insight"><div class="k">کلمات سخت</div><div class="v" id="st-hard-count">۰</div></div>
+              <div class="insight"><div class="k">میانگین روزانه</div><div class="v" id="st-daily-avg">۰</div></div>
+            </div>
+            <div id="category-stats" class="category-stats"></div>
+          </div>
+          <div class="card">
+            <div class="card-title"><span class="ui-icon title-icon" data-icon="clock"></span>زمان صرف شده</div>
+            <div class="settings-item">
+              <span class="settings-label">کل زمان</span>
+              <span class="settings-val" id="st-time-total">۰ دقیقه</span>
+            </div>
+            <div class="settings-item">
+              <span class="settings-label">امروز</span>
+              <span class="settings-val" id="st-time-today">۰ دقیقه</span>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-title"><span class="ui-icon title-icon" data-icon="rotate"></span>کلمات سخت</div>
+            <select id="st-hard-cat" onchange="renderStatsWordBoxes()" style="border-radius:20px;padding:6px 10px;font-size:12px;border:1px solid var(--border);margin-bottom:10px"><option value="">همه دسته‌ها</option></select>
+            <div id="st-hard-list" class="stats-list"><div class="empty">هنوز کلمه سختی ثبت نشده</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="card more-direct-card">
       <button class="more-toggle" id="more-list-toggle" onclick="toggleMoreSection('more-list-panel', this)">
         <span class="more-toggle-main">
@@ -1835,15 +1956,6 @@ body[data-panel="notes"] .note-speech-player:not([hidden]){display:block}
           <button class="btn" onclick="cancelImport()">لغو</button>
         </div>
       </div>
-    </div>
-
-    <div class="card">
-      <div class="card-title"><span class="ui-icon title-icon" data-icon="refresh"></span>آپدیت و رفرش</div>
-      <div class="settings-item">
-        <span class="settings-label">رفرش کامل اپ</span>
-        <button class="btn btn-sm btn-outline" onclick="hardRefresh()">رفرش</button>
-      </div>
-      <div style="font-size:12px;color:var(--text3);margin-top:8px">برای پاک کردن cache و دانلود نسخه جدید</div>
     </div>
 
     <div class="card">
@@ -1963,10 +2075,6 @@ body[data-panel="notes"] .note-speech-player:not([hidden]){display:block}
     <i data-lucide="messages-square" aria-hidden="true"></i>
     چت<div class="dot"></div>
   </button>
-  <button class="nav-btn" onclick="showPanel('stats',this)">
-    <i data-lucide="chart-no-axes-column-increasing" aria-hidden="true"></i>
-    آمار<div class="dot"></div>
-  </button>
   <button class="nav-btn" onclick="showPanel('more',this)">
     <i data-lucide="ellipsis" aria-hidden="true"></i>
     بیشتر<div class="dot"></div>
@@ -1994,6 +2102,7 @@ const FLASH_SETTINGS_KEY = 'vocab_flash_settings_v1';
 const NOTES_KEY = 'vocab_notes_v1';
 const CHAT_SETTINGS_KEY = 'vocab_chat_settings_v1';
 const CHAT_HISTORY_KEY = 'vocab_chat_history_v1';
+const CHAT_ATTACHED_NOTES_KEY = 'vocab_chat_attached_notes_v1';
 const TODAY = new Date().toDateString();
 let words = [];
 let stats = {};
@@ -2015,13 +2124,18 @@ let noteEditorInstance = null;
 let noteSpeechRunId = 0;
 let noteSpeechState = { chunks: [], index: 0, title: '', status: 'idle', utterance: null };
 let activeNoteTag = '';
+let activeNoteCardId = '';
 let chatMode = 'free';
 let chatFlow = { step: '', categoryKey: '' };
 let chatSending = false;
 let chatHistory = [];
+let chatAttachedNoteIds = [];
+let chatNotePickerOpen = false;
 let chatSettings = { provider: 'openai', model: 'gpt-4o-mini', baseUrl: 'https://api.openai.com/v1', apiKey: '', profiles: {} };
 let aiExamState = { status: 'setup', selectedCategories: [], includeKnown: false, words: [], title: '', questions: [], current: 0, answers: {}, reviews: {}, checkingQuestionId: '', result: null, error: '' };
 let statsCalendarAnchor = new Date();
+window.flashIncludeKnown = false;
+window.quizIncludeKnown = false;
 const HM_MAX = 6;
 const ALPHA = 'abcdefghijklmnopqrstuvwxyz'.split('');
 const HM_ST = ['۰/۶','۱/۶','۲/۶','۳/۶','۴/۶','۵/۶','باختی'];
@@ -2082,6 +2196,7 @@ function load() {
     customCats = JSON.parse(localStorage.getItem(CATS_KEY) || '[]');
     notes = JSON.parse(localStorage.getItem(NOTES_KEY) || '[]');
     chatHistory = JSON.parse(localStorage.getItem(CHAT_HISTORY_KEY) || '[]');
+    chatAttachedNoteIds = JSON.parse(localStorage.getItem(CHAT_ATTACHED_NOTES_KEY) || '[]');
     chatSettings = { ...chatSettings, ...JSON.parse(localStorage.getItem(CHAT_SETTINGS_KEY) || '{}') };
     if (chatSettings.provider === 'deepseek' && (!chatSettings.baseUrl || chatSettings.baseUrl.includes('/v1') || chatSettings.model === 'deepseek-chat')) {
       chatSettings.baseUrl = 'https://api.deepseek.com';
@@ -2111,6 +2226,7 @@ function load() {
     });
     notes = Array.isArray(notes) ? notes : [];
     chatHistory = Array.isArray(chatHistory) ? chatHistory : [];
+    chatAttachedNoteIds = Array.isArray(chatAttachedNoteIds) ? chatAttachedNoteIds.map(String) : [];
     notes.forEach(n => {
       if (!n.id) n.id = Date.now() + Math.random();
       n.title = String(n.title || '');
@@ -2118,18 +2234,23 @@ function load() {
       n.tags = Array.isArray(n.tags) ? n.tags : splitTerms(n.tags);
       n.date = n.date || TODAY;
     });
+    chatAttachedNoteIds = chatAttachedNoteIds.filter(id => notes.some(n => String(n.id) === id));
     words.forEach(normalizeWordRelations);
   } catch(e) {
-    words = []; stats = {}; customCats = []; notes = []; chatHistory = [];
+    words = []; stats = {}; customCats = []; notes = []; chatHistory = []; chatAttachedNoteIds = [];
   }
 }
-function save() { localStorage.setItem(KEY, JSON.stringify(words)); localStorage.setItem(STATS_KEY, JSON.stringify(stats)); localStorage.setItem(CATS_KEY, JSON.stringify(customCats)); localStorage.setItem(FLASH_SETTINGS_KEY, JSON.stringify(flSettings)); localStorage.setItem(NOTES_KEY, JSON.stringify(notes)); localStorage.setItem(CHAT_HISTORY_KEY, JSON.stringify(chatHistory)); localStorage.setItem(CHAT_SETTINGS_KEY, JSON.stringify(chatSettings)); }
+function save() { localStorage.setItem(KEY, JSON.stringify(words)); localStorage.setItem(STATS_KEY, JSON.stringify(stats)); localStorage.setItem(CATS_KEY, JSON.stringify(customCats)); localStorage.setItem(FLASH_SETTINGS_KEY, JSON.stringify(flSettings)); localStorage.setItem(NOTES_KEY, JSON.stringify(notes)); localStorage.setItem(CHAT_HISTORY_KEY, JSON.stringify(chatHistory)); localStorage.setItem(CHAT_SETTINGS_KEY, JSON.stringify(chatSettings)); localStorage.setItem(CHAT_ATTACHED_NOTES_KEY, JSON.stringify(chatAttachedNoteIds)); }
 function saveStatsOnly() { localStorage.setItem(STATS_KEY, JSON.stringify(stats)); }
 function activeWords() { return words.filter(w => !w.known); }
 function learnedWords() { return words.filter(w => w.known); }
 function hardWords() { return words.filter(w => w.hard && !w.known); }
 function getCats() { const s = new Set(customCats); activeWords().forEach(w => { if(w.cat) s.add(w.cat); }); return [...s].sort(); }
 function getAllWordCats() { const s = new Set(customCats); words.forEach(w => { if(w.cat) s.add(w.cat); }); return [...s].sort(); }
+function fw(cat, includeKnown = false) {
+  const pool = includeKnown ? words : activeWords();
+  return cat ? pool.filter(w => w.cat === cat) : pool;
+}
 function markKnown(w) {
   if (!w) return;
   w.known = true;
@@ -2542,7 +2663,7 @@ function trackSessionTime() {
   saveStatsOnly();
   sessionStartTime = now;
   updateTimeStats();
-  if (document.getElementById('p-stats')?.classList.contains('act')) {
+  if (document.getElementById('more-stats-panel')?.classList.contains('open')) {
     renderStudyCalendar();
     const streakEl = document.getElementById('st-streak');
     if (streakEl) {
@@ -2791,10 +2912,6 @@ function toggleFlashSentence() {
   updateAutoFlashButtons();
 }
 
-function fw(cat) {
-  const pool = activeWords();
-  return cat ? pool.filter(w => w.cat === cat) : pool;
-}
 function shuf(a) { const b=[...a]; for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];} return b; }
 function shuffledWordIndexes(pool) {
   const selected = new Set(pool);
@@ -2842,10 +2959,26 @@ function startFlash(keepAuto = false) {
   if (!keepAuto) stopAutoFlash();
   document.body.classList.remove('flash-answer-open');
   const cat = document.getElementById('fl-cat').value;
-  const pool = fw(cat);
+  const includeKnown = !!window.flashIncludeKnown;
+  const pool = fw(cat, includeKnown);
   if (!pool.length) { document.getElementById('flash-area').innerHTML = emptyState('کلمه‌ای نیست', 'با دکمه افزودن، اولین فلش‌کارت را بساز.', 'book'); return; }
   flOrder = shuffledWordIndexes(pool);
   flIdx = 0; flShown = false; renderFlash();
+}
+
+function syncFlashIncludeKnownUI() {
+  const btn = document.getElementById('fl-include-known-btn');
+  if (!btn) return;
+  const active = !!window.flashIncludeKnown;
+  btn.classList.toggle('active', active);
+  btn.setAttribute('aria-pressed', String(active));
+  btn.textContent = active ? 'همه واژه‌ها' : 'فقط یادنگرفته‌ها';
+}
+
+function toggleFlashIncludeKnown() {
+  window.flashIncludeKnown = !window.flashIncludeKnown;
+  syncFlashIncludeKnownUI();
+  startFlash();
 }
 
 function currentFlashWord() {
@@ -3051,15 +3184,15 @@ function renderFlash() {
   const exampleText = String(w.ex || w.sentence || w.example || w.exampleSentence || '').trim();
   const pron = pronunciation ? `<div class="fc-pron-row"><span class="fc-pron-label">تلفظ فارسی</span><span class="fc-pron">${h(pronunciation)}</span></div>` : '';
   const front = isEn
-    ? `<div class="fc-word">${h(w.en)} <button type="button" class="speak-btn" onclick="speakWord(event,'${jsq(w.en)}')" title="خواندن واژه انگلیسی" aria-label="خواندن ${attr(w.en)}">${speakIcon()}</button></div>${pron}<div class="fc-hint">برای دیدن معنی و مثال لمس کن</div>`
-    : `<div class="fc-word" style="font-size:22px">${h(w.fa)}</div><div class="fc-hint">کلمه انگلیسی؟</div>`;
+    ? `<div class="fc-front"><div class="fc-card-kicker">${icon('sparkles')} واژه انگلیسی</div><div class="fc-word"><span class="fc-word-text" dir="ltr">${h(w.en)}</span><button type="button" class="speak-btn" onclick="speakWord(event,'${jsq(w.en)}')" title="خواندن واژه انگلیسی" aria-label="خواندن ${attr(w.en)}">${speakIcon()}</button></div></div>`
+    : `<div class="fc-front"><div class="fc-card-kicker">${icon('sparkles')} معنی فارسی</div><div class="fc-word fa"><span class="fc-word-text">${h(w.fa)}</span></div></div>`;
   const rel = relationFlashHTML(w);
   const example = exampleText
     ? `<div class="fc-example">${icon('quote')}<div class="fc-example-copy"><span class="fc-example-label">جمله مثال</span><div class="fc-example-text">${h(exampleText)}</div></div></div>`
     : `<div class="fc-example fc-example-empty">${icon('quote')}<div class="fc-example-copy"><span class="fc-example-label">جمله مثال</span><div class="fc-example-text">برای این واژه جمله‌ای ثبت نشده است.</div></div></div>`;
   const back = isEn
-    ? `<div class="fc-back"><div class="fc-answer-label">معنی فارسی</div><div class="fc-meaning">${h(w.fa)}</div>${example}</div>`
-    : `<div class="fc-back"><div class="fc-answer-label">واژه انگلیسی</div><div class="fc-meaning" style="direction:ltr">${h(w.en)} <button type="button" class="speak-btn" onclick="speakWord(event,'${jsq(w.en)}')" title="خواندن واژه انگلیسی" aria-label="خواندن ${attr(w.en)}">${speakIcon()}</button></div>${pron}${example}</div>`;
+    ? `<div class="fc-back"><div class="fc-answer-label">معنی فارسی</div><div class="fc-meaning">${h(w.fa)}</div>${pron}${example}</div>`
+    : `<div class="fc-back"><div class="fc-answer-label">واژه انگلیسی</div><div class="fc-meaning english-answer"><span>${h(w.en)}</span><button type="button" class="speak-btn" onclick="speakWord(event,'${jsq(w.en)}')" title="خواندن واژه انگلیسی" aria-label="خواندن ${attr(w.en)}">${speakIcon()}</button></div>${pron}${example}</div>`;
   area.innerHTML = `${progHTML(flIdx, flOrder.length)}
     <div class="flashcard" onclick="revealFlashCard('${jsq(w.en)}')">${front}${flShown ? back : ''}</div>
     ${flShown
@@ -3102,7 +3235,8 @@ function deleteCurrentFlashWord() {
 
 async function toggleAutoFlash() {
   if (flAuto) { stopAutoFlash(); return; }
-  const pool = fw(document.getElementById('fl-cat').value);
+  const includeKnown = !!window.flashIncludeKnown;
+  const pool = fw(document.getElementById('fl-cat').value, includeKnown);
   if (!pool.length) { document.getElementById('flash-area').innerHTML = emptyState('کلمه‌ای نیست', 'کلمه‌های بلدشده از مرور خارج می‌شوند.', 'book'); return; }
   flAuto = true;
   flAutoRunId++;
@@ -3153,14 +3287,16 @@ async function runAutoFlash(runId) {
 
 // QUIZ
 function startQuiz() {
-  const pool = fw(document.getElementById('qz-cat').value);
+  const includeKnown = !!window.quizIncludeKnown;
+  const pool = fw(document.getElementById('qz-cat').value, includeKnown);
   if (pool.length < 4) { document.getElementById('quiz-area').innerHTML = emptyState('حداقل ۴ کلمه لازم است', 'برای ساخت گزینه‌های هوشمند، چند کلمه دیگر اضافه کن.', 'bar-chart'); return; }
   qzOrder = shuffledWordIndexes(pool); qzIdx = 0; renderQuiz();
 }
 
 function renderQuiz() {
   const area = document.getElementById('quiz-area');
-  const pool = fw(document.getElementById('qz-cat').value);
+  const includeKnown = !!window.quizIncludeKnown;
+  const pool = fw(document.getElementById('qz-cat').value, includeKnown);
   if (qzIdx >= qzOrder.length) { area.innerHTML = finishCard('startQuiz()'); return; }
   const w = words[qzOrder[qzIdx]];
   const choices = shuf([w.fa, ...shuf(pool.filter(x => x.id !== w.id)).slice(0,3).map(x => x.fa)]);
@@ -3192,14 +3328,16 @@ function pickQ(chosen, correct) {
 
 // TYPE
 function startType() {
-  const pool = fw(document.getElementById('tp-cat').value);
+  const includeKnown = !!document.getElementById('tp-include-known')?.checked;
+  const pool = fw(document.getElementById('tp-cat').value, includeKnown);
   if (!pool.length) { document.getElementById('type-area').innerHTML = emptyState('کلمه‌ای نیست', 'تمرین تایپ با کلمه‌های فعال ساخته می‌شود.', 'book'); return; }
   tpOrder = shuffledWordIndexes(pool); tpIdx = 0; renderType();
 }
 
 function renderType() {
   const area = document.getElementById('type-area');
-  const pool = fw(document.getElementById('tp-cat').value);
+  const includeKnown = !!document.getElementById('tp-include-known')?.checked;
+  const pool = fw(document.getElementById('tp-cat').value, includeKnown);
   if (tpIdx >= tpOrder.length) { area.innerHTML = finishCard('startType()'); return; }
   const w = words[tpOrder[tpIdx]];
   area.innerHTML = `${progHTML(tpIdx, tpOrder.length)}
@@ -3228,6 +3366,21 @@ function checkType(correct) {
     document.getElementById('tp-res').innerHTML = `<div class="result-bad">${icon('alert')} جواب: «${h(correct)}» <button type="button" class="speak-btn" onclick="speakWord(event,'${jsq(correct)}')" title="خواندن واژه انگلیسی" aria-label="خواندن ${attr(correct)}">${speakIcon()}</button></div>`;
     document.getElementById('tp-nx').style.display = 'block';
   }
+}
+
+function syncQuizIncludeKnownUI() {
+  const btn = document.getElementById('qz-include-known-btn');
+  if (!btn) return;
+  const active = !!window.quizIncludeKnown;
+  btn.classList.toggle('active', active);
+  btn.setAttribute('aria-pressed', String(active));
+  btn.textContent = active ? 'همه واژه‌ها' : 'فقط یادنگرفته‌ها';
+}
+
+function toggleQuizIncludeKnown() {
+  window.quizIncludeKnown = !window.quizIncludeKnown;
+  syncQuizIncludeKnownUI();
+  startQuiz();
 }
 
 // AI EXAM
@@ -3432,10 +3585,14 @@ async function startAIExam() {
       content: `You are an expert English exam designer for Persian speakers.
 Return ONLY valid JSON, with no Markdown or commentary.
 Create a varied, fair and engaging exam. Use every supplied vocabulary item at least once across targetWords.
-Use a balanced mix of these types: mcq, fill, sentence, conversation, translation, correction.
-For mcq, provide exactly 4 plausible options and put the exact correct option in correctAnswer.
-For fill/translation/correction, provide correctAnswer.
-For sentence/conversation, provide a concise rubric and a strong sample in correctAnswer.
+Mix the question types intentionally so the exam feels dynamic, not repetitive:
+mcq, fill, translation, sentence, conversation, correction.
+Avoid using the same type too often in a row.
+For mcq, provide exactly 4 plausible options and make the distractors natural, close in meaning, and not obviously wrong.
+For fill/translation/correction, provide a concise correctAnswer.
+For sentence/conversation, write a short, natural Persian prompt and a rich, realistic English sample in correctAnswer.
+Conversation questions should feel like a real dialogue, with a clear situation, one speaker turn at a time, and a warmer conversational tone.
+Keep conversations concise but vivid, and prefer everyday, fluent English over stiff textbook phrasing.
 Prompts should be mainly Persian, while answers are normally English.
 Never reveal the correct answer inside the prompt or context.`
     },
@@ -4315,8 +4472,50 @@ function deleteNote(id, e) {
   if (e) e.stopPropagation();
   if (!confirm('این درس حذف شود؟')) return;
   notes = notes.filter(n => String(n.id) !== String(id));
+  chatAttachedNoteIds = chatAttachedNoteIds.filter(noteId => noteId !== String(id));
+  if (String(activeNoteCardId) === String(id)) activeNoteCardId = '';
   save();
   renderNotes();
+}
+
+function toggleNoteCard(id, event) {
+  if (event?.target?.closest('button')) return;
+  const key = String(id);
+  activeNoteCardId = String(activeNoteCardId) === key ? '' : key;
+  document.querySelectorAll('.note-item[data-note-id]').forEach(card => {
+    const selected = card.dataset.noteId === activeNoteCardId;
+    card.classList.toggle('selected', selected);
+    card.setAttribute('aria-expanded', String(selected));
+    card.querySelector('.note-item-actions')?.toggleAttribute('inert', !selected);
+  });
+}
+
+function noteCardKeydown(id, event) {
+  if (!['Enter', ' '].includes(event.key)) return;
+  event.preventDefault();
+  toggleNoteCard(id, event);
+}
+
+function noteCardHTML(n, previewLength = 85) {
+  const preview = notePlainText(n.content).trim().slice(0, previewLength);
+  const selected = String(activeNoteCardId) === String(n.id);
+  return `<div class="note-item ${selected ? 'selected' : ''}" data-note-id="${attr(n.id)}" role="button" tabindex="0" aria-expanded="${selected}" aria-label="درس ${attr(n.title)}؛ برای نمایش گزینه‌ها کلیک کنید" onclick="toggleNoteCard('${jsq(n.id)}',event)" onkeydown="noteCardKeydown('${jsq(n.id)}',event)">
+    <div class="note-item-head">
+      <span class="note-item-symbol">${icon('notebook-tabs')}</span>
+      <div class="note-item-copy">
+        <div class="note-item-eyebrow">عنوان درس</div>
+        <div class="note-item-title">${h(n.title)}</div>
+        <div class="note-item-meta">${h(preview)}${preview.length >= previewLength ? '...' : ''}</div>
+      </div>
+      <span class="note-item-reveal" aria-hidden="true">${icon('chevron-down')}</span>
+    </div>
+    <div class="note-item-actions" aria-label="گزینه‌های درس" ${selected ? '' : 'inert'}>
+      <button type="button" class="btn note-item-action audio" title="خواندن متن انگلیسی" aria-label="خواندن متن انگلیسی ${attr(n.title)}" onclick="speakSavedNoteEnglish('${jsq(n.id)}',event)">${icon('volume')}</button>
+      <button type="button" class="btn note-item-action edit" title="ویرایش" aria-label="ویرایش ${attr(n.title)}" onclick="editNote('${jsq(n.id)}');event.stopPropagation()">${icon('pencil')}</button>
+      <button type="button" class="btn note-item-action download" title="دانلود نوت" aria-label="دانلود ${attr(n.title)}" onclick="backupSingleNoteJSON('${jsq(n.id)}',event)">${icon('download')}</button>
+      <button type="button" class="btn note-item-action danger" title="حذف" aria-label="حذف ${attr(n.title)}" onclick="deleteNote('${jsq(n.id)}',event)">${icon('trash')}</button>
+    </div>
+  </div>`;
 }
 
 function renderNotes() {
@@ -4336,21 +4535,7 @@ function renderNotes() {
     renderNoteTags();
     return;
   }
-  list.innerHTML = filtered.map(n => {
-    const preview = notePlainText(n.content).trim().slice(0, 85);
-    return `<div class="note-item" onclick="editNote('${jsq(n.id)}')">
-      <div class="note-item-copy">
-        <div class="note-item-title">${h(n.title)}</div>
-        <div class="note-item-meta">${h(preview)}${preview.length >= 85 ? '...' : ''}</div>
-      </div>
-      <div class="note-item-actions">
-        <button type="button" class="btn note-item-action audio" title="خواندن متن انگلیسی" aria-label="خواندن متن انگلیسی ${attr(n.title)}" onclick="speakSavedNoteEnglish('${jsq(n.id)}',event)">${icon('volume')}</button>
-        <button type="button" class="btn note-item-action edit" title="ویرایش" aria-label="ویرایش ${attr(n.title)}" onclick="editNote('${jsq(n.id)}');event.stopPropagation()">${icon('pencil')}</button>
-        <button type="button" class="btn note-item-action" title="خروجی نوت" aria-label="خروجی ${attr(n.title)}" onclick="backupSingleNoteJSON('${jsq(n.id)}',event)">${icon('download')}</button>
-        <button type="button" class="btn note-item-action danger" title="حذف" aria-label="حذف ${attr(n.title)}" onclick="deleteNote('${jsq(n.id)}',event)">${icon('trash')}</button>
-      </div>
-    </div>`;
-  }).join('');
+  list.innerHTML = filtered.map(n => noteCardHTML(n)).join('');
   renderNoteTags();
 }
 
@@ -4402,22 +4587,7 @@ function showNotesByTag(tag) {
     list.innerHTML = emptyState('نوتی برای این تگ نیست', 'تگ دیگری را انتخاب کن.', 'book');
     return;
   }
-  list.innerHTML = filtered.map(n => {
-    const preview = notePlainText(n.content).trim().slice(0, 75);
-    const compactTags = (n.tags || []).slice(0, 3);
-    return `<div class="note-item" onclick="editNote('${jsq(n.id)}')">
-      <div class="note-item-copy">
-        <div class="note-item-title">${h(n.title)}</div>
-        <div class="note-item-meta">${h(preview)}${preview.length >= 75 ? '...' : ''}</div>
-        ${compactTags.length ? `<div class="note-item-tags-compact">${compactTags.map(t => `<span class="note-tag">${h(t)}</span>`).join('')}</div>` : ''}
-      </div>
-      <div class="note-item-actions">
-        <button type="button" class="btn note-item-action audio" title="خواندن متن انگلیسی" aria-label="خواندن متن انگلیسی ${attr(n.title)}" onclick="speakSavedNoteEnglish('${jsq(n.id)}',event)">${icon('volume')}</button>
-        <button type="button" class="btn note-item-action edit" title="ویرایش" aria-label="ویرایش ${attr(n.title)}" onclick="editNote('${jsq(n.id)}');event.stopPropagation()">${icon('pencil')}</button>
-        <button type="button" class="btn note-item-action" title="خروجی نوت" aria-label="خروجی ${attr(n.title)}" onclick="backupSingleNoteJSON('${jsq(n.id)}',event)">${icon('download')}</button>
-      </div>
-    </div>`;
-  }).join('');
+  list.innerHTML = filtered.map(n => noteCardHTML(n, 75)).join('');
 }
 
 // CHAT
@@ -4553,12 +4723,119 @@ function setChatMode(mode, btn) {
     correct: 'یک جمله انگلیسی بنویس تا اصلاحش کنم...',
     word: 'یک کلمه انگلیسی بنویس تا توضیح بدهم...',
     lesson: 'موضوع درس را بنویس، مثلاً present perfect...',
+    random: 'برای دریافت یک موضوع تازه، دوباره «درس تصادفی» را بزن...',
     conversation: 'نقش مکالمه را بنویس، مثلاً airport یا job interview...',
     quiz: 'بگو از کدام دسته یا کلمات برایت تمرین بسازم...'
   };
   if (input) input.placeholder = placeholders[mode] || placeholders.free;
   chatFlow = { step: (mode === 'word' || mode === 'conversation') ? 'category' : '', categoryKey: '' };
   renderChatFlow();
+}
+
+const RANDOM_LESSON_TOPICS = [
+  'quantifiers and quantity expressions: countable and uncountable nouns, amounts, approximations and common mistakes',
+  'paying and money: payment methods, prices, bills, refunds, discounts and useful checkout phrases',
+  'time expressions: telling time, duration, deadlines, frequency and prepositions of time',
+  'polite requests and offers in everyday English, from casual to formal',
+  'shopping language: sizes, trying things on, availability, returns and exchanges',
+  'travel and airport English: check-in, security, boarding, delays and baggage',
+  'restaurant English: ordering, dietary needs, complaints, bills and tipping',
+  'health and pharmacy English: symptoms, pain, advice and medicine instructions',
+  'workplace English: meetings, deadlines, updates, agreement and disagreement',
+  'phone and messaging English: starting, clarifying, leaving messages and ending politely',
+  'directions and locations: asking the way, landmarks, distance and transport',
+  'similar modal verbs and their real-life differences: can, could, may, might, must, should and have to',
+  'ways to talk about plans and the future: will, be going to, present continuous and present simple',
+  'common phrasal verbs used in daily routines, with separable and inseparable patterns',
+  'linking words for speaking and writing: contrast, reason, result, addition and examples',
+  'describing people and personality naturally without sounding rude',
+  'weather and temperature: forecasts, conditions, changes and everyday small talk',
+  'home and renting English: rooms, repairs, utilities, landlords and household problems'
+];
+let lastRandomLessonTopic = '';
+
+function startRandomEnglishLesson(btn) {
+  if (chatSending) return;
+  setChatMode('random', btn);
+  const choices = RANDOM_LESSON_TOPICS.filter(topic => topic !== lastRandomLessonTopic);
+  const topic = choices[Math.floor(Math.random() * choices.length)] || RANDOM_LESSON_TOPICS[0];
+  lastRandomLessonTopic = topic;
+  startGuidedChat(`یک درس تصادفی و کاربردی درباره این موضوع به من بده: ${topic}.
+موضوع را خودت به یک عنوان طبیعی فارسی تبدیل کن. همه واژه‌ها، عبارت‌ها و ساختارهای مهم و رایج مرتبط را در گروه‌های روشن پوشش بده؛ تفاوت کاربردها، ساختار جمله، مثال طبیعی با ترجمه، اشتباه‌های رایج و یک تمرین کوتاه هم داشته باشد. فقط فهرست لغت نده و موارد کم‌کاربرد را با موارد اصلی قاطی نکن.`);
+}
+
+function attachedChatNotes() {
+  return chatAttachedNoteIds.map(id => notes.find(n => String(n.id) === String(id))).filter(Boolean);
+}
+
+function toggleChatNotePicker(force) {
+  chatNotePickerOpen = typeof force === 'boolean' ? force : !chatNotePickerOpen;
+  renderChatNotePicker();
+}
+
+function renderChatNotePicker() {
+  const host = document.getElementById('chat-note-picker');
+  document.getElementById('chat-notes-mode')?.classList.toggle('picker-open', chatNotePickerOpen);
+  if (!host) return;
+  host.className = `chat-note-picker${chatNotePickerOpen ? ' open' : ''}`;
+  if (!chatNotePickerOpen) { host.innerHTML = ''; return; }
+  const options = notes.map(n => {
+    const checked = chatAttachedNoteIds.includes(String(n.id));
+    const preview = notePlainText(n.content).replace(/\s+/g, ' ').trim().slice(0, 75);
+    const search = `${n.title || ''} ${(n.tags || []).join(' ')} ${preview}`.toLowerCase();
+    return `<label class="chat-note-option" data-search="${attr(search)}">
+      <input type="checkbox" ${checked ? 'checked' : ''} onchange="toggleChatNoteAttachment('${jsq(n.id)}', this.checked)">
+      <span class="chat-note-option-copy"><strong>${h(n.title || 'نوت بدون عنوان')}</strong><small>${h(preview || (n.tags || []).join('، ') || 'بدون پیش‌نمایش')}</small></span>
+    </label>`;
+  }).join('');
+  host.innerHTML = `<div class="chat-note-picker-head">
+    <div class="chat-note-picker-title">${icon('notebook-tabs')}<span>نوت‌های مرتبط را انتخاب کن</span></div>
+    <div class="chat-note-picker-actions">${chatAttachedNoteIds.length ? '<button type="button" class="btn btn-outline" onclick="clearChatNoteAttachments()">پاک کردن</button>' : ''}<button type="button" class="btn btn-outline" onclick="toggleChatNotePicker(false)">بستن</button></div>
+  </div>
+  ${notes.length ? `<input type="search" class="chat-note-search" placeholder="جستجو در نوت‌ها..." oninput="filterChatNoteOptions(this.value)"><div class="chat-note-list">${options}</div>` : '<div class="note-tag-empty">هنوز نوتی ذخیره نکرده‌ای.</div>'}`;
+  queueLucideRefresh();
+}
+
+function filterChatNoteOptions(value) {
+  const query = String(value || '').trim().toLowerCase();
+  document.querySelectorAll('#chat-note-picker .chat-note-option').forEach(option => {
+    option.hidden = !!query && !String(option.dataset.search || '').includes(query);
+  });
+}
+
+function toggleChatNoteAttachment(noteId, checked) {
+  const id = String(noteId);
+  chatAttachedNoteIds = checked ? [...new Set([...chatAttachedNoteIds, id])] : chatAttachedNoteIds.filter(item => item !== id);
+  save();
+  renderChatNoteAttachments();
+  renderChatNotePicker();
+}
+
+function removeChatNoteAttachment(noteId) {
+  chatAttachedNoteIds = chatAttachedNoteIds.filter(id => id !== String(noteId));
+  save();
+  renderChatNoteAttachments();
+  if (chatNotePickerOpen) renderChatNotePicker();
+}
+
+function clearChatNoteAttachments() {
+  chatAttachedNoteIds = [];
+  save();
+  renderChatNoteAttachments();
+  renderChatNotePicker();
+}
+
+function renderChatNoteAttachments() {
+  chatAttachedNoteIds = chatAttachedNoteIds.filter(id => notes.some(n => String(n.id) === String(id)));
+  const selected = attachedChatNotes();
+  const count = document.getElementById('chat-note-count');
+  const modeButton = document.getElementById('chat-notes-mode');
+  const host = document.getElementById('chat-attached-notes');
+  if (count) count.textContent = toFa(selected.length);
+  modeButton?.classList.toggle('has-notes', selected.length > 0);
+  if (!host) return;
+  host.innerHTML = selected.map(n => `<button type="button" class="chat-attached-note" onclick="removeChatNoteAttachment('${jsq(n.id)}')" title="حذف پیوست ${attr(n.title)}">${icon('paperclip')}<span>${h(n.title)}</span>${icon('x')}</button>`).join('');
+  queueLucideRefresh();
 }
 
 function chatCategoryOptions() {
@@ -4767,6 +5044,7 @@ function renderChatMarkdown(content) {
 function renderChat() {
   loadChatSettingsUI();
   renderChatFlow();
+  renderChatNoteAttachments();
   const feed = document.getElementById('chat-feed');
   if (!feed) return;
   if (!chatHistory.length) {
@@ -4780,6 +5058,29 @@ function renderChat() {
   queueLucideRefresh();
 }
 
+function noteTextForAI(note) {
+  const withBreaks = String(note?.content || '')
+    .replace(/<br\s*\/?\s*>/gi, '\n')
+    .replace(/<\/(p|div|li|h[1-6]|blockquote|tr)>/gi, '\n');
+  return notePlainText(withBreaks).replace(/\n{3,}/g, '\n\n').trim();
+}
+
+function getAttachedNotesContext() {
+  const selected = attachedChatNotes();
+  if (!selected.length) return '';
+  let remaining = 36000;
+  const sections = [];
+  selected.forEach((note, index) => {
+    if (remaining <= 0) return;
+    const text = noteTextForAI(note);
+    const allowed = Math.min(12000, remaining);
+    const excerpt = text.slice(0, allowed);
+    remaining -= excerpt.length;
+    sections.push(`ATTACHED NOTE ${index + 1}\nTitle: ${note.title || 'Untitled'}\nTags: ${(note.tags || []).join(', ') || 'none'}\nContent:\n${excerpt}${text.length > excerpt.length ? '\n[Content truncated because the note is very long]' : ''}`);
+  });
+  return `FULL CONTENT OF USER-ATTACHED NOTES (${selected.length}). Use these notes as the primary source when the user asks about them. Clearly correct an error if a note conflicts with reliable English usage:\n\n${sections.join('\n\n---\n\n')}`;
+}
+
 function getLearningContext() {
   const allVocabulary = words.map((w, index) => [
     `${index + 1}. ${w.en || ''} | fa=${w.fa || ''}`,
@@ -4791,9 +5092,11 @@ function getLearningContext() {
     `status=${w.known ? 'learned' : (w.hard ? 'review' : 'learning')}`
   ].filter(Boolean).join(' | ')).join('\n');
   const allNotes = notes.map(n => `- ${n.title}${(n.tags || []).length ? ` | tags: ${(n.tags || []).join(', ')}` : ''}`).join('\n');
+  const attachedNotes = getAttachedNotesContext();
   return [
     allVocabulary ? `COMPLETE SAVED VOCABULARY (${words.length} entries; this is the full current list):\n${allVocabulary}` : 'COMPLETE SAVED VOCABULARY: empty',
-    allNotes ? `Notebook lessons (${notes.length}):\n${allNotes}` : ''
+    allNotes ? `Notebook lesson index (${notes.length}):\n${allNotes}` : '',
+    attachedNotes
   ].filter(Boolean).join('\n\n');
 }
 
@@ -4803,6 +5106,7 @@ function chatSystemPrompt() {
     correct: 'Correct the English sentence. Explain mistakes in Persian, then provide a natural version and 2 alternatives.',
     word: 'Explain the word for a Persian speaker: meaning, pronunciation hint if useful, examples, synonyms, antonyms, common mistakes.',
     lesson: 'Create a short practical English lesson with examples, mini practice, and Persian explanations.',
+    random: 'Teach the randomly selected practical topic comprehensively. Group all common words, phrases, and structures by meaning and situation; contrast confusing choices, show sentence patterns and natural examples, then add a mini practice.',
     conversation: 'Role-play a realistic English conversation. Ask one short question at a time, correct the learner gently in Persian.',
     quiz: 'Create a short quiz using the saved vocabulary. Ask one item at a time and wait for the learner answer.'
   };
@@ -4814,6 +5118,8 @@ Never output broken Markdown markers, decorative star separators, repeated aster
 Do not glue emphasis markers to Persian text. Accuracy and readable structure are more important than decoration.
 Current mode: ${chatMode}. ${modes[chatMode] || modes.free}
 You have access to the user's complete saved vocabulary catalog in the next system message. Treat it as authoritative and use the selected category or word exactly when the user chooses one.
+The user may attach notebook notes. When full attached-note content is present, read it closely, answer questions about it, explain it step by step, summarize it, create examples or exercises from it, and distinguish what comes from the note from useful additions.
+When the learner asks what is used for a concept (for example quantity, payment, time, comparison, requests) or says "همه رو بگو", infer the intended English topic and give a broad practical inventory grouped by function. Include the important everyday alternatives, differences, grammar patterns, examples and common errors. Do not stop after only two or three examples, and do not pad the answer with obsolete expressions.
 If there is not enough app data, still help normally.`;
 }
 
@@ -4835,6 +5141,7 @@ function avalaiMaxTokens() {
     correct: 450,
     word: 600,
     lesson: 750,
+    random: 900,
     quiz: 650,
     free: 600
   };
@@ -4917,7 +5224,7 @@ async function sendChatMessage() {
   renderChatStatus(`${chatProviderDefaults(chatSettings.provider).label} در حال پاسخ‌دادن است...`);
   try {
     const answer = await requestConfiguredAI(buildChatMessages(text), {
-      temperature: chatMode === 'quiz' || chatMode === 'correct' ? 0.35 : 0.55,
+      temperature: chatMode === 'quiz' || chatMode === 'correct' ? 0.35 : (chatMode === 'random' ? 0.72 : 0.55),
       maxTokens: chatSettings.provider === 'avalai' ? avalaiMaxTokens() : null
     });
     chatHistory.push({ role: 'assistant', content: answer, ts: Date.now(), mode: chatMode });
@@ -5273,7 +5580,7 @@ function resetLearningProgress() {
 function clearAll() {
   if (!confirm('همه کلمات پاک شوند؟')) return;
   if (!confirm('مطمئنی؟ برگشت‌ناپذیره!')) return;
-  words = []; stats = {}; customCats = []; notes = []; save(); updateStats(); renderList(); renderCategories(); renderNotes(); clearNoteForm();
+  words = []; stats = {}; customCats = []; notes = []; chatAttachedNoteIds = []; save(); updateStats(); renderList(); renderCategories(); renderNotes(); clearNoteForm();
   msg('settings-msg', 'همه کلمات پاک شدند', 'var(--red)');
 }
 
@@ -5302,7 +5609,6 @@ function showPanel(name, btn) {
     if (name === 'hangman') startHangman();
     if (name === 'practice') showPractice(practiceMode);
     if (name === 'add' && document.getElementById('add-list-panel')?.classList.contains('open')) renderList();
-    if (name === 'stats') updateStatsPanel();
     if (name === 'notes') renderNotes();
     if (name === 'chat') renderChat();
     if (name === 'more') { renderCategories(); renderNoteTags(); }
@@ -5318,6 +5624,7 @@ function toggleMoreSection(id, btn) {
   if (open && id === 'more-list-panel') renderList();
   if (open && id === 'more-cats-panel') renderCategories();
   if (open && id === 'more-note-tags-panel') renderNoteTags();
+  if (open && id === 'more-stats-panel') updateStatsPanel();
 }
 
 function openCollapseSection(id, btnId) {
@@ -5409,7 +5716,7 @@ if (window.speechSynthesis) {
   speechSynthesis.getVoices();
 }
 
-load(); loadDarkMode(); hydrateIcons(); initNoteEditor(); updateStats(); renderCategories(); renderNotes(); renderChat(); loadFlashSettingsUI(); startFlash();
+load(); loadDarkMode(); hydrateIcons(); initNoteEditor(); updateStats(); renderCategories(); renderNotes(); renderChat(); loadFlashSettingsUI(); syncFlashIncludeKnownUI(); syncQuizIncludeKnownUI(); startFlash();
 setInterval(trackSessionTime, 60000);
 </script>
 </body>
