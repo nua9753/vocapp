@@ -1,4 +1,4 @@
-const CACHE = 'vocab-v55';
+const CACHE = 'vocab-v68';
 // Everything the app needs to boot and run offline, including the vendored
 // third-party libraries that used to be CDN-only.
 const CORE_FILES = [
@@ -8,7 +8,9 @@ const CORE_FILES = [
   './icon-192.png',
   './icon-512.png',
   './lucide.min.js',
-  './xlsx.full.min.js'
+  './xlsx.full.min.js',
+  './pdf.min.js',
+  './pdf.worker.min.js'
 ];
 
 self.addEventListener('install', e => {
@@ -32,7 +34,7 @@ self.addEventListener('activate', e => {
   self.clients.claim();
 });
 
-const CACHEABLE_HOSTS = ['cdn.jsdelivr.net', 'cdnjs.cloudflare.com', 'cdn.ckeditor.com'];
+const CACHEABLE_HOSTS = ['cdn.jsdelivr.net', 'cdnjs.cloudflare.com'];
 
 self.addEventListener('fetch', e => {
   if (e.request.method !== 'GET') return;
@@ -70,6 +72,36 @@ self.addEventListener('fetch', e => {
         }
         return r;
       });
+    })
+  );
+});
+
+self.addEventListener('notificationclick', e => {
+  e.notification.close();
+  const rawUrl = e.notification?.data?.url || './index.html#flash';
+  const targetUrl = new URL(rawUrl, self.location.href).href;
+  e.waitUntil(
+    self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then(openClients => {
+      const appClient = openClients.find(client => {
+        try {
+          const clientUrl = new URL(client.url);
+          const target = new URL(targetUrl);
+          return clientUrl.origin === target.origin
+            && (clientUrl.pathname.endsWith('/index.html') || clientUrl.pathname.endsWith('/'));
+        } catch (error) {
+          return false;
+        }
+      });
+      if (appClient) {
+        if ('navigate' in appClient) {
+          return appClient.navigate(targetUrl)
+            .then(client => (client || appClient).focus())
+            .catch(() => appClient.focus());
+        }
+        return appClient.focus();
+      }
+      if (self.clients.openWindow) return self.clients.openWindow(targetUrl);
+      return null;
     })
   );
 });
