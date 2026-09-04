@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">لوگوی اپ دفترچه لغت</title>
+  <desc id="desc">فلش‌کارت‌های رنگی همراه با نشان یادگیری و جرقه هوشمند</desc>
+  <defs>
+    <linearGradient id="card" x1="99" y1="118" x2="379" y2="399" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#7759EE"/>
+      <stop offset="1" stop-color="#4B31B9"/>
+    </linearGradient>
+    <linearGradient id="paper" x1="42" y1="36" x2="465" y2="478" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFF9F2"/>
+      <stop offset="1" stop-color="#F2EBE3"/>
+    </linearGradient>
+    <filter id="shadow" x="54" y="68" width="412" height="400" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="16" stdDeviation="15" flood-color="#684839" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+
+  <rect width="512" height="512" rx="112" fill="url(#paper)"/>
+  <circle cx="63" cy="67" r="120" fill="#FFD9C9" fill-opacity="0.64"/>
+  <circle cx="444" cy="430" r="145" fill="#DCD3FF" fill-opacity="0.72"/>
+
+  <g filter="url(#shadow)">
+    <rect x="88" y="139" width="226" height="255" rx="48" transform="rotate(-12 88 139)" fill="#FF846D"/>
+    <rect x="127" y="97" width="226" height="274" rx="48" transform="rotate(8 127 97)" fill="#2DBAC5"/>
+    <rect x="100" y="119" width="226" height="274" rx="48" fill="url(#card)"/>
+
+    <path d="M148 186H224" stroke="#FFFFFF" stroke-width="18" stroke-linecap="round"/>
+    <path d="M148 233H278" stroke="#DCD4FF" stroke-width="13" stroke-linecap="round"/>
+    <path d="M148 270H255" stroke="#DCD4FF" stroke-width="13" stroke-linecap="round"/>
+    <path d="M148 307H211" stroke="#DCD4FF" stroke-width="13" stroke-linecap="round"/>
+
+    <circle cx="278" cy="337" r="43" fill="#FFE074"/>
+    <path d="M257 337L272 352L299 320" fill="none" stroke="#35236C" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+
+  <path d="M395 73C398.159 88.999 411.001 101.841 427 105C411.001 108.159 398.159 121.001 395 137C391.841 121.001 378.999 108.159 363 105C378.999 101.841 391.841 88.999 395 73Z" fill="#7655E7"/>
+  <path d="M351 67C352.579 74.999 359.001 81.421 367 83C359.001 84.579 352.579 91.001 351 99C349.421 91.001 342.999 84.579 335 83C342.999 81.421 349.421 74.999 351 67Z" fill="#FF846D"/>
+</svg>

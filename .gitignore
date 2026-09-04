@@ -1,0 +1,11 @@
+# Claude Code local machine settings
+.claude/settings.local.json
+
+# Editor / OS noise
+.DS_Store
+Thumbs.db
+
+# Working files
+outputs/
+*.before-*.html
+index-view.html
